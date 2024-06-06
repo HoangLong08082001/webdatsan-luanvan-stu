@@ -1,0 +1,18 @@
+Bật terminal của project.
+
+Phía server api:
+b1: cd server
+b2: npm i
+b3: npm start
+=>Chạy thành công: 
+server is running on the port 4000
+Connected to MySQL!
+
+Phía client:
+b1: cd client
+b2: npm i 
+b3: npm start
+b4: truy cập đường dẫn: http://localhost:3000/admin 
+b5: username: cang123, password:cang123 
+
+
