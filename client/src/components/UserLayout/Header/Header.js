@@ -16,7 +16,7 @@ const cx = classNames.bind(style);
 export default function Header() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-
+  const [open, setOpen] = useState(false);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("list-menu")}>
@@ -80,6 +80,9 @@ export default function Header() {
               onClick={() => navigate("/dang-ky")}
             >
               Đăng ký
+            </button>
+            <button className={cx("cart")}>
+              <FontAwesomeIcon icon={faCartShopping} />
             </button>
           </li>
         </ul>
