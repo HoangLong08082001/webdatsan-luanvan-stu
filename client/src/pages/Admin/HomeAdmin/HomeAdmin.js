@@ -1,11 +1,11 @@
 import React from "react";
-import style from './HomeAdmin.module.scss'
+import style from "./HomeAdmin.module.scss";
 import classNames from "classnames/bind";
-const cx =classNames.bind(style)
+const cx = classNames.bind(style);
 export default function HomeAdmin() {
   return (
     <div className={cx("wrapper")}>
-      <div>Home Admin</div>
+      <img src="" alt="" />
     </div>
   );
 }

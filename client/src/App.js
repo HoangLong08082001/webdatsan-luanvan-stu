@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AdminLayout from "./components/AdminLayout/AdminLayout";
-import { AdminRouter } from "./routers";
+import { AdminRouter, UserRouter } from "./routers";
 import "./App.css";
+import UserLayout from "./components/UserLayout/UserLayout";
 function App() {
   return (
     <Router>
@@ -24,6 +25,20 @@ function App() {
             } else {
               return <Route path={route.path} element={<Page />} />;
             }
+          })}
+          {UserRouter.map((route, index) => {
+            let Layout = UserLayout;
+            let Page = route.component;
+            return (
+              <Route
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
           })}
         </Routes>
       </div>

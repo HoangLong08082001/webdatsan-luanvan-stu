@@ -33,7 +33,7 @@ export default function Header() {
           </Link>
         </li>
         <li>
-          <Link className={cx("link")} to="">
+          <Link className={cx("link")} to="/admin-dung-cu-the-thao">
             Dụng cụ thể thao
           </Link>
         </li>

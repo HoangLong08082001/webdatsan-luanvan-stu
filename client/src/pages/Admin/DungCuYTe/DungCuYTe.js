@@ -11,6 +11,8 @@ import {
 import axios from "axios";
 const cx = classNames.bind(style);
 export default function DungCuYTe() {
+  const [imageSrc, setImageSrc] = useState("");
+
   const [listDungCu, setListDungCu] = useState([]);
   const fetchDungCuYTe = async () => {
     await axios

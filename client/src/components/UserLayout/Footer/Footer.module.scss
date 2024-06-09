@@ -1,0 +1,115 @@
+.wrapper {
+  margin-top: 10px;
+  height: 600px;
+  background-color: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  .list-footer {
+    padding: 20px;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    .first {
+      border-bottom: 1px solid black;
+      width: 100%;
+      height: 80%;
+      .logo {
+        font-size: 30px;
+        display: flex;
+      }
+      .logo-first {
+        text-decoration: underline;
+        color: #f9b90f;
+        font-weight: 700;
+      }
+      .logo-second {
+        text-decoration: underline;
+        color: #18458b;
+        font-weight: 700;
+      }
+      .slogon {
+        margin-top: 10px;
+        color: #18458b;
+        font-weight: 800;
+        font-size: 30px;
+      }
+    }
+    .second {
+      border-bottom: 1px solid black;
+      width: 100%;
+      height: 80%;
+      .title-footer {
+        color: black;
+        font-weight: 700;
+      }
+      ul {
+        margin-top: 10px;
+        list-style: none;
+        li {
+          cursor: pointer;
+          margin-top: 5px;
+          transition: 0.2s linear;
+          &:hover {
+            color: #18458b;
+            font-weight: 600;
+            transition: 0.2s linear;
+          }
+        }
+      }
+    }
+    .third {
+      border-bottom: 1px solid black;
+      width: 100%;
+      height: 80%;
+      .title-footer {
+        color: black;
+        font-weight: 700;
+      }
+      ul {
+        margin-top: 10px;
+        list-style: none;
+        li {
+          cursor: pointer;
+          margin-top: 5px;
+          transition: 0.2s linear;
+          &:hover {
+            color: #18458b;
+            font-weight: 600;
+            transition: 0.2s linear;
+          }
+        }
+      }
+    }
+    .four {
+      border-bottom: 1px solid black;
+      width: 100%;
+      height: 80%;
+      .title-footer {
+        color: black;
+        font-weight: 700;
+      }
+      ul {
+        margin-top: 10px;
+        list-style: none;
+        li {
+          cursor: pointer;
+          margin-top: 5px;
+        }
+        .map {
+          width: 100%;
+          height: 300px;
+        }
+      }
+    }
+  }
+  .footer {
+    background-color: #18458b;
+    height: 10%;
+  }
+  .text-footer {
+    text-align: center;
+    margin-top: 10px;
+    color: white;
+    font-weight: 800;
+  }
+}

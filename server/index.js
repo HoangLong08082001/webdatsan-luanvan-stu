@@ -1,6 +1,7 @@
 import AdminRoutes from "./API/Admin/AdminRoutes";
 import ChiNhanhRoutes from "./API/ChiNhanh/ChiNhanhRoutes";
 import DoAnRoutes from "./API/DoAn/DoAnRoutes";
+import DungCuTheThaoRoutes from "./API/DungCuTheThao/DungCuTheThaoRoutes";
 import DungCuYTeRoutes from "./API/DungCuYTe/DungCuYTeRoutes";
 import NuocUongRoutes from "./API/NuocUong/NuocUongRoutes";
 import "./config/database";
@@ -36,6 +37,7 @@ ChiNhanhRoutes(app);
 DoAnRoutes(app);
 DungCuYTeRoutes(app);
 NuocUongRoutes(app);
+DungCuTheThaoRoutes(app);
 server.listen(port, (err) => {
   if (err) {
     throw err;
