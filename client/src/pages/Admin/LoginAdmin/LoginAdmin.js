@@ -10,24 +10,25 @@ export default function LoginAdmin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleLogin = async () => {
-    try {
-      let res = await axios.post("http://localhost:4000/admin/login", {
-        username: username,
-        password: password,
-      });
+    // try {
+    //   let res = await axios.post("http://localhost:4000/admin/login", {
+    //     username: username,
+    //     password: password,
+    //   });
 
-      if (res.data.message === "success") {
-        alert("Success to login");
-        localStorage.setItem("jwt", "account");
-        naviate("/admin-trang-chu");
-      }
-    } catch (error) {
-      if (error.response.status >= 500) {
-        alert("SYSTEM ERROR");
-      } else {
-        alert("Khong ton tai account");
-      }
-    }
+    //   if (res.data.message === "success") {
+    //     alert("Success to login");
+    //     localStorage.setItem("jwt", "account");
+    //     naviate("/admin-trang-chu");
+    //   }
+    // } catch (error) {
+    //   if (error.response.status >= 500) {
+    //     alert("SYSTEM ERROR");
+    //   } else {
+    //     alert("Khong ton tai account");
+    //   }
+    // }
+    naviate("/admin-trang-chu");
   };
   return (
     <div className={cx("wrapper")}>

@@ -1,140 +1,131 @@
 .wrapper {
   padding: 10px;
-  .yard {
-    padding: 10px;
-    .title-yard {
-      text-align: center;
-      font-size: 20px;
-      color: #18458b;
-      font-weight: 800;
-    }
-    .item-yard {
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-      background-color: white;
-      display: flex;
+  display: flex;
+  
+  height: 380px;
+  .left {
+    overflow-y: scroll;
+    width: 100%;
+    padding: 5px;
+    max-height: 380px;
+    
+    .item {
       padding: 10px;
+      display: flex;
+      width: 100%;
+      height: 100px;
+      .action {
+        width: 10%;
+        .delete {
+          margin-top: 20px;
+          border: none;
+          background-color: red;
+          font-weight: 900;
+          color: white;
+          padding: 10px 15px;
+        }
+      }
       .form-img {
-        width: 60%;
-        height: 250px;
-        border-radius: 20px;
-        padding: 10px;
+        width: 20%;
         img {
           width: 100%;
           height: 100%;
         }
       }
       .info {
-        padding: 10px;
-        width: 100%;
-        margin: auto;
-        .price-yard {
-          color: #18458b;
-          background-color: #f9b90f;
-          padding: 10px;
-          font-weight: 900;
-          text-align: center;
-        }
-      }
-      .action-yard {
-        width: 20%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .delete-yard {
-          cursor: pointer;
-          padding: 10px;
-          width: 100%;
-          background-color: red;
-          color: white;
+        .name-item {
+          font-size: 20px;
           font-weight: 800;
-          border: none;
+          color: black;
         }
+        .item-1 {
+          margin: 5px;
+        }
+        .item {
+          margin: 5px;
+        }
+        width: 40%;
       }
     }
   }
-  .other {
-    padding: 10px;
-    .title-other {
+  .right {
+    width: 100%;
+    padding: 5px;
+    .title {
+      color: #18458b;
       text-align: center;
       font-size: 20px;
-      color: #18458b;
       font-weight: 800;
     }
-    .item-other {
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-      background-color: white;
-      display: flex;
-      padding: 10px;
-      .form-img {
-        width: 60%;
-        height: 250px;
-        border-radius: 20px;
-        padding: 10px;
-        img {
-          width: 100%;
-          height: 100%;
-        }
+    table {
+      width: 100%;
+      tr {
+        margin: 10px 0px;
       }
-      .info {
-        padding: 10px;
-        width: 100%;
-        margin: auto;
-        .price-yard {
-          color: #18458b;
-          background-color: #f9b90f;
-          padding: 10px;
-          font-weight: 900;
-          text-align: center;
-        }
+      td {
+        text-align: center;
       }
       .action {
-        width: 20%;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        .list-next-prev {
-          margin-top: 10px;
-          display: flex;
-          width: 80%;
-          justify-content: space-around;
-          .prev {
-            font-weight: 800;
-            background-color: white;
-            padding: 10px;
-          }
-          .num {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-          }
-          .next {
-            font-weight: 800;
-            background-color: white;
-            padding: 10px;
-          }
-        }
-        .delete {
-          cursor: pointer;
-          padding: 10px;
-          width: 100%;
-          background-color: red;
-          color: white;
-          font-weight: 800;
+        justify-content: space-around;
+        .prev {
           border: none;
+          padding: 10px;
+        }
+        .next {
+          border: none;
+          padding: 10px;
+        }
+        .num {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+    .bottom {
+      display: flex;
+      padding: 10px;
+      justify-content: space-between;
+      .comment {
+        display: flex;
+        .title-comment {
+          color: black;
+          font-weight: 800;
+        }
+        input {
+          height: 20px;
+        }
+      }
+    }
+    .total {
+      .money {
+        text-align: right;
+      }
+      .deposit {
+        text-align: right;
+      }
+      .sale {
+        text-align: right;
+      }
+      .money-total {
+        text-align: right;
+        .red {
+          color: rgb(190, 3, 3);
+          font-size: 800;
+          font-size: 25px;
         }
       }
     }
   }
-  .payment {
-    padding: 30px 50px;
-    margin: 20px 0px;
-    font-weight: 900;
-    background-color: #a91f6c;
-    color: white;
-    border-radius: 5px;
-    border: none;
-  }
 }
+.momo {
+  padding: 10px;
+  margin: 20px 0px;
+  background-color: #a91f6c;
+  color: white;
+  font-weight: 800;
+  border: none;
+  right: 0;
+}
+

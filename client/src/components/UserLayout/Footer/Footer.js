@@ -14,8 +14,8 @@ export default function Footer() {
       <div className={cx("list-footer")}>
         <div className={cx("first")}>
           <div className={cx("logo")}>
-            <p className={cx("logo-first")}>CANG</p>
-            <p className={cx("logo-second")}>ĐẠT</p>
+            <p className={cx("logo-first")}>SPORT</p>
+            <p className={cx("logo-second")}>RETAL</p>
           </div>
           <p className={cx("slogon")}>DỊCH VỤ ĐẶT SÂN THỂ THAO-TPHCM</p>
         </div>

@@ -7,7 +7,7 @@ const create = (req, res) => {
 
   try {
     pool.query(
-      "SELECT * FROM admin WHERE username_admin=?",
+      "SELECT * FROM quantri WHERE username=?",
       [username],
       (err, data) => {
         if (err) {
@@ -22,7 +22,7 @@ const create = (req, res) => {
             }
             if (hash) {
               pool.query(
-                "INSERT INTO admin (username_admin, password_admin) VALUES (?,?)",
+                "INSERT INTO quantri (username, password) VALUES (?,?)",
                 [username, hash],
                 (err, result) => {
                   if (err) {
@@ -47,7 +47,7 @@ const login = (req, res) => {
   let password = req.body.password;
   try {
     pool.query(
-      "SELECT * FROM admin WHERE username_admin=?",
+      "SELECT * FROM quantri WHERE username=?",
       [username],
       (err, data) => {
         if (err) {
@@ -78,7 +78,7 @@ const login = (req, res) => {
 const forgotPassword = (req, res) => {};
 const getAll = (req, res) => {
   try {
-    pool.query("SELECT * FROM admin", [], (err, data) => {
+    pool.query("SELECT * FROM quantri", [], (err, data) => {
       if (err) {
         throw err;
       }

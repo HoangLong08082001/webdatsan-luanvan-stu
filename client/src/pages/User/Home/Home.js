@@ -20,8 +20,8 @@ export default function Home() {
         />
       </div>
       <div className={cx("logo")}>
-        <p className={cx("logo-first")}>CANG</p>
-        <p className={cx("logo-second")}>ĐẠT</p>
+        <p className={cx("logo-first")}>SPORT</p>
+        <p className={cx("logo-second")}>RETAL</p>
       </div>
       <p className={cx("name")}>DỊCH VỤ ĐẶT SÂN THỂ THAO-TPHCM</p>
       <div className={cx("search-form")}>

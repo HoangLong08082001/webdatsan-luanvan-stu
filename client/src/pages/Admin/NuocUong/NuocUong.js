@@ -9,25 +9,39 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import AddDoAn from "../DoAn/AddDoAn/AddDoAn";
+import AddNuocUong from "./AddNuocUong/AddNuocUong";
 const cx = classNames.bind(style);
 export default function NuocUong() {
+  const [modal, setModal] = useState(false);
   const [listNuocUong, setListNuocUong] = useState([]);
   const fetchNuocUong = async () => {
     await axios.get("http://localhost:4000/nuoc-uong/get-all").then((res) => {
       if (res) {
         setListNuocUong(res.data);
-        console.log(res.data);
       }
     });
   };
+  const handleBlock = (item) => {
+    axios
+      .put("http://localhost:4000/nuoc-uong/block", {
+        id_nuoc_uong: item,
+      })
+      .then((res) => {
+        if (res) {
+        }
+      });
+  };
   useEffect(() => {
     fetchNuocUong();
-  }, []);
+  }, [listNuocUong]);
   return (
     <div className={cx("wrapper")}>
-      <p className={cx("title")}>CHI NHÁNH </p>
+      <p className={cx("title")}>NƯỚC UỐNG </p>
       <div className={cx("list-btn")}>
-        <button className={cx("add")}>THÊM MỚI</button>
+        <button className={cx("add")} onClick={() => setModal(true)}>
+          THÊM MỚI
+        </button>
         <button className={cx("excel")}>XUẤT EXCEL</button>
       </div>
       <div className={cx("form-table")}>
@@ -37,32 +51,28 @@ export default function NuocUong() {
             <th>Tên nước uống</th>
             <th>Giá</th>
             <th>Số lượng</th>
+            {/* <th>Trạng thái</th> */}
             <th>Hình ảnh</th>
             <th>Xử lý</th>
           </tr>
           {listNuocUong.map((item, index) => {
-            const base64String = btoa(
-              new Uint8Array(item.hinh_nuoc_uong).reduce(
-                (data, byte) => data + String.fromCharCode(byte),
-                ""
-              )
-            );
             return (
               <tr className={cx("tr-td")}>
                 <td>{index + 1}</td>
                 <td>{item.ten_nuoc_uong}</td>
-                <td>{item.gia}</td>
-                <td>{item.so_luong}</td>
+                <td>{item.gia_nuoc}</td>
+                <td>{item.so_luong_kho}</td>
+                {/* <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td> */}
                 <td>
-                  <img
-                    className={cx("img")}
-                    src={`data:image/jpeg;base64,${base64String}`}
-                    alt=""
-                  />
+                  <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>
                 <td className={cx("action")}>
                   <FontAwesomeIcon icon={faPen} className={cx("edit")} />
-                  <FontAwesomeIcon icon={faLock} className={cx("lock")} />
+                  <FontAwesomeIcon
+                    icon={faLock}
+                    className={cx("lock")}
+                    onClick={() => handleBlock(item.ma_nuoc_uong_loai)}
+                  />
                   <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
                 </td>
               </tr>
@@ -70,6 +80,11 @@ export default function NuocUong() {
           })}
         </table>
       </div>
+      {modal === true ? (
+        <AddNuocUong handleClose={() => setModal(false)} />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

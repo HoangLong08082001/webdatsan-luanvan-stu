@@ -9,9 +9,11 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import AddDoAn from "./AddDoAn/AddDoAn";
 const cx = classNames.bind(style);
 export default function DoAn() {
   const [listDoAn, setListDoAn] = useState([]);
+  const [modal, setModal] = useState(false);
   const fetchChiNhanh = async () => {
     await axios.get("http://localhost:4000/do-an/get-all").then((res) => {
       if (res) {
@@ -20,15 +22,29 @@ export default function DoAn() {
       }
     });
   };
-
+  const close = () => {
+    setModal(false);
+  };
+  const handleBlock = (item) => {
+    axios
+      .put("http://localhost:4000/do-an/block", {
+        id_do_an: item,
+      })
+      .then((res) => {
+        if (res) {
+        }
+      });
+  };
   useEffect(() => {
     fetchChiNhanh();
-  }, []);
+  }, [listDoAn]);
   return (
     <div className={cx("wrapper")}>
-      <p className={cx("title")}>CHI NHÁNH </p>
+      <p className={cx("title")}>ĐỒ ĂN </p>
       <div className={cx("list-btn")}>
-        <button className={cx("add")}>THÊM MỚI</button>
+        <button className={cx("add")} onClick={() => setModal(true)}>
+          THÊM MỚI
+        </button>
         <button className={cx("excel")}>XUẤT EXCEL</button>
       </div>
       <div className={cx("form-table")}>
@@ -38,32 +54,29 @@ export default function DoAn() {
             <th>Tên đồ ăn</th>
             <th>Giá đồ ăn</th>
             <th>Số lượng</th>
+            <th>Trạng thái</th>
             <th>Hình ảnh</th>
             <th>Xử lý</th>
           </tr>
           {listDoAn.map((item, index) => {
-            const base64String = btoa(
-              new Uint8Array(item.hinh_an_do_an).reduce(
-                (data, byte) => data + String.fromCharCode(byte),
-                ""
-              )
-            );
             return (
               <tr className={cx("tr-td")}>
                 <td>{index + 1}</td>
                 <td>{item.ten_do_an}</td>
                 <td>{item.gia_do_an}</td>
                 <td>{item.so_luong}</td>
+                <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td>
                 <td>
-                  <img
-                    className={cx("img")}
-                    src={`data:image/jpeg;base64,${base64String}`}
-                    alt=""
-                  />
+                  {" "}
+                  <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>
                 <td className={cx("action")}>
                   <FontAwesomeIcon icon={faPen} className={cx("edit")} />
-                  <FontAwesomeIcon icon={faLock} className={cx("lock")} />
+                  <FontAwesomeIcon
+                    icon={faLock}
+                    className={cx("lock")}
+                    onClick={() => handleBlock(item.ma_do_an)}
+                  />
                   <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
                 </td>
               </tr>
@@ -71,6 +84,7 @@ export default function DoAn() {
           })}
         </table>
       </div>
+      {modal === true ? <AddDoAn handleClose={close} /> : ""}
     </div>
   );
 }

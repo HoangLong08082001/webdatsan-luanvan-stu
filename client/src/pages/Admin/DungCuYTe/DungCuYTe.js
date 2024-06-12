@@ -9,8 +9,10 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import AddDungCuYTe from "./AddDungCuYTe/AddDungCuYTe";
 const cx = classNames.bind(style);
 export default function DungCuYTe() {
+  const [modal, setModal] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
 
   const [listDungCu, setListDungCu] = useState([]);
@@ -20,18 +22,19 @@ export default function DungCuYTe() {
       .then((res) => {
         if (res) {
           setListDungCu(res.data);
-          console.log(res.data);
         }
       });
   };
   useEffect(() => {
     fetchDungCuYTe();
-  }, []);
+  }, [listDungCu]);
   return (
     <div className={cx("wrapper")}>
-      <p className={cx("title")}>CHI NHÁNH </p>
+      <p className={cx("title")}>DỤNG CỤ Y TẾ </p>
       <div className={cx("list-btn")}>
-        <button className={cx("add")}>THÊM MỚI</button>
+        <button className={cx("add")} onClick={() => setModal(true)}>
+          THÊM MỚI
+        </button>
         <button className={cx("excel")}>XUẤT EXCEL</button>
       </div>
       <div className={cx("form-table")}>
@@ -41,29 +44,21 @@ export default function DungCuYTe() {
             <th>Tên dụng cụ y tế</th>
             <th>Giá</th>
             <th>Số lượng</th>
+            <th>Trạng thái</th>
             <th>Hình ảnh</th>
             <th>Xử lý</th>
           </tr>
           {listDungCu.map((item, index) => {
-            const base64String = btoa(
-              new Uint8Array(item.hinh_an_dung_cu).reduce(
-                (data, byte) => data + String.fromCharCode(byte),
-                ""
-              )
-            );
             return (
               <tr className={cx("tr-td")}>
                 <td>{index + 1}</td>
                 <td>{item.ten_dung_cu_y_te}</td>
-                <td>{item.gia}</td>
+                <td>{item.gia_dung_cu}</td>
                 <td>{item.so_luong}</td>
+                <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td>
                 <td>
                   {" "}
-                  <img
-                    className={cx("img")}
-                    src={`data:image/jpeg;base64,${base64String}`}
-                    alt=""
-                  />
+                  <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>
                 <td className={cx("action")}>
                   <FontAwesomeIcon icon={faPen} className={cx("edit")} />
@@ -75,6 +70,11 @@ export default function DungCuYTe() {
           })}
         </table>
       </div>
+      {modal === true ? (
+        <AddDungCuYTe handleClose={() => setModal(false)} />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

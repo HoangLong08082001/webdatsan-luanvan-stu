@@ -1,0 +1,89 @@
+import React, { useEffect, useState } from "react";
+import style from "./San.module.scss";
+import classNames from "classnames/bind";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPen,
+  faTrash,
+  faLock,
+  faTrashCan,
+  faUnlock,
+} from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import AddSan from "./AddSan/AddSan";
+const cx = classNames.bind(style);
+
+export default function San() {
+  const [modal, setModal] = useState(false);
+  const [listSan, setListSan] = useState([]);
+  const fetchListSan = () => {
+    axios.get("http://localhost:4000/san/get-all").then((res) => {
+      if (res) {
+        setListSan(res.data);
+      }
+    });
+  };
+  const handleBlock = (item) => {
+    axios
+      .put("http://localhost:4000/san/block", {
+        ma_san: item,
+      })
+      .then((res) => {
+        if (res) {
+          alert("Block successfully");
+        }
+      });
+  };
+  useEffect(() => {
+    fetchListSan();
+  }, [listSan]);
+  return (
+    <div className={cx("wrapper")}>
+      <p className={cx("title")}>SÂN</p>
+      <div className={cx("list-btn")}>
+        <button className={cx("add")} onClick={() => setModal(true)}>
+          THÊM MỚI
+        </button>
+        <button className={cx("excel")}>XUẤT EXCEL</button>
+      </div>
+      {/* loai_san description hinh_anh trang_thai ma_chi_nhanh */}
+      <div className={cx("form-table")}>
+        <table border={1} cellSpacing={0} className={cx("table")}>
+          <tr className={cx("tr-th")}>
+            <th>STT</th>
+            <th>Tên sân</th>
+            <th>trạng thái</th>
+            <th>Chi nhánh</th>
+            <th>Hình ảnh</th>
+            <th>Xử lý</th>
+          </tr>
+          {listSan.map((item, index) => {
+            return (
+              <tr className={cx("tr-td")}>
+                <td>{index + 1}</td>
+                <td>{item.ten_san}</td>
+                <td>{item.trang_thai === 1 ? "Hiển thị" : "Chưa hiển thị"}</td>
+                <td>{item.ten_chi_nhanh}</td>
+                <td>
+                  <img className={cx("img")} src={item.hinh_anh} alt="" />
+                </td>
+                <td className={cx("action")}>
+                  <FontAwesomeIcon icon={faPen} className={cx("edit")} />
+                  <FontAwesomeIcon
+                    icon={item.trang_thai === 1 ? faLock : faUnlock}
+                    className={cx(
+                      item.trang_thai === 1 ? "lock" : "lock-active"
+                    )}
+                    onClick={() => handleBlock(item.ma_san)}
+                  />
+                  <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
+                </td>
+              </tr>
+            );
+          })}
+        </table>
+      </div>
+      {modal === true ? <AddSan handleClose={() => setModal(false)} /> : ""}
+    </div>
+  );
+}

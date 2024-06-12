@@ -12,6 +12,7 @@ import {
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
+import Cart from "../../Cart/Cart";
 const cx = classNames.bind(style);
 export default function Header() {
   const navigate = useNavigate();
@@ -22,11 +23,14 @@ export default function Header() {
       <div className={cx("list-menu")}>
         <ul>
           <li className={cx("logo")}>
-            <p className={cx("logo-first")}>CANG</p>
-            <p className={cx("logo-second")}>ĐẠT</p>
+            <p className={cx("logo-first")}>SPORT</p>
+            <p className={cx("logo-second")}>RETAL</p>
           </li>
           <li className={cx("link")} onClick={() => navigate("/")}>
             Trang chủ{" "}
+          </li>
+          <li className={cx("link")} onClick={() => navigate("/")}>
+            Chi nhánh{" "}
           </li>
           <li className={cx("link")} onClick={() => setShow(!show)}>
             Loại sân{" "}
@@ -68,6 +72,15 @@ export default function Header() {
           <li className={cx("link")} onClick={() => navigate("/nuoc-uong")}>
             Nước uống
           </li>
+          <li className={cx("link")} onClick={() => navigate("/dung-cu-y-te")}>
+            Dụng cụ y tế
+          </li>
+          <li
+            className={cx("link")}
+            onClick={() => navigate("/dung-cu-the-thao")}
+          >
+            Dụng cụ thể thao
+          </li>
           <li className={cx("li")}>
             <button
               className={cx("login")}
@@ -81,12 +94,13 @@ export default function Header() {
             >
               Đăng ký
             </button>
-            <button className={cx("cart")}>
+            {/* <button className={cx("cart")}>
               <FontAwesomeIcon icon={faCartShopping} />
-            </button>
+            </button> */}
           </li>
         </ul>
       </div>
+      {/* <Cart/> */}
     </div>
   );
 }

@@ -9,8 +9,10 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import AddDungCuTheThao from "./AddDungCuTheThao/AddDungCuTheThao";
 const cx = classNames.bind(style);
 export default function DungCuTheThao() {
+  const [modal, setModal] = useState(false);
   const [list, setList] = useState([]);
   const fetchDungCuYTe = async () => {
     await axios
@@ -22,14 +24,26 @@ export default function DungCuTheThao() {
         }
       });
   };
+  const handleBlock = (item) => {
+    axios
+      .put("http://localhost:4000/dung-cu-the-thao/block", {
+        id_dung_cu_the_thao: item,
+      })
+      .then((res) => {
+        if (res) {
+        }
+      });
+  };
   useEffect(() => {
     fetchDungCuYTe();
-  }, []);
+  }, [list]);
   return (
     <div className={cx("wrapper")}>
-      <p className={cx("title")}>CHI NHÁNH </p>
+      <p className={cx("title")}>DỤNG CỤ THỂ THAO </p>
       <div className={cx("list-btn")}>
-        <button className={cx("add")}>THÊM MỚI</button>
+        <button className={cx("add")} onClick={() => setModal(true)}>
+          THÊM MỚI
+        </button>
         <button className={cx("excel")}>XUẤT EXCEL</button>
       </div>
       <div className={cx("form-table")}>
@@ -39,33 +53,29 @@ export default function DungCuTheThao() {
             <th>Tên dụng cụ y tế</th>
             <th>Giá</th>
             <th>Số lượng</th>
+            <th>Trạng thái</th>
             <th>Hình ảnh</th>
             <th>Xử lý</th>
           </tr>
           {list.map((item, index) => {
-            const base64String = btoa(
-              new Uint8Array(item.hinh_an_dung_cu).reduce(
-                (data, byte) => data + String.fromCharCode(byte),
-                ""
-              )
-            );
             return (
               <tr className={cx("tr-td")}>
-                <td>{index+1}</td>
-                <td>asd</td>
-                <td>asd</td>
-                <td>asd</td>
+                <td>{index + 1}</td>
+                <td>{item.ten_dung_cu_the_thao}</td>
+                <td>{item.gia_dung_cu}</td>
+                <td>{item.so_luong}</td>
+                <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td>
                 <td>
                   {" "}
-                  <img
-                    className={cx("img")}
-                    src={`data:image/jpeg;base64,${base64String}`}
-                    alt=""
-                  />
+                  <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>
                 <td className={cx("action")}>
                   <FontAwesomeIcon icon={faPen} className={cx("edit")} />
-                  <FontAwesomeIcon icon={faLock} className={cx("lock")} />
+                  <FontAwesomeIcon
+                    icon={faLock}
+                    className={cx("lock")}
+                    onClick={() => handleBlock(item.ma_dung_cu_the_thao)}
+                  />
                   <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
                 </td>
               </tr>
@@ -73,6 +83,11 @@ export default function DungCuTheThao() {
           })}
         </table>
       </div>
+      {modal === true ? (
+        <AddDungCuTheThao handleClose={() => setModal(false)} />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

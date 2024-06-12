@@ -5,7 +5,11 @@ const cx = classNames.bind(style);
 export default function HomeAdmin() {
   return (
     <div className={cx("wrapper")}>
-      <img src="" alt="" />
+      <div className={cx("statis")}>
+        <div className={cx("item")}>
+          
+        </div>
+      </div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import DoAnRoutes from "./API/DoAn/DoAnRoutes";
 import DungCuTheThaoRoutes from "./API/DungCuTheThao/DungCuTheThaoRoutes";
 import DungCuYTeRoutes from "./API/DungCuYTe/DungCuYTeRoutes";
 import NuocUongRoutes from "./API/NuocUong/NuocUongRoutes";
+import sanRoutes from "./API/San/sanRoutes";
 import "./config/database";
 const express = require("express");
 const dotenv = require("dotenv");
@@ -38,6 +39,7 @@ DoAnRoutes(app);
 DungCuYTeRoutes(app);
 NuocUongRoutes(app);
 DungCuTheThaoRoutes(app);
+sanRoutes(app);
 server.listen(port, (err) => {
   if (err) {
     throw err;

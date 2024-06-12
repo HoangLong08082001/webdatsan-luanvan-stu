@@ -47,13 +47,9 @@ export default function Header() {
             Nước uống
           </Link>
         </li>
+
         <li>
-          <Link className={cx("link")} to="">
-            Quận huyện
-          </Link>
-        </li>
-        <li>
-          <Link className={cx("link")} to="">
+          <Link className={cx("link")} to="/admin-san">
             Sân
           </Link>
         </li>

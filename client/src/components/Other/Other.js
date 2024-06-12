@@ -4,15 +4,15 @@ import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 const cx = classNames.bind(style);
-export default function Other() {
+export default function Other({ img,category, name, soluong, gia }) {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("form-img")}>
-        <img src="" alt="" />
+        <img src={img} alt="" />
       </div>
-      <p className={cx("name")}>STING</p>
-      <p className={cx("price")}>120000/chai</p>
-      <p className={cx("price")}>300000/thung</p>
+      <p className={cx("name")}>{name} / {category}</p>
+      <p className={cx("price")}>Số lượng: {soluong}</p>
+      <p className={cx("price")}>Giá: {gia}</p>
       <button className={cx("add")}>
         THÊM VÀO TẠM TÍNH <FontAwesomeIcon icon={faPlus} />
       </button>

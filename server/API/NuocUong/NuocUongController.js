@@ -1,8 +1,28 @@
 const pool = require("../../config/database");
-
+const randomNumberCodeVerfify = () => {
+  return Math.floor(100000 + Math.random() * 900000);
+};
 const getNuocUong = (req, res) => {
   try {
-    pool.query("SELECT * FROM nuoc_uong", [], (err, data) => {
+    pool.query(
+      "SELECT * FROM nuoc_uong_loai join loai_nuoc_uong on loai_nuoc_uong.ma_loai_nuoc_uong = nuoc_uong_loai.ma_loai_nuoc_uong join nuoc_uong on nuoc_uong.ma_nuoc_uong = nuoc_uong_loai.ma_nuoc_uong",
+      [],
+      (err, data) => {
+        if (err) {
+          throw err;
+        }
+        if (data) {
+          return res.status(200).json(data);
+        }
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({ message: "ERROR" });
+  }
+};
+const getCategory = (req, res) => {
+  try {
+    pool.query("SELECT * FROM loai_nuoc_uong", [], (err, data) => {
       if (err) {
         throw err;
       }
@@ -11,7 +31,116 @@ const getNuocUong = (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).json({ message: "ERROR" });
+    return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
-module.exports = { getNuocUong };
+const getLoaiNuoc = (req, res) => {
+  try {
+    pool.query("SELECT * FROM loai_nuoc_uong", [], (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        return res.status(200).json(data);
+      }
+    });
+  } catch (error) {}
+};
+const createNew = (req, res) => {
+  let ten = req.body.ten;
+  let soluong = req.body.soluong;
+  let maloai = req.body.maloai;
+  let hinhanh = req.body.hinhanh;
+  let gia = req.body.gia;
+  console.log(ten);
+  console.log(soluong);
+  console.log(maloai);
+  console.log(hinhanh);
+  console.log(gia);
+  pool.query(
+    "SELECT * FROM nuoc_uong WHERE ten_nuoc_uong=?",
+    [ten],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data.length > 0) {
+        return res.status(400).json({ message: "Loại nước này đã tồn tại" });
+      } else {
+        pool.query(
+          "INSERT INTO nuoc_uong( ten_nuoc_uong, so_luong_kho) VALUES (?,?)",
+          [ten, soluong],
+          (err, data) => {
+            if (err) {
+              throw err;
+            }
+            if (data) {
+              console.log(data);
+              pool.query(
+                "INSERT INTO nuoc_uong_loai( ma_nuoc_uong, ma_loai_nuoc_uong, hinh_anh, trang_thai, gia_nuoc) VALUES(?,?,?,?,?)",
+                [data.insertId, maloai, hinhanh, 0, gia],
+                (err, data) => {
+                  if (err) {
+                    throw err;
+                  }
+                  if (data) {
+                    return res.status(200).json({ message: "success" });
+                  }
+                }
+              );
+            }
+          }
+        );
+      }
+    }
+  );
+};
+const BlockNuocUong = (req, res) => {
+  let manuocuong = req.body.id_nuoc_uong;
+  pool.query(
+    "SELECT * FROM nuoc_uong_loai WHERE ma_nuoc_uong_loai=?",
+    [manuocuong],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data.length > 0) {
+        if (data[0].trang_thai === 0) {
+          pool.query(
+            "UPDATE nuoc_uong_loai SET trang_thai=1 WHERE ma_nuoc_uong_loai=?",
+            [manuocuong],
+            (err, data) => {
+              if (res) {
+                throw err;
+              }
+              if (data) {
+                return res.status(200).json({ message: "success" });
+              }
+            }
+          );
+        }
+        if (data[0].trang_thai === 1) {
+          pool.query(
+            "UPDATE nuoc_uong_loai SET trang_thai=0 WHERE ma_nuoc_uong_loai=?",
+            [manuocuong],
+            (err, data) => {
+              if (res) {
+                throw err;
+              }
+              if (data) {
+                return res.status(200).json({ message: "success" });
+              }
+            }
+          );
+        }
+      }
+    }
+  );
+};
+module.exports = {
+  getNuocUong,
+  getLoaiNuoc,
+  getCategory,
+  createNew,
+  BlockNuocUong,
+};

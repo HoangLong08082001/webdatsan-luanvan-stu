@@ -1,16 +1,24 @@
 .wrapper {
+  cursor: pointer;
   border-radius: 30px;
   padding: 15px;
   margin: 0px 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   .form-image {
-    border-radius: 30px;
     width: 100%;
     height: 200px;
+    overflow: hidden;
+    border-radius: 30px;
     img {
       border-radius: 30px;
       width: 100%;
       height: 100%;
+      object-fit: cover;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        border-radius: 30px;
+        transform: scale(1.2);
+      }
     }
   }
   .name {
