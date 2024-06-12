@@ -26,6 +26,7 @@ const createChiNhanh = (req, res) => {
   let maquanhuyen = req.body.ma_quan_huyen;
   let quan = req.body.quan;
   let phuong = req.body.phuong;
+  let sdt = req.body.sdt;
   try {
     pool.query(
       "SELECT * FROM chi_nhanh WHERE ten_chi_nhanh LIKE ? OR dia_chi LIKE ?",
@@ -47,8 +48,8 @@ const createChiNhanh = (req, res) => {
               [quan, phuong],
               (err, data) => {
                 pool.query(
-                  "INSERT INTO chi_nhanh ( ten_chi_nhanh,dia_chi,trang_thai,ma_quan_huyen) VALUES (?,?,?,?)",
-                  [tenchinhanh, diachi, 0, data.insertId],
+                  "INSERT INTO chi_nhanh ( ten_chi_nhanh,so_dien_thoai, dia_chi,trang_thai,ma_quan_huyen) VALUES (?,?,?,?,?)",
+                  [tenchinhanh, sdt, diachi, 0, data.insertId],
                   (err, data) => {
                     if (err) {
                       throw err;
@@ -152,5 +153,5 @@ module.exports = {
   createChiNhanh,
   BlockChiNhanh,
   updateChiNhanh,
-  getAllChiNhanh
+  getAllChiNhanh,
 };

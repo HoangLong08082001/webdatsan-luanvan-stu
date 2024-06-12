@@ -13,6 +13,7 @@ export default function AddChiNhanh({ handleClose }) {
   const [maquan, setMaquan] = useState("");
   const [quan, setQuan] = useState("");
   const [phuong, setPhuong] = useState("");
+  const [sdt, setSdt] = useState("");
   const fetchDistrict = () => {
     axios.get("http://localhost:4000/chi-nhanh/get-phuong-quan").then((res) => {
       if (res) {
@@ -55,6 +56,15 @@ export default function AddChiNhanh({ handleClose }) {
               onChange={(e) => setName(e.target.value)}
               placeholder="Nhập tên"
             />
+          </div>{" "}
+          <div className={cx("form-input")}>
+            <label htmlFor="">Số điện thoai</label>
+            <input
+              type="number"
+              value={sdt}
+              onChange={(e) => setSdt(e.target.value)}
+              placeholder="Nhập số điện thoại"
+            />
           </div>
           <div className={cx("form-input")}>
             <label htmlFor="">Địa chỉ</label>
@@ -62,7 +72,7 @@ export default function AddChiNhanh({ handleClose }) {
               type="text"
               value={diachi}
               onChange={(e) => setDiaChi(e.target.value)}
-              placeholder="Nhập giá"
+              placeholder="Nhập Địa chỉ"
             />
           </div>
           <div className={cx("form-input")}>
@@ -91,7 +101,7 @@ export default function AddChiNhanh({ handleClose }) {
                 value={maquan}
                 onChange={(e) => setMaquan(e.target.value)}
               >
-                {" "}
+                <option value={""}>Vui long chon</option>{" "}
                 {listDistrict.map((item, index) => {
                   return (
                     <option value={item.ma_quan_huyen}>
@@ -107,8 +117,8 @@ export default function AddChiNhanh({ handleClose }) {
               <label htmlFor="">Tên quận</label>
               <input
                 disabled
-                type="text"
-                placeholder="Nhập số lượng"
+                type="number"
+                placeholder="Nhập số quận"
                 value={quan}
                 onChange={(e) => setQuan(e.target.value)}
               />
@@ -117,8 +127,8 @@ export default function AddChiNhanh({ handleClose }) {
             <div className={cx("form-input")}>
               <label htmlFor="">Tên quận</label>
               <input
-                type="text"
-                placeholder="Nhập số lượng"
+                type="number"
+                placeholder="Nhập số quận"
                 value={quan}
                 onChange={(e) => setQuan(e.target.value)}
               />
@@ -129,8 +139,8 @@ export default function AddChiNhanh({ handleClose }) {
               <label htmlFor="">Tên phường</label>
               <input
                 disabled
-                type="text"
-                placeholder="Dán đường link hình ảnh"
+                type="number"
+                placeholder="Nhập số phường"
                 value={phuong}
                 onChange={(e) => setPhuong(e.target.value)}
               />
@@ -139,14 +149,13 @@ export default function AddChiNhanh({ handleClose }) {
             <div className={cx("form-input")}>
               <label htmlFor="">Tên phường</label>
               <input
-                type="text"
-                placeholder="Dán đường link hình ảnh"
+                type="number"
+                placeholder="Nhập số phường"
                 value={phuong}
                 onChange={(e) => setPhuong(e.target.value)}
               />
             </div>
           )}
-
           <button onClick={handleSubmit} className={cx("add")}>
             THÊM MỚI
           </button>

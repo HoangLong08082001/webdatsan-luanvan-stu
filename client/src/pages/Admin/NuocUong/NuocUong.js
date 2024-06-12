@@ -11,10 +11,18 @@ import {
 import axios from "axios";
 import AddDoAn from "../DoAn/AddDoAn/AddDoAn";
 import AddNuocUong from "./AddNuocUong/AddNuocUong";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 export default function NuocUong() {
   const [modal, setModal] = useState(false);
   const [listNuocUong, setListNuocUong] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!window.localStorage.getItem("token")) {
+      navigate("/admin");
+    }
+  }, [navigate]);
   const fetchNuocUong = async () => {
     await axios.get("http://localhost:4000/nuoc-uong/get-all").then((res) => {
       if (res) {

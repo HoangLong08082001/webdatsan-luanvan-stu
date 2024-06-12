@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./Details.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,15 +6,32 @@ import {
   faChevronRight,
   faEnvelope,
   faLocationDot,
+  faPhone,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 export default function Details() {
   const Navigate = useNavigate();
   const [click, setClick] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
-
+  const location = useLocation();
+  const [name, setName] = useState("");
+  const [img, setImg] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [des, setDes] = useState("");
+  const [quan, setQuan] = useState("");
+  const [phuong, setPhuong] = useState("");
+  const getLocation = () => {
+    setName(location.state.ten_san);
+    setImg(location.state.hinh_anh);
+    setPhone(location.state.so_dien_thoai);
+    setAddress(location.state.dia_chi);
+    setDes(location.state.description);
+    setQuan(location.state.ten_quan);
+    setPhuong(location.state.ten_phuong);
+  };
   const months = [
     "Tháng 1",
     "Tháng 2",
@@ -52,42 +69,31 @@ export default function Details() {
       return newDate;
     });
   };
+  useEffect(() => {
+    getLocation();
+  }, []);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("up")}>
         <div className={cx("img")}>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/S%C3%A2n_v%E1%BA%ADn_%C4%91%E1%BB%99ng_Thi%C3%AAn_Tr%C6%B0%E1%BB%9Dng.jpg/1200px-S%C3%A2n_v%E1%BA%ADn_%C4%91%E1%BB%99ng_Thi%C3%AAn_Tr%C6%B0%E1%BB%9Dng.jpg"
-            alt=""
-          />
+          <img src={img} alt="" />
         </div>
         <div className={cx("list-info")}>
           <div className={cx("description")}>
-            <p className={cx("name-yard")}>San bong da</p>
+            <p className={cx("name-yard")}>{name}</p>
             <p className={cx("list-description")}>
               <p className={cx("title-des")}>Mô tả: </p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
+              {des}
             </p>
           </div>
           <div className={cx("info-host")}>
-            <p className={cx("title-host")}>Thông tin chủ sân</p>
-            <p className={cx("name-info")}>
-              <FontAwesomeIcon icon={faUser} />: Do mixi
-            </p>
+            <p className={cx("title-host")}>Thông tin sân</p>
             <p className={cx("email")}>
-              <FontAwesomeIcon icon={faEnvelope} />: ixi@gmail.com
+              <FontAwesomeIcon icon={faPhone} />: {phone}
             </p>
             <p className={cx("address")}>
-              <FontAwesomeIcon icon={faLocationDot} />:
+              <FontAwesomeIcon icon={faLocationDot} />: {address}, phường{" "}
+              {phuong}, quận {quan}
             </p>
           </div>
           <div className={cx("booking")}>

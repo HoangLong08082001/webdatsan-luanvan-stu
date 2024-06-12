@@ -10,10 +10,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import AddDungCuTheThao from "./AddDungCuTheThao/AddDungCuTheThao";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 export default function DungCuTheThao() {
   const [modal, setModal] = useState(false);
   const [list, setList] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!window.localStorage.getItem("token")) {
+      navigate("/admin");
+    }
+  }, [navigate]);
   const fetchDungCuYTe = async () => {
     await axios
       .get("http://localhost:4000/dung-cu-the-thao/get")

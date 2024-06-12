@@ -46,7 +46,7 @@ export default function AddDungCuTheThao({ handleClose }) {
           <div className={cx("form-input")}>
             <label htmlFor="">Giá dụng cụ</label>
             <input
-              type="text"
+              type="number"
               placeholder="Nhập giá"
               value={gia}
               onChange={(e) => setGia(e.target.value)}
@@ -55,7 +55,7 @@ export default function AddDungCuTheThao({ handleClose }) {
           <div className={cx("form-input")}>
             <label htmlFor="">Số lượng</label>
             <input
-              type="text"
+              type="number"
               placeholder="Nhập số lượng"
               value={soluong}
               onChange={(e) => setSoLuong(e.target.value)}

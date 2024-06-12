@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import style from "./Header.module.scss";
 import classNames from "classnames/bind";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/UserContext";
 const cx = classNames.bind(style);
 export default function Header() {
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  const [nameTemp, setNameTemp] = useState(localStorage.getItem("user"));
   const handleLogout = () => {
     localStorage.clear("jwt");
     navigate("/admin");
@@ -43,6 +46,11 @@ export default function Header() {
           </Link>
         </li>
         <li>
+          <Link className={cx("link")} to="/admin-page">
+            Nhân viên
+          </Link>
+        </li>
+        <li>
           <Link className={cx("link")} to="/admin-nuoc-uong">
             Nước uống
           </Link>
@@ -59,7 +67,6 @@ export default function Header() {
           </Link>
         </li>
         <li>
-          <p className={cx("name")}>Name</p>
           <p className={cx("logout")} onClick={handleLogout}>
             Đăng xuất
           </p>

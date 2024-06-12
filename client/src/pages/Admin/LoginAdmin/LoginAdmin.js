@@ -1,34 +1,43 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import style from "./LoginAdmin.module.scss";
 import classNames from "classnames/bind";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../../context/UserContext";
 const cx = classNames.bind(style);
 export default function LoginAdmin() {
-  const naviate = useNavigate();
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
   const [hideShow, setHideShow] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleLogin = async () => {
-    // try {
-    //   let res = await axios.post("http://localhost:4000/admin/login", {
-    //     username: username,
-    //     password: password,
-    //   });
+    try {
+      let res = await axios.post("http://localhost:4000/admin/login", {
+        username: username,
+        password: password,
+      });
 
-    //   if (res.data.message === "success") {
-    //     alert("Success to login");
-    //     localStorage.setItem("jwt", "account");
-    //     naviate("/admin-trang-chu");
-    //   }
-    // } catch (error) {
-    //   if (error.response.status >= 500) {
-    //     alert("SYSTEM ERROR");
-    //   } else {
-    //     alert("Khong ton tai account");
-    //   }
-    // }
-    naviate("/admin-trang-chu");
+      if (res.data.message === "success") {
+        const context = {
+          isLoading: true,
+          isAuthenticated: false,
+          token: res.data.access_token,
+          account: {
+            data: res.data.data,
+          },
+        };
+        alert("Success to login");
+        login(context);
+        navigate("/admin-trang-chu");
+      }
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("SYSTEM ERROR");
+      } else {
+        alert("Khong ton tai account");
+      }
+    }
   };
   return (
     <div className={cx("wrapper")}>

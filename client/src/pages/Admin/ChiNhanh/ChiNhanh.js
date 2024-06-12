@@ -14,8 +14,14 @@ import AddChiNhanh from "./AddChiNhanh/AddChiNhanh";
 const cx = classNames.bind(style);
 export default function ChiNhanh() {
   const [modal, setModal] = useState(false);
-  const navigate = useNavigate();
   const [listChiNhanh, setListChiNhanh] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!window.localStorage.getItem("token")) {
+      navigate("/admin");
+    }
+  }, [navigate]);
   const fetchChiNhanh = async () => {
     await axios.get("http://localhost:4000/chi-nhanh/get-all").then((res) => {
       if (res) {

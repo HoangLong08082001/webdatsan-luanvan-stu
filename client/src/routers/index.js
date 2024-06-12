@@ -1,3 +1,4 @@
+import AdminPages from "../pages/Admin/AdminPages/AdminPages";
 import ChiNhanh from "../pages/Admin/ChiNhanh/ChiNhanh";
 import DoAn from "../pages/Admin/DoAn/DoAn";
 import DungCuTheThao from "../pages/Admin/DungCuTheThao/DungCuTheThao";
@@ -34,6 +35,7 @@ const AdminRouter = [
   { path: "/admin-dung-cu-the-thao", component: DungCuTheThao },
   { path: "/admin-nuoc-uong", component: NuocUong },
   { path: "/admin-san", component: San },
+  { path: "/admin-page", component: AdminPages },
 ];
 const UserRouter = [
   { path: "/", component: Home },
@@ -44,7 +46,7 @@ const UserRouter = [
   { path: "/do-an", component: Foods },
   { path: "/nuoc-uong", component: Drinks },
   { path: "/loai-san", component: Category },
-  { path: "/chi-tiet", component: Details },
+  { path: "/chi-tiet/:name/:id", component: Details },
   { path: "/san-bong-da", component: FootballPages },
   { path: "/san-bong-ro", component: BasketballPages },
   { path: "/san-cau-long", component: BadmintonPages },

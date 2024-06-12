@@ -11,11 +11,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import AddSan from "./AddSan/AddSan";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 
 export default function San() {
   const [modal, setModal] = useState(false);
   const [listSan, setListSan] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!window.localStorage.getItem("token")) {
+      navigate("/admin");
+    }
+  }, [navigate]);
   const fetchListSan = () => {
     axios.get("http://localhost:4000/san/get-all").then((res) => {
       if (res) {

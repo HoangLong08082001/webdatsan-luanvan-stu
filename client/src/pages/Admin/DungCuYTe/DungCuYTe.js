@@ -10,12 +10,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import AddDungCuYTe from "./AddDungCuYTe/AddDungCuYTe";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 export default function DungCuYTe() {
   const [modal, setModal] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
-
   const [listDungCu, setListDungCu] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!window.localStorage.getItem("token")) {
+      navigate("/admin");
+    }
+  }, [navigate]);
   const fetchDungCuYTe = async () => {
     await axios
       .get("http://localhost:4000/dung-cu-y-te/get-all")
