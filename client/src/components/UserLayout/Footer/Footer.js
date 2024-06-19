@@ -37,14 +37,6 @@ export default function Footer() {
         <div className={cx("four")}>
           <p className={cx("title-footer")}>Địa chỉ</p>
           <ul>
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15679.817641153899!2d106.6778321!3d10.7379972!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f62a90e5dbd%3A0x674d5126513db295!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBuZ2jhu4cgU8OgaSBHw7Ju!5e0!3m2!1svi!2s!4v1717820687943!5m2!1svi!2s"
-              className={cx("map")}
-              style={{ border: 0 }}
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
             <ul>
               <li>
                 <FontAwesomeIcon icon={faLocationDot} /> : SAIGON TECHNOLOGY
@@ -54,6 +46,14 @@ export default function Footer() {
                 <FontAwesomeIcon icon={faPhone} />: 028 3850 5520
               </li>
             </ul>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15679.817641153899!2d106.6778321!3d10.7379972!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f62a90e5dbd%3A0x674d5126513db295!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBuZ2jhu4cgU8OgaSBHw7Ju!5e0!3m2!1svi!2s!4v1717820687943!5m2!1svi!2s"
+              className={cx("map")}
+              style={{ border: 0 }}
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
           </ul>
         </div>
       </div>

@@ -2,143 +2,77 @@ import React from "react";
 import style from "./Bill.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCalendar,
-  faClock,
-  faLocationDot,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faClock, faLocationDot, faTrash } from "@fortawesome/free-solid-svg-icons";
+
 const cx = classNames.bind(style);
+
 export default function Bill() {
   return (
-    <div className={cx("wrapper")}>
-      <div className={cx("left")}>
-        <div className={cx("item")}>
-          <div className={cx("action")}>
-            <button className={cx("delete")}>XOÁ</button>
-          </div>
-          <div className={cx("form-img")}>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/S%C3%A2n_v%E1%BA%ADn_%C4%91%E1%BB%99ng_Thi%C3%AAn_Tr%C6%B0%E1%BB%9Dng.jpg/1200px-S%C3%A2n_v%E1%BA%ADn_%C4%91%E1%BB%99ng_Thi%C3%AAn_Tr%C6%B0%E1%BB%9Dng.jpg"
-              alt=""
-            />
-          </div>
-          <div className={cx("info")}>
-            <p className={cx("name-item")}>San bong da</p>
-            <p className={cx("item-1")}>Don gia: 50.000d</p>
-            <div className={cx("item-2")}>thanh tien: 300.000d</div>
-          </div>
-        </div>
-        <div className={cx("item")}>
-          <div className={cx("action")}>
-            <button className={cx("delete")}>XOÁ</button>
-          </div>
-          <div className={cx("form-img")}>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/S%C3%A2n_v%E1%BA%ADn_%C4%91%E1%BB%99ng_Thi%C3%AAn_Tr%C6%B0%E1%BB%9Dng.jpg/1200px-S%C3%A2n_v%E1%BA%ADn_%C4%91%E1%BB%99ng_Thi%C3%AAn_Tr%C6%B0%E1%BB%9Dng.jpg"
-              alt=""
-            />
-          </div>
-          <div className={cx("info")}>
-            <p className={cx("name-item")}>San bong da</p>
-            <p className={cx("item-1")}>Don gia: 50.000d</p>
-            <div className={cx("item-2")}>thanh tien: 300.000d</div>
-          </div>
-        </div>
-        <div className={cx("item")}>
-          <div className={cx("action")}>
-            <button className={cx("delete")}>XOÁ</button>
-          </div>
-          <div className={cx("form-img")}>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/S%C3%A2n_v%E1%BA%ADn_%C4%91%E1%BB%99ng_Thi%C3%AAn_Tr%C6%B0%E1%BB%9Dng.jpg/1200px-S%C3%A2n_v%E1%BA%ADn_%C4%91%E1%BB%99ng_Thi%C3%AAn_Tr%C6%B0%E1%BB%9Dng.jpg"
-              alt=""
-            />
-          </div>
-          <div className={cx("info")}>
-            <p className={cx("name-item")}>San bong da</p>
-            <p className={cx("item-1")}>Don gia: 50.000d</p>
-            <div className={cx("item-2")}>thanh tien: 300.000d</div>
-          </div>
-        </div>{" "}
-        <div className={cx("item")}>
-          <div className={cx("action")}>
-            <button className={cx("delete")}>XOÁ</button>
-          </div>
-          <div className={cx("form-img")}>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/S%C3%A2n_v%E1%BA%ADn_%C4%91%E1%BB%99ng_Thi%C3%AAn_Tr%C6%B0%E1%BB%9Dng.jpg/1200px-S%C3%A2n_v%E1%BA%ADn_%C4%91%E1%BB%99ng_Thi%C3%AAn_Tr%C6%B0%E1%BB%9Dng.jpg"
-              alt=""
-            />
-          </div>
-          <div className={cx("info")}>
-            <p className={cx("name-item")}>San bong da</p>
-            <p className={cx("item-1")}>Don gia: 50.000d</p>
-            <div className={cx("item-2")}>thanh tien: 300.000d</div>
-          </div>
-        </div>
-      </div>
-      <div className={cx("right")}>
-        <p className={cx("title")}>HOÁ ĐƠN TẠM TÍNH</p>
+    <div className={cx("small-container", "cart-page")}>
+      <div className={cx("flex-item")}>
         <table>
-          <tr>
-            <th>Sản phẩm</th>
-            <th>Đơn giá</th>
-            <th>Số lượng</th>
-            <th>Thành tiền</th>
-          </tr>
-          <tr>
-            <td>Sân bóng dá quận 8</td>
-            <td>300.000</td>
-            <td className={cx("action")}>
-              <button className={cx("prev")}>-</button>
-              <p className={cx("num")}>1</p>
-              <button className={cx("next")}>+</button>
-            </td>
-            <td>100000</td>
-          </tr>
-          <tr>
-            <td>Sân bóng dá quận 8</td>
-            <td>300.000</td>
-            <td className={cx("action")}>
-              <button className={cx("prev")}>-</button>
-              <p className={cx("num")}>1</p>
-              <button className={cx("next")}>+</button>
-            </td>
-            <td>100000</td>
-          </tr>
-          <tr>
-            <td>Sân bóng dá quận 8</td>
-            <td>300.000</td>
-            <td className={cx("action")}>
-              <button className={cx("prev")}>-</button>
-              <p className={cx("num")}>1</p>
-              <button className={cx("next")}>+</button>
-            </td>
-            <td>100000</td>
-          </tr>
+          <thead>
+            <tr>
+              <th width={50}></th>
+              <th width={200}></th>
+              <th>Sản phẩm</th>
+              <th width={200}>Số lượng</th>
+              <th className={cx("thRight")} width={200}>Tạm tính</th>
+              <th width={80}></th>
+            </tr>
+          </thead>
+          <tbody className={cx("scrollable-tbody")}>
+            <tr>
+              <td width={50}>
+                <input type="checkbox" style={{width:"20px"}}/>
+              </td>
+              <td width={200}>
+                <div className={cx("cart-info")}>
+                  <img className={cx("productImage")} src="https://i.ibb.co/B3vYjvw/buy-1.jpg" alt="" />
+                </div>
+              </td>
+              <td>
+                  <p className={cx("productName")}>Red Printed T-Shirt</p>
+                  <small className={cx("productPrice")}>500.000đ</small>
+              </td>
+              <td width={200}><input type="number" value="1" /></td>
+              <td className={cx("tdRight")} width={200}>500.000đ</td>
+              <td width={80} className={cx("tdAction")}>
+                <button className={cx("btn", "btn-danger")}>
+                  <FontAwesomeIcon icon={faTrash}/>
+                </button>
+              </td>
+            </tr>
+           
+          </tbody>
         </table>
-        <div className={cx("bottom")}>
-          <div className={cx("comment")}>
-            <p className={cx("title-commet")}>Ghi chú</p>
-            <input type="text" />
-          </div>
-          <div className={cx("total")}>
-            <p className={cx("money")}>
-              <strong>Tạm tinh:</strong> 1.550.000
-            </p>
-            <p className={cx("deposit")}>
-              <strong>Tiền cọc(50%):</strong> 600.000
-            </p>
-            <p className={cx("sale")}>
-              <strong>Khuyến mãi:</strong> 0
-            </p>
-            <p className={cx("money-total")}>
-              <strong>Tổng cộng:</strong>
-              <p className={cx("red")}>2.150.000</p>
-            </p>
-          </div>
-        </div>{" "}
-        <button className={cx("momo")}>THANH TOÁN MOMO</button>
+      </div>
+
+      <div className={cx("total-price")}>
+        <table>
+          <tbody>
+            <tr>
+              <td>Tạm tính</td>
+              <td>500.000đ</td>
+            </tr>
+            <tr>
+              <td>Thuế</td>
+              <td>15.000đ</td>
+            </tr>
+            <tr>
+              <td>Tổng tiền</td>
+              <td>515.000đ</td>
+            </tr>
+            <tr>
+              <td>
+                <button className={cx("btn", "btn-intermediate")}>Momo</button>
+              </td>
+              <td>
+                <button className={cx("btn", "btn-beginner")}>Thanh toán</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );

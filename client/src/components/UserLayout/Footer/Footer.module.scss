@@ -1,18 +1,16 @@
 .wrapper {
   margin-top: 10px;
-  height: 600px;
   background-color: #f6f6f6;
-  display: flex;
-  flex-direction: column;
   .list-footer {
     padding: 20px;
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 60%;
     .first {
+      flex:4;
       border-bottom: 1px solid black;
       width: 100%;
-      height: 80%;
+      height: 300px;
       .logo {
         font-size: 30px;
         display: flex;
@@ -35,9 +33,10 @@
       }
     }
     .second {
+      flex: 2;
       border-bottom: 1px solid black;
       width: 100%;
-      height: 80%;
+      height: 300px;
       .title-footer {
         color: black;
         font-weight: 700;
@@ -58,9 +57,10 @@
       }
     }
     .third {
+      flex: 2;
       border-bottom: 1px solid black;
       width: 100%;
-      height: 80%;
+      height: 300px;
       .title-footer {
         color: black;
         font-weight: 700;
@@ -81,9 +81,10 @@
       }
     }
     .four {
+      flex: 2;
       border-bottom: 1px solid black;
       width: 100%;
-      height: 80%;
+      height: 300px;
       .title-footer {
         color: black;
         font-weight: 700;
@@ -97,18 +98,18 @@
         }
         .map {
           width: 100%;
-          height: 300px;
+          height: 50%;
         }
       }
     }
   }
   .footer {
     background-color: #18458b;
-    height: 10%;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
   .text-footer {
     text-align: center;
-    margin-top: 10px;
     color: white;
     font-weight: 800;
   }

@@ -1,131 +1,144 @@
-.wrapper {
-  padding: 10px;
-  display: flex;
-  
-  height: 380px;
-  .left {
-    overflow-y: scroll;
-    width: 100%;
-    padding: 5px;
-    max-height: 380px;
-    
-    .item {
-      padding: 10px;
-      display: flex;
-      width: 100%;
-      height: 100px;
-      .action {
-        width: 10%;
-        .delete {
-          margin-top: 20px;
-          border: none;
-          background-color: red;
-          font-weight: 900;
-          color: white;
-          padding: 10px 15px;
-        }
-      }
-      .form-img {
-        width: 20%;
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .info {
-        .name-item {
-          font-size: 20px;
-          font-weight: 800;
-          color: black;
-        }
-        .item-1 {
-          margin: 5px;
-        }
-        .item {
-          margin: 5px;
-        }
-        width: 40%;
-      }
-    }
-  }
-  .right {
-    width: 100%;
-    padding: 5px;
-    .title {
-      color: #18458b;
-      text-align: center;
-      font-size: 20px;
-      font-weight: 800;
-    }
-    table {
-      width: 100%;
-      tr {
-        margin: 10px 0px;
-      }
-      td {
-        text-align: center;
-      }
-      .action {
-        display: flex;
-        justify-content: space-around;
-        .prev {
-          border: none;
-          padding: 10px;
-        }
-        .next {
-          border: none;
-          padding: 10px;
-        }
-        .num {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-      }
-    }
-    .bottom {
-      display: flex;
-      padding: 10px;
-      justify-content: space-between;
-      .comment {
-        display: flex;
-        .title-comment {
-          color: black;
-          font-weight: 800;
-        }
-        input {
-          height: 20px;
-        }
-      }
-    }
-    .total {
-      .money {
-        text-align: right;
-      }
-      .deposit {
-        text-align: right;
-      }
-      .sale {
-        text-align: right;
-      }
-      .money-total {
-        text-align: right;
-        .red {
-          color: rgb(190, 3, 3);
-          font-size: 800;
-          font-size: 25px;
-        }
-      }
-    }
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.momo {
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.small-container {
+  min-height: 500px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.cart-page {
+  margin: 90px auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
   padding: 10px;
-  margin: 20px 0px;
-  background-color: #a91f6c;
+}
+
+th {
+  background: #ff523b;
+  color: #ffffff;
+}
+
+td input {
+  width: 40px;
+  height: 30px;
+  padding: 5px;
+}
+
+td img {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+}
+
+.total-price {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.total-price table {
+  border-top: 3px solid #ff523b;
+  width: 100%;
+  max-width: 400px;
+}
+
+.tdRight {
+  text-align: right;
+  padding-right: 20px;
+}
+
+.thRight {
+  text-align: right;
+}
+
+td:last-child,
+th:last-child{
+  text-align: right;
+}
+
+.scrollable-tbody {
+  display: block;
+  height: 460px;
+  overflow: auto;
+}
+
+.scrollable-tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+thead, tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+thead {
+  width: calc( 100% - 1em )
+}
+
+.productName{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.productImage{
+  width: 160px;
+  height: 120px;
+}
+
+.productPrice{
+  font-size: 14px;
+}
+
+.btn {
   color: white;
-  font-weight: 800;
+  padding: 5px 10px;
   border: none;
-  right: 0;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.btn-beginner{
+  background-color: #4CAF50;
+}
+
+.btn-intermediate {
+  background: #FF416C;
+}
+
+.btn-danger {
+  font-size: 14px;
+  background: #ff3030;
+}
+.btn-danger:hover {
+  background: rgb(255, 106, 106);
+}
+
+.btn-beginner:hover,
+.btn-intermediate:hover {
+  transform: scale(1.1);
+}
+
+.tdAction{
+  padding: 0;
+  padding-right: 20px;
 }
 
