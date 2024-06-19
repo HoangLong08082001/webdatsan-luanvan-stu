@@ -61,7 +61,6 @@ export default function DoAn() {
             <th>STT</th>
             <th>Tên đồ ăn</th>
             <th>Giá đồ ăn</th>
-            <th>Số lượng</th>
             <th>Trạng thái</th>
             <th>Hình ảnh</th>
             <th>Xử lý</th>
@@ -72,7 +71,6 @@ export default function DoAn() {
                 <td>{index + 1}</td>
                 <td>{item.ten_do_an}</td>
                 <td>{item.gia_do_an}</td>
-                <td>{item.so_luong}</td>
                 <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td>
                 <td>
                   {" "}

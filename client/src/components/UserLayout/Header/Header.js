@@ -13,11 +13,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import Cart from "../../Cart/Cart";
+import axios from "axios";
 const cx = classNames.bind(style);
 export default function Header() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
+  const [id, setId] = useState(localStorage.getItem("email"));
+  console.log(id);
+  const handleLogout = () => {
+    localStorage.removeItem("email");
+    window.location.reload();
+  };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("list-menu")}>
@@ -82,18 +89,30 @@ export default function Header() {
             Dụng cụ thể thao
           </li>
           <li className={cx("li")}>
-            <button
-              className={cx("login")}
-              onClick={() => navigate("/dang-nhap")}
-            >
-              Đăng nhập
-            </button>
-            <button
-              className={cx("register")}
-              onClick={() => navigate("/dang-ky")}
-            >
-              Đăng ký
-            </button>
+            {!id ? (
+              <div className={cx("action-div")}>
+                <button
+                  className={cx("login")}
+                  onClick={() => navigate("/dang-nhap")}
+                >
+                  Đăng nhập
+                </button>
+                <button
+                  className={cx("register")}
+                  onClick={() => navigate("/dang-ky")}
+                >
+                  Đăng ký
+                </button>
+              </div>
+            ) : (
+              <div className={cx("action-div")}>
+                <p className={cx("name")}>{id}</p>
+                <button className={cx("btn-info")}>Thông tin</button>
+                <button onClick={handleLogout} className={cx("btn-logout")}>
+                  Đăng xuất
+                </button>
+              </div>
+            )}
             {/* <button className={cx("cart")}>
               <FontAwesomeIcon icon={faCartShopping} />
             </button> */}

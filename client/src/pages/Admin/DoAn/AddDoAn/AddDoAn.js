@@ -9,14 +9,12 @@ export default function AddDoAn({ handleClose }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [img, setImg] = useState("");
-  const [quality, setQuality] = useState("");
   const handleSubmit = async () => {
     await axios
       .post("http://localhost:4000/do-an/create", {
         tendoan: name,
         gia: price,
         hinhanh: img,
-        soluong: quality,
       })
       .then((res) => {
         if (res) {
@@ -51,15 +49,7 @@ export default function AddDoAn({ handleClose }) {
               onChange={(e) => setPrice(e.target.value)}
             />
           </div>
-          <div className={cx("form-input")}>
-            <label htmlFor="">Số lượng</label>
-            <input
-              type="number"
-              placeholder="Nhập giá đồ ăn"
-              value={quality}
-              onChange={(e) => setQuality(e.target.value)}
-            />
-          </div>
+          
           <div className={cx("form-input")}>
             <label htmlFor="">Hình ảnh</label>
             <input

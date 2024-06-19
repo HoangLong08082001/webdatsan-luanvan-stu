@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const pool = require("../../config/database");
+const { createJwtWebsite } = require("../../middleware/JWTAction");
 const salt = 10;
 const randomNumberCodeVerfify = () => {
   return Math.floor(100000 + Math.random() * 900000);
@@ -28,12 +29,7 @@ const createNew = (req, res) => {
           if (hash) {
             pool.query(
               "INSERT INTO khach_hang( ten_khach_hang,email,password, so_dien_thoai) VALUES (?,?,?,?)",
-              [
-                ten_nguoi_dung,
-                email,
-                hash,
-                sodienthoai,
-              ],
+              [ten_nguoi_dung, email, hash, sodienthoai],
               (err, data) => {
                 if (err) {
                   throw err;
@@ -66,7 +62,28 @@ const Login = (req, res) => {
               throw err;
             }
             if (data) {
-              return res.status(200).json({ message: "success" });
+              pool.query(
+                "SELECT * FROM khach_hang WHERE email = ?",
+                [username],
+                (err, data) => {
+                  if (err) {
+                    throw err;
+                  }
+                  if (data.length > 0) {
+                    let payload = {
+                      username: username,
+                      data: data[0],
+                    };
+                    let token = createJwtWebsite(payload);
+                    console.log(data[0]);
+                    return res.status(200).json({
+                      message: "success",
+                      access_token: token,
+                      data: data[0],
+                    });
+                  }
+                }
+              );
             }
             if (!data) {
               return res.status(400).json({ message: "Password không hợp lệ" });

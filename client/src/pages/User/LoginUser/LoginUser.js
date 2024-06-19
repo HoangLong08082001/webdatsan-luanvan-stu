@@ -4,22 +4,54 @@ import classNames from "classnames/bind";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 const cx = classNames.bind(style);
 export default function LoginUser() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [hide, setHide] = useState(false);
+  const handleLogin = () => {
+    axios
+      .post("http://localhost:4000/khach-hang/login", {
+        username: username,
+        password: password,
+      })
+      .then((res) => {
+        if (res) {
+          alert("Login successfully");
+          setUsername("");
+          setPassword("");
+          console.log(res.data.data + " " + res.data.access_token);
+          console.log(res.data.data);
+          localStorage.setItem("id", res.data.data.ma_khach_hang);
+          localStorage.setItem("email", res.data.data.email);
+
+          window.location.reload();
+        }
+      });
+  };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("form")}>
         <p className={cx("title-login")}>TRANG ĐĂNG NHẬP</p>
         <div className={cx("form-login")}>
           <div className={cx("form-input")}>
-            <input type="text" name="" id="" placeholder="Nhập email" />
+            <input
+              type="text"
+              name=""
+              id=""
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Nhập email"
+            />
           </div>
           <div className={cx("form-input")}>
             <input
               type={hide === false ? "password" : "text"}
               name=""
               id=""
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Nhập mật khẩu"
             />
             <p className={cx("hide")} onClick={() => setHide(!hide)}>
@@ -27,7 +59,9 @@ export default function LoginUser() {
               <FontAwesomeIcon icon={hide === false ? faLock : faUnlock} />
             </p>
           </div>
-          <button className={cx("btn-login")}>ĐĂNG NHẬP</button>
+          <button className={cx("btn-login")} onClick={handleLogin}>
+            ĐĂNG NHẬP
+          </button>
           <div className={cx("list-link")}>
             <Link className={cx("dont")} to="/dang-ky">
               Đăng ký nếu chưa có tài khoản

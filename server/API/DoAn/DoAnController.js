@@ -20,7 +20,6 @@ const createNew = (req, res) => {
   let hinhanh = req.body.hinhanh;
   let tendoan = req.body.tendoan;
   let gia = req.body.gia;
-  let soluong = req.body.soluong;
   try {
     pool.query(
       "SELECT * FROM do_an WHERE ten_do_an=?",
@@ -33,7 +32,7 @@ const createNew = (req, res) => {
           return res.status(400).json({ message: "Đã tồn tại loại đồ ăn này" });
         } else {
           pool.query(
-            "INSERT INTO do_an ( hinh_anh, so_luong, gia_do_an, trang_thai, ten_do_an) VALUES(?,?,?,?,?)",
+            "INSERT INTO do_an ( hinh_anh, gia_do_an, trang_thai, ten_do_an) VALUES(?,?,?,?)",
             [ hinhanh, soluong, gia, 0, tendoan],
             (err, data) => {
               if (err) {
