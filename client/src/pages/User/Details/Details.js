@@ -10,12 +10,25 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 const cx = classNames.bind(style);
 export default function Details() {
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Thêm số 0 vào đầu nếu tháng < 10
+    const day = String(today.getDate()).padStart(2, "0"); // Thêm số 0 vào đầu nếu ngày < 10
+
+    return `${year}-${month}-${day}`;
+  };
+
   const Navigate = useNavigate();
+  const [price, setPrice] = useState("");
   const [click, setClick] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [idSan, setIdSan] = useState("");
   const location = useLocation();
+  const [today, setToday] = useState(getTodayDate());
   const [name, setName] = useState("");
   const [img, setImg] = useState("");
   const [phone, setPhone] = useState("");
@@ -24,8 +37,11 @@ export default function Details() {
   const [quan, setQuan] = useState("");
   const [phuong, setPhuong] = useState("");
   const [id, setId] = useState("");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
   const [object, setObject] = useState([]);
   const getLocation = () => {
+    setIdSan(location.state.ma_san);
     setName(location.state.ten_san);
     setImg(location.state.hinh_anh);
     setPhone(location.state.so_dien_thoai);
@@ -33,44 +49,9 @@ export default function Details() {
     setDes(location.state.description);
     setQuan(location.state.ten_quan);
     setPhuong(location.state.ten_phuong);
-  };
-  const months = [
-    "Tháng 1",
-    "Tháng 2",
-    "Tháng 3",
-    "Tháng 4",
-    "Tháng 5",
-    "Tháng 6",
-    "Tháng 7",
-    "Tháng 8",
-    "Tháng 9",
-    "Tháng 10",
-    "Tháng 11",
-    "Tháng 12",
-  ];
-
-  const formatDate = (date) => {
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${day} ${month}, ${year}`;
+    setPrice(location.state.gia_san);
   };
 
-  const handlePrev = () => {
-    setCurrentDate((prevDate) => {
-      const newDate = new Date(prevDate);
-      newDate.setDate(newDate.getDate() - 1);
-      return newDate;
-    });
-  };
-
-  const handleNext = () => {
-    setCurrentDate((prevDate) => {
-      const newDate = new Date(prevDate);
-      newDate.setDate(newDate.getDate() + 1);
-      return newDate;
-    });
-  };
   const listSlot = [
     { id: 1, start: "8:00", end: "9:00" },
     { id: 2, start: "9:30", end: "10:30" },
@@ -87,12 +68,34 @@ export default function Details() {
     }
     console.log(item.id);
     setClick(item.id);
+    setStart(item.start);
+    setEnd(item.end);
     listSlot.forEach((element) => {
       if (element.id === item.id) {
         console.log(element);
         setObject(element);
       }
     });
+  };
+  const handleBook = () => {
+    if (click !== null) {
+      axios
+        .post("http://localhost:4000/tam-tinh/add-san", {
+          id_san: idSan,
+          id_tam_tinh: localStorage.getItem("tam_tinh"),
+          start: start,
+          end: end,
+          date: today,
+        })
+        .then((res) => {
+          if (res) {
+            alert("Thêm sân thành công vào tạm tính");
+            Navigate("/thanh-toan");
+          }
+        });
+    } else {
+      alert("Vui lòng chọn khung giờ");
+    }
   };
   useEffect(() => {
     getLocation();
@@ -122,10 +125,7 @@ export default function Details() {
             </p>
           </div>
           <div className={cx("booking")}>
-            <button
-              className={cx("btn-booking")}
-              onClick={() => Navigate("/thanh-toan", { state: object })}
-            >
+            <button className={cx("btn-booking")} onClick={() => handleBook()}>
               ĐẶT SÂN
             </button>
           </div>
@@ -134,7 +134,15 @@ export default function Details() {
       <div className={cx("calendar")}>
         <div className={cx("date-time")}>
           {/* <p>{formatDate(currentDate)}</p> */}
-          <input type="date" className={cx("date")} />
+          <input
+            type="date"
+            value={today}
+            onChange={(e) => {
+              setToday(e.target.value);
+            }}
+            min={getTodayDate(new Date())}
+            className={cx("date")}
+          />
         </div>
         <div className={cx("list-calendar")}>
           {listSlot.map((item, index) => {

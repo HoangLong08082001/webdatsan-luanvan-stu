@@ -8,12 +8,30 @@ import axios from "axios";
 const cx = classNames.bind(style);
 export default function Drinks() {
   const [listDrink, setListDrink] = useState([]);
+  const id_tam_tinh = localStorage.getItem("tam_tinh");
+  const id_khach_hang = localStorage.getItem("id");
   const fetchListDrink = () => {
     axios.get("http://localhost:4000/nuoc-uong/get-all").then((res) => {
       if (res) {
         setListDrink(res.data);
       }
     });
+  };
+  const addTamTinh = (id_nuoc_uong) => {
+    if (id_khach_hang) {
+      axios
+        .post("http://localhost:4000/tam-tinh/add-nuoc-uong", {
+          id_nuoc_uong: id_nuoc_uong,
+          id_tam_tinh: id_tam_tinh,
+        })
+        .then((res) => {
+          if (res) {
+            alert("Thêm thành công nước uống vào tạm tính");
+          }
+        });
+    } else {
+      alert("Vui lòng đăng nhập trước khi thêm sản phẩm");
+    }
   };
   useEffect(() => {
     fetchListDrink();
@@ -30,6 +48,7 @@ export default function Drinks() {
               img={item.hinh_anh}
               soluong={item.so_luong_kho}
               gia={item.gia_nuoc}
+              handleClick={() => addTamTinh(item.ma_nuoc_uong_loai)}
             />
           );
         })}

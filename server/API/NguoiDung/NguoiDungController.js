@@ -35,7 +35,18 @@ const createNew = (req, res) => {
                   throw err;
                 }
                 if (data) {
-                  return res.status(200).json({ message: "success" });
+                  pool.query(
+                    "INSERT INTO `tam_tinh` (`ma_khach_hang`) VALUES (?)",
+                    [data.insertId],
+                    (err, data) => {
+                      if (err) {
+                        throw err;
+                      }
+                      if (data) {
+                        return res.status(200).json({ message: "success" });
+                      }
+                    }
+                  );
                 }
               }
             );
@@ -63,23 +74,24 @@ const Login = (req, res) => {
             }
             if (data) {
               pool.query(
-                "SELECT * FROM khach_hang WHERE email = ?",
+                "SELECT * FROM khach_hang join tam_tinh on khach_hang.ma_khach_hang=tam_tinh.ma_khach_hang WHERE email = ?",
                 [username],
                 (err, data) => {
                   if (err) {
                     throw err;
                   }
                   if (data.length > 0) {
+                    let listdata = data[0];
                     let payload = {
                       username: username,
                       data: data[0],
                     };
                     let token = createJwtWebsite(payload);
-                    console.log(data[0]);
+
                     return res.status(200).json({
                       message: "success",
                       access_token: token,
-                      data: data[0],
+                      data: listdata,
                     });
                   }
                 }

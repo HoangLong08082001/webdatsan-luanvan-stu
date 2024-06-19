@@ -23,13 +23,14 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   text-align: left;
   padding: 10px;
 }
 
 th {
-  background: #ff523b;
+  background: #18458b;
   color: #ffffff;
 }
 
@@ -66,7 +67,7 @@ td img {
 }
 
 td:last-child,
-th:last-child{
+th:last-child {
   text-align: right;
 }
 
@@ -82,27 +83,28 @@ th:last-child{
   table-layout: fixed;
 }
 
-thead, tbody tr {
+thead,
+tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed;
 }
 
 thead {
-  width: calc( 100% - 1em )
+  width: calc(100% - 1em);
 }
 
-.productName{
+.productName {
   font-size: 24px;
   font-weight: bold;
 }
 
-.productImage{
+.productImage {
   width: 160px;
   height: 120px;
 }
 
-.productPrice{
+.productPrice {
   font-size: 14px;
 }
 
@@ -116,12 +118,12 @@ thead {
   font-size: 1.2rem;
 }
 
-.btn-beginner{
-  background-color: #4CAF50;
+.btn-beginner {
+  background-color: #4caf50;
 }
 
 .btn-intermediate {
-  background: #FF416C;
+  background: #ff416c;
 }
 
 .btn-danger {
@@ -137,8 +139,13 @@ thead {
   transform: scale(1.1);
 }
 
-.tdAction{
+.tdAction {
   padding: 0;
   padding-right: 20px;
 }
-
+.title {
+  text-align: center;
+  font-size: 30px;
+  color: #18458b;
+  font-weight: 800;
+}

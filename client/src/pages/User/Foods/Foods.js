@@ -13,6 +13,19 @@ export default function Foods() {
       }
     });
   };
+  const handleAdd = (id_do_an)=>{
+    if(localStorage.getItem('id'))
+      {
+        axios.post("http://localhost:4000/tam-tinh/add-do-an", {
+          id_do_an: id_do_an,
+          id_tam_tinh: localStorage.getItem("tam_tinh"),
+        }).then(res=>{
+          alert("Thêm thành công món ăn vào tạm tính");
+        });
+      }else{
+        alert("Vui lòng đăng nhập trước khi thêm sản phẩm");
+      }
+  }
   useEffect(() => {
     fetchListFood();
   }, [listFood]);
@@ -29,6 +42,7 @@ export default function Foods() {
                 soluong={item.so_luong}
                 gia={item.gia_do_an}
                 key={index}
+                handleClick={()=>handleAdd(item.ma_do_an)}
               />
             );
           }

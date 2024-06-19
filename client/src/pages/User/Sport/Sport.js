@@ -13,6 +13,20 @@ export default function Sport() {
       }
     });
   };
+  const handleAdd = (id_do_an) => {
+    if (localStorage.getItem("id")) {
+      axios
+        .post("http://localhost:4000/tam-tinh/add-the-thao", {
+          id_dung_cu_the_thao: id_do_an,
+          id_tam_tinh: localStorage.getItem("tam_tinh"),
+        })
+        .then((res) => {
+          alert("Thêm thành công dụng cụ y tế vào tạm tính");
+        });
+    } else {
+      alert("Vui lòng đăng nhập trước khi thêm sản phẩm");
+    }
+  };
   useEffect(() => {
     fetchListMedical();
   }, [listMedical]);
@@ -29,6 +43,7 @@ export default function Sport() {
                 soluong={item.so_luong}
                 gia={item.gia_dung_cu}
                 key={index}
+                handleClick={() => handleAdd(item.ma_dung_cu_the_thao)}
               />
             );
           }

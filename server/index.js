@@ -8,6 +8,8 @@ import sanRoutes from "./API/San/sanRoutes";
 import NguoiDungRoutes from "./API/NguoiDung/NguoiDungRoutes";
 
 import "./config/database";
+import TamTinhRoutes from "./API/TamTinh/TamTinhRoutes";
+import PaymentRoutes from "./API/Payment/PaymentRoutes";
 const express = require("express");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
@@ -43,6 +45,8 @@ NuocUongRoutes(app);
 DungCuTheThaoRoutes(app);
 NguoiDungRoutes(app);
 sanRoutes(app);
+TamTinhRoutes(app);
+PaymentRoutes(app);
 server.listen(port, (err) => {
   if (err) {
     throw err;

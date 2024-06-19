@@ -108,6 +108,12 @@ export default function Header() {
               <div className={cx("action-div")}>
                 <p className={cx("name")}>{id}</p>
                 <button className={cx("btn-info")}>Thông tin</button>
+                <button
+                  className={cx("btn-pay")}
+                  onClick={() => navigate("/thanh-toan")}
+                >
+                  Thanh toán
+                </button>
                 <button onClick={handleLogout} className={cx("btn-logout")}>
                   Đăng xuất
                 </button>

@@ -25,7 +25,7 @@ export default function LoginUser() {
           console.log(res.data.data);
           localStorage.setItem("id", res.data.data.ma_khach_hang);
           localStorage.setItem("email", res.data.data.email);
-
+          localStorage.setItem("tam_tinh", res.data.data.ma_tam_tinh);
           window.location.reload();
         }
       });
