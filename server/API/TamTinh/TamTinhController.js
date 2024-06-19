@@ -96,7 +96,7 @@ const addDungCuYTe = (req, res) => {
       if (data.length > 0) {
         let quality = data[0].so_luong;
         pool.query(
-          "UPDATE tam_tinh_dung_cu_y_te SET so_luong=? WHERE WHERE ma_dung_cu_y_te=? AND ma_tam_tinh=?",
+          "UPDATE tam_tinh_dung_cu_y_te SET so_luong=? WHERE ma_dung_cu_y_te=? AND ma_tam_tinh=?",
           [quality + 1, id_dung_cu_y_te, id_tam_tinh],
           (err, data) => {
             if (err) {
