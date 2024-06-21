@@ -117,10 +117,10 @@ export default function Details() {
           <div className={cx("info-host")}>
             <p className={cx("title-host")}>Thông tin sân</p>
             <p className={cx("email")}>
-              <FontAwesomeIcon icon={faPhone} />: {phone}
+              <FontAwesomeIcon icon={faPhone} fontSize={16}/>: {phone}
             </p>
             <p className={cx("address")}>
-              <FontAwesomeIcon icon={faLocationDot} />: {address}, phường{" "}
+              <FontAwesomeIcon icon={faLocationDot} fontSize={20} />: {address}, phường{" "}
               {phuong}, quận {quan}
             </p>
           </div>
