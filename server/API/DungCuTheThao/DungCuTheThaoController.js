@@ -93,5 +93,60 @@ const BlockDungCuTheThao = (req, res) => {
     return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
+const Delete = (req, res) => {
+  let ma_the_thao = req.params.id;
 
-module.exports = { getall, createNew, BlockDungCuTheThao };
+  try {
+    pool.query(
+      "DELETE FROM dung_cu_the_thao WHERE ma_dung_cu_the_thao=?",
+      [ma_the_thao],
+      (err, data) => {
+        if (err) {
+          return res.status(400).json({ message: "Không thể xoá" });
+        }
+        if (data) {
+          return res.status(200).json({ message: "success" });
+        } else {
+          return res.status(400).json({ message: "Không thể xoá" });
+        }
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({ message: "error" });
+  }
+};
+const getById = (req, res) => {
+  let id = req.params.id;
+  pool.query(
+    "SELECT * FROM dung_cu_the_thao WHERE ma_dung_cu_the_thao=?",
+    [id],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data.length > 0) {
+        return res.status(200).json(data);
+      }
+    }
+  );
+};
+const updateDungCuTheThao = (req, res) => {
+  let iddungcu = req.body.id_dung_cu;
+  let hinhanh = req.body.hinh_anh;
+  let tendungcu = req.body.ten_dung_cu;
+  let soluong = req.body.so_luong;
+  let gia = req.body.gia;
+  pool.query(
+    "UPDATE dung_cu_the_thao SET hinh_anh=?, ten_dung_cu_the_thao=?, so_luong=?, gia_dung_cu=? WHERE ma_dung_cu_the_thao=?",
+    [hinhanh, tendungcu, soluong, gia, iddungcu],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        return res.status(200).json({ message: "success" });
+      }
+    }
+  );
+};
+module.exports = {updateDungCuTheThao, getById, getall, createNew, BlockDungCuTheThao, Delete };

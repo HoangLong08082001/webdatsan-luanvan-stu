@@ -61,7 +61,9 @@ const login = (req, res) => {
         if (data.length > 0) {
           bcrypt.compare(password, data[0].password_admin, (err, result) => {
             if (err) {
-              throw err;
+              return res
+                .status(400)
+                .json({ message: "Username hoặc password không tồn tại" });
             }
             if (result) {
               pool.query(
@@ -95,10 +97,16 @@ const login = (req, res) => {
                   }
                 }
               );
+            } else {
+              return res
+                .status(400)
+                .json({ message: "Username hoặc password không tồn tại" });
             }
           });
         } else {
-          return res.status(400).json({ message: "Username không tồn tại" });
+          return res
+            .status(400)
+            .json({ message: "Username hoặc password không tồn tại" });
         }
       }
     );

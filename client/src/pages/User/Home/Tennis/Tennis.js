@@ -24,10 +24,14 @@ export default function Tennis() {
       <p className={cx("title")}>SÂN TENNIS</p>
       <div className={cx("list-yard")}>
         {listSan.map((item, index) => {
-          if (index >= 0 && index <= 5 && item.loai_san === "Sân tennis") {
+          if (index >= 0 && index <= 5 && item.loai_san === "tennis") {
             return (
               <Item
-                clickDetails={() => navigate("/chi-tiet")}
+                clickDetails={() =>
+                  navigate(`/chi-tiet/${item.ten_san}/${item.ma_san}`, {
+                    state: item,
+                  })
+                }
                 name={item.ten_san}
                 quan={item.ten_quan}
                 phuong={item.ten_phuong}
@@ -39,9 +43,7 @@ export default function Tennis() {
           }
         })}
       </div>
-      <Link className={cx("show-more")} to="/san-tennis">
-        XEM THÊM
-      </Link>
+      
     </div>
   );
 }

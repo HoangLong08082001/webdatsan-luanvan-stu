@@ -40,12 +40,28 @@ export default function DoAn() {
       })
       .then((res) => {
         if (res) {
+          fetchChiNhanh();
         }
       });
   };
+  const deleteDoAn = async (item) => {
+    try {
+      await axios.delete(`http://localhost:4000/do-an/delete/${item}`).then((res) => {
+        if (res) {
+          alert("Xoá thành công");
+        }
+      });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
+  };
   useEffect(() => {
     fetchChiNhanh();
-  }, [listDoAn]);
+  }, []);
   return (
     <div className={cx("wrapper")}>
       <p className={cx("title")}>ĐỒ ĂN </p>
@@ -83,7 +99,11 @@ export default function DoAn() {
                     className={cx("lock")}
                     onClick={() => handleBlock(item.ma_do_an)}
                   />
-                  <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className={cx("delete")}
+                    onClick={() => deleteDoAn(item.ma_do_an)}
+                  />
                 </td>
               </tr>
             );

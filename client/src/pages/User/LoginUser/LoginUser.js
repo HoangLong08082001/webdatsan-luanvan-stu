@@ -10,25 +10,33 @@ export default function LoginUser() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [hide, setHide] = useState(false);
-  const handleLogin = () => {
-    axios
-      .post("http://localhost:4000/khach-hang/login", {
-        username: username,
-        password: password,
-      })
-      .then((res) => {
-        if (res) {
-          alert("Login successfully");
-          setUsername("");
-          setPassword("");
-          console.log(res.data.data + " " + res.data.access_token);
-          console.log(res.data.data);
-          localStorage.setItem("id", res.data.data.ma_khach_hang);
-          localStorage.setItem("email", res.data.data.email);
-          localStorage.setItem("tam_tinh", res.data.data.ma_tam_tinh);
-          window.location.reload();
-        }
-      });
+  const handleLogin = async () => {
+    try {
+      await axios
+        .post("http://localhost:4000/khach-hang/login", {
+          username: username,
+          password: password,
+        })
+        .then((res) => {
+          if (res) {
+            alert("Login successfully");
+            setUsername("");
+            setPassword("");
+            console.log(res.data.data + " " + res.data.access_token);
+            console.log(res.data.data);
+            localStorage.setItem("id", res.data.data.ma_khach_hang);
+            localStorage.setItem("email", res.data.data.email);
+            localStorage.setItem("tam_tinh", res.data.data.ma_tam_tinh);
+            window.location.reload();
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
   };
   return (
     <div className={cx("wrapper")}>

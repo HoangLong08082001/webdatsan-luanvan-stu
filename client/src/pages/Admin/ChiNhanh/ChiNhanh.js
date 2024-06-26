@@ -35,8 +35,25 @@ export default function ChiNhanh() {
         id_chi_nhanh: item,
       })
       .then((res) => {
-        alert("Block successfully")
+        alert("Block successfully");
       });
+  };
+  const handleDelete = async (id) => {
+    try {
+      await axios
+        .delete(`http://localhost:4000/chi-nhanh/delete/${id}`)
+        .then((res) => {
+          if (res) {
+            alert("Delete successfully");
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
   };
   useEffect(() => {
     fetchChiNhanh();
@@ -69,13 +86,21 @@ export default function ChiNhanh() {
                 </td>
                 <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td>
                 <td className={cx("action")}>
-                  <FontAwesomeIcon icon={faPen} className={cx("edit")} />
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    className={cx("edit")}
+                    onClick={() => setModal(true)}
+                  />
                   <FontAwesomeIcon
                     icon={faLock}
                     className={cx("lock")}
-                    onClick={()=>handleLock(item.ma_chi_nhanh)}
+                    onClick={() => handleLock(item.ma_chi_nhanh)}
                   />
-                  <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    onClick={() => handleDelete(item.ma_chi_nhanh)}
+                    className={cx("delete")}
+                  />
                 </td>
               </tr>
             );

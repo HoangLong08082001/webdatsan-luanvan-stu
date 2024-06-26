@@ -176,29 +176,33 @@ const addSan = (req, res) => {
   console.log(start);
   console.log(end);
   console.log(date);
-  pool.query(
-    "INSERT INTO khung_gio (gio_bat_dau, gio_ket_thuc, thoi_gian, ma_san) VALUES(?,?,?,?)",
-    [start, end, date, id_san],
-    (err, data) => {
-      if (err) {
-        throw err;
-      }
-      if (data) {
-        pool.query(
-          "INSERT INTO tam_tinh_san (ma_san, ma_tam_tinh) VALUES (?,?)",
-          [id_san, id_tam_tinh],
-          (err, data) => {
-            if (err) {
-              throw err;
+  try {
+    pool.query(
+      "INSERT INTO khung_gio (gio_bat_dau, gio_ket_thuc, thoi_gian, ma_san) VALUES(?,?,?,?)",
+      [start, end, date, id_san],
+      (err, data) => {
+        if (err) {
+          throw err;
+        }
+        if (data) {
+          pool.query(
+            "INSERT INTO tam_tinh_san (ma_san, ma_tam_tinh, ma_khung_gio) VALUES (?,?,?)",
+            [id_san, id_tam_tinh, data.insertId],
+            (err, data) => {
+              if (err) {
+                throw err;
+              }
+              if (data) {
+                return res.status(200).json({ message: "success" });
+              }
             }
-            if (data) {
-              return res.status(200).json({ message: "success" });
-            }
-          }
-        );
+          );
+        }
       }
-    }
-  );
+    );
+  } catch (error) {
+    return res.status(500).json({ message: "Error" });
+  }
 };
 
 const getTamTinhDoAn = (req, res) => {
@@ -276,6 +280,91 @@ const getTamTinhTheThao = (req, res) => {
     }
   );
 };
+const deleteTamTinhSan = (req, res) => {
+  let id = req.params.id_tam_tinh;
+  pool.query(
+    "DELETE FROM tam_tinh_san WHERE ma_tam_tinh_san = ?",
+    [id],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        return res.status(200).json({ message: "success" });
+      } else {
+        return res.status(400).json({ message: "Không thể xoá" });
+      }
+    }
+  );
+};
+const deleteTamTinhDoAn = (req, res) => {
+  let id = req.params.id_tam_tinh;
+  pool.query(
+    "DELETE FROM tam_tinh_do_an WHERE ma_tam_tinh_do_an = ?",
+    [id],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        return res.status(200).json({ message: "success" });
+      } else {
+        return res.status(400).json({ message: "Không thể xoá" });
+      }
+    }
+  );
+};
+const deleteTamTinhNuocUong = (req, res) => {
+  let id = req.params.id_tam_tinh;
+  pool.query(
+    "DELETE FROM tam_tinh_nuoc_uong WHERE ma_tam_tinh_nuoc_uong = ?",
+    [id],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        return res.status(200).json({ message: "success" });
+      } else {
+        return res.status(400).json({ message: "Không thể xoá" });
+      }
+    }
+  );
+};
+const deleteTamTinhYTe = (req, res) => {
+  let id = req.params.id_tam_tinh;
+  pool.query(
+    "DELETE FROM tam_tinh_dung_cu_y_te WHERE ma_tam_tinh_dung_cu_y_te = ?",
+    [id],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        return res.status(200).json({ message: "success" });
+      } else {
+        return res.status(400).json({ message: "Không thể xoá" });
+      }
+    }
+  );
+};
+const deleteTamTinhTheoThao = (req, res) => {
+  let id = req.params.id_tam_tinh;
+  pool.query(
+    "DELETE FROM tam_tinh_dung_cu_the_thao WHERE ma_tam_tinh_dung_cu_the_thao = ?",
+    [id],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        return res.status(200).json({ message: "success" });
+      } else {
+        return res.status(400).json({ message: "Không thể xoá" });
+      }
+    }
+  );
+};
 module.exports = {
   addSan,
   addNuocUong,
@@ -287,4 +376,9 @@ module.exports = {
   getTamTinhNuocUong,
   getTamTinhYTe,
   getTamTinhTheThao,
+  deleteTamTinhSan,
+  deleteTamTinhDoAn,
+  deleteTamTinhNuocUong,
+  deleteTamTinhYTe,
+  deleteTamTinhTheoThao,
 };

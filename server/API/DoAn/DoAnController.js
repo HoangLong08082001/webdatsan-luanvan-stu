@@ -33,7 +33,7 @@ const createNew = (req, res) => {
         } else {
           pool.query(
             "INSERT INTO do_an ( hinh_anh, gia_do_an, trang_thai, ten_do_an) VALUES(?,?,?,?)",
-            [ hinhanh, soluong, gia, 0, tendoan],
+            [hinhanh, soluong, gia, 0, tendoan],
             (err, data) => {
               if (err) {
                 throw err;
@@ -88,4 +88,59 @@ const BlockDoAn = (req, res) => {
     }
   });
 };
-module.exports = { getDoAn, createNew, BlockDoAn };
+const Delete = (req, res) => {
+  let ma_do_an = req.params.id;
+
+  try {
+    pool.query(
+      "DELETE FROM do_an WHERE ma_do_an=?",
+      [ma_do_an],
+      (err, data) => {
+        if (err) {
+          return res.status(400).json({ message: "Không thể xoá" });
+        }
+        if (data) {
+          return res.status(200).json({ message: "success" });
+        } else {
+          return res.status(400).json({ message: "Không thể xoá" });
+        }
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({ message: "error" });
+  }
+};
+const getById = (req, res) => {
+  let id = req.params.id;
+  pool.query(
+    "SELECT * FROM do_an WHERE ma_do_an=?",
+    [id],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data.length > 0) {
+        return res.status(200).json(data);
+      }
+    }
+  );
+};
+const updateDoAn = (req, res) => {
+  let iddoan = req.body.id_do_an;
+  let hinhanh = req.body.hinh_anh;
+  let tendoan = req.body.ten_do_an;
+  let gia = req.body.gia_do_an;
+  pool.query(
+    "UPDATE do_an SET hinh_anh=?, ten_do_an=?, gia_do_an=? WHERE ma_do_an=?",
+    [hinhanh, tendoan, gia, iddoan],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        return res.status(200).json({ message: "success" });
+      }
+    }
+  );
+};
+module.exports = { updateDoAn, getDoAn, createNew, BlockDoAn, Delete, getById };

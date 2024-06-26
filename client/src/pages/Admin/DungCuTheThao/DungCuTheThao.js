@@ -39,12 +39,30 @@ export default function DungCuTheThao() {
       })
       .then((res) => {
         if (res) {
+          fetchDungCuYTe();
         }
       });
   };
+  const handleDelete = async (id) => {
+    try {
+      await axios
+        .delete(`http://localhost:4000/dung-cu-the-thao/delete/${id}`)
+        .then((res) => {
+          if (res) {
+            alert("Delete successfully");
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
+  };
   useEffect(() => {
     fetchDungCuYTe();
-  }, [list]);
+  }, []);
   return (
     <div className={cx("wrapper")}>
       <p className={cx("title")}>DỤNG CỤ THỂ THAO </p>
@@ -84,7 +102,11 @@ export default function DungCuTheThao() {
                     className={cx("lock")}
                     onClick={() => handleBlock(item.ma_dung_cu_the_thao)}
                   />
-                  <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className={cx("delete")}
+                    onClick={() => handleDelete(item.ma_dung_cu_the_thao)}
+                  />
                 </td>
               </tr>
             );

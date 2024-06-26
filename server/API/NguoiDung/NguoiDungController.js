@@ -124,5 +124,19 @@ const getAll = (req, res) => {
     return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
-
-module.exports = { createNew, Login, getAll };
+const getById = (req, res) => {
+  let id = req.params.id;
+  pool.query(
+    "SELECT * FROM chi_nhanh WHERE ma_chi_nhanh=?",
+    [id],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        return res.status(200).json(data);
+      }
+    }
+  );
+};
+module.exports = { getById,createNew, Login, getAll };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./Home.module.scss";
 import classNames from "classnames/bind";
 import Footbal from "./Football/Footbal";
@@ -7,8 +7,36 @@ import Tennis from "./Tennis/Tennis";
 import Basketball from "./Basketball/Basketball";
 import Volleyball from "./Volleyball/Volleyball";
 import Contract from "./Contract/Contract";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const cx = classNames.bind(style);
 export default function Home() {
+  const navigate = useNavigate();
+  const [search, setSearch] = useState("");
+  const [notFound, setNotFound] = useState("");
+  const [listResult, setListResult] = useState([]);
+
+  const fetchSearchResult = async () => {
+    try {
+      await axios
+        .get(`http://localhost:4000/san/search/${search}`)
+        .then((res) => {
+          if (res) {
+            navigate(`/tim-kiem/${search}`, {
+              state: res.data,
+            });
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error System");
+      } else {
+        navigate(`/tim-kiem/${search}`, {
+          state: error.response.data.message,
+        });
+      }
+    }
+  };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("form-img")}>
@@ -29,8 +57,12 @@ export default function Home() {
           className={cx("search-input")}
           placeholder="Nhập tên sân hoặc tên quận"
           type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <button className={cx("btn-search")}>Tìm tên sân</button>
+        <button className={cx("btn-search")} onClick={fetchSearchResult}>
+          Tìm tên sân
+        </button>
       </div>
       <Footbal />
       <div className={cx("mid-banner")}>
@@ -51,6 +83,7 @@ export default function Home() {
       </div>
       <Basketball />
       <Contract />
+      <Volleyball />
     </div>
   );
 }

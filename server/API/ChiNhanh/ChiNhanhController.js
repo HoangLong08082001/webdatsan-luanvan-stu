@@ -131,9 +131,22 @@ const updateChiNhanh = (req, res) => {
   let id_chinhanh = req.body.id_chinhanh;
   let tenchinhanh = req.body.ten_chi_nhanh;
   let diachi = req.body.dia_chi;
+  let sodienthoai = req.body.so_dien_thoai;
   let id_quan_huyen = req.body.id_quan_huyen;
   let quan = req.body.quan;
   let huyen = req.body.huyen;
+  pool.query(
+    "UPDATE chi_nhanh SET ten_chi_nhanh=?, dia_chi=?,so_dien_thoai=?, ma_quan_huyen=? WHERE ma_chi_nhanh=?",
+    [tenchinhanh, diachi, sodienthoai, id_quan_huyen, id_chinhanh],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data) {
+        return res.status(200).json({ message: "success" });
+      }
+    }
+  );
 };
 const getAllChiNhanh = (req, res) => {
   try {
@@ -147,6 +160,45 @@ const getAllChiNhanh = (req, res) => {
     });
   } catch (error) {}
 };
+const Delete = (req, res) => {
+  let ma_chi_nhanh = req.params.id;
+
+  try {
+    pool.query(
+      "DELETE FROM chi_nhanh WHERE ma_chi_nhanh=?",
+      [ma_chi_nhanh],
+      (err, data) => {
+        if (err) {
+          return res.status(400).json({ message: "Không thể xoá" });
+        }
+        if (data) {
+          return res.status(200).json({ message: "success" });
+        } else {
+          return res.status(400).json({ message: "Không thể xoá" });
+        }
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({ message: "error" });
+  }
+};
+
+const getById = (req, res) => {
+  let id = req.params.id;
+  pool.query(
+    "SELECT * FROM chi_nhanh WHERE ma_chi_nhanh=?",
+    [id],
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      if (data.length > 0) {
+        return res.status(200).json(data);
+      }
+    }
+  );
+};
+
 module.exports = {
   getQuanPhuong,
   getChiNhanh,
@@ -154,4 +206,6 @@ module.exports = {
   BlockChiNhanh,
   updateChiNhanh,
   getAllChiNhanh,
+  Delete,
+  getById,
 };

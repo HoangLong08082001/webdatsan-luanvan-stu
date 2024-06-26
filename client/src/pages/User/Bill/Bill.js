@@ -28,6 +28,12 @@ export default function Bill() {
   const [totalYTe, setTotalYTe] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  }
   const fetchSan = () => {
     axios
       .get(
@@ -118,17 +124,135 @@ export default function Bill() {
         }
       });
   };
-  const handlePayment = () => {
-    axios
-      .post("http://localhost:4000/payment/momo", {
-        total: (totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe) / 2,
-      })
-      .then((res) => {
-        if (res) {
-          window.location.href =
-            "https://test-payment.momo.vn/v2/gateway/pay?t=TU9NT3xNT01PMTcxODgxMDIyMzE3OA&s=3cd2880558df6c64fd8c655e7d7c9d6be39ac678ee2ca7f567d8811aa33bc489";
-        }
+  const handlePayment = async () => {
+    try {
+      const response = await axios.post("http://localhost:4000/payment/momo", {
+        partnerCode: "MOMOBKUN20180529",
+        accessKey: "klm05TvNBzhg7h7j",
+        secretKey: "at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa",
+        orderId: Date.now().toString(),
+        orderInfo: "Thanh toán qua MoMo",
+        amount:
+          (totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe) / 2,
+        ipnUrl: "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b",
+        redirectUrl: "http://localhost:3000/",
+        extraData: "",
       });
+
+      if (response.data.payUrl) {
+        window.location.href = response.data.payUrl;
+      } else {
+        console.error("Payment URL not found in the response");
+      }
+    } catch (error) {
+      console.error("Error during the payment process:", error);
+    }
+    // axios
+    //   .post("http://localhost:4000/payment/momo", {
+    //     total: (totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe) / 2,
+    //   })
+    //   .then((res) => {
+    //     if (res) {
+    //       window.location.href =
+    //         "https://test-payment.momo.vn/v2/gateway/pay?t=TU9NT3xNT01PMTcxODgxMDIyMzE3OA&s=3cd2880558df6c64fd8c655e7d7c9d6be39ac678ee2ca7f567d8811aa33bc489";
+    //     }
+    //   });
+  };
+  const deleteTamTinhSan = async (id) => {
+    try {
+      await axios
+        .delete(`http://localhost:4000/tam-tinh/delete-tam-tinh-san/${id}`)
+        .then((res) => {
+          if (res) {
+            alert("Xoá thành công");
+            fetchSan();
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
+  };
+  const deleteTamTinhNuocUong = async (id) => {
+    try {
+      await axios
+        .delete(
+          `http://localhost:4000/tam-tinh/delete-tam-tinh-nuoc-uong/${id}`
+        )
+        .then((res) => {
+          if (res) {
+            alert("Xoá thành công");
+            fetchNuoc();
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
+  };
+  const deleteTamTinhDoAn = async (id) => {
+    try {
+      await axios
+        .delete(`http://localhost:4000/tam-tinh/delete-tam-tinh-do-an/${id}`)
+        .then((res) => {
+          if (res) {
+            alert("Xoá thành công");
+            fetchDoAn();
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
+  };
+  const deleteTamTinhDungCuYTe = async (id) => {
+    try {
+      await axios
+        .delete(
+          `http://localhost:4000/tam-tinh/delete-tam-tinh-dung-cu-y-te/${id}`
+        )
+        .then((res) => {
+          if (res) {
+            alert("Xoá thành công");
+            fetchYTe();
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
+  };
+  const deleteTamTinhDungCuTheThao = async (id) => {
+    try {
+      await axios
+        .delete(
+          `http://localhost:4000/tam-tinh/delete-tam-tinh-dung-cu-the-thao/${id}`
+        )
+        .then((res) => {
+          if (res) {
+            alert("Xoá thành công");
+            fetchTheThao();
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
   };
   useEffect(() => {
     // setStart(location.state.start);
@@ -175,15 +299,18 @@ export default function Bill() {
                     <td>
                       <p className={cx("productName")}>{item.ten_san}</p>
                       <small className={cx("productPrice")}>
-                        {item.gia_san}
+                        {formatCurrency(item.gia_san)}
                       </small>
                     </td>
                     <td className={cx("tdRight")} width={200}>
-                      {item.gia_san}
+                      {formatCurrency(item.gia_san)}
                     </td>
                     <td width={80} className={cx("tdAction")}>
                       <button className={cx("btn", "btn-danger")}>
-                        <FontAwesomeIcon icon={faTrash} />
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          onClick={() => deleteTamTinhSan(item.ma_tam_tinh_san)}
+                        />
                       </button>
                     </td>
                   </tr>
@@ -209,6 +336,12 @@ export default function Bill() {
             </thead>
             <tbody className={cx("scrollable-tbody")}>
               {listNuocUong.map((item, index) => {
+                const totalPrice = listNuocUong.reduce(
+                  (accumulator, currentValue) => {
+                    return accumulator + currentValue.so_luong;
+                  },
+                  0
+                );
                 return (
                   <tr key={index}>
                     {/* <td width={50}>
@@ -226,18 +359,23 @@ export default function Bill() {
                     <td>
                       <p className={cx("productName")}>{item.ten_nuoc_uong}</p>
                       <small className={cx("productPrice")}>
-                        {item.gia_nuoc}
+                        {formatCurrency(item.gia_nuoc)}
                       </small>
                     </td>
                     <td width={200}>
-                      <input type="number" value={item.gia_nuoc} />
+                      <input type="number" value={totalPrice} />
                     </td>
                     <td className={cx("tdRight")} width={200}>
-                      {item.gia_nuoc}
+                      {formatCurrency(item.gia_nuoc)}
                     </td>
                     <td width={80} className={cx("tdAction")}>
                       <button className={cx("btn", "btn-danger")}>
-                        <FontAwesomeIcon icon={faTrash} />
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          onClick={() =>
+                            deleteTamTinhNuocUong(item.ma_tam_tinh_nuoc_uong)
+                          }
+                        />
                       </button>
                     </td>
                   </tr>
@@ -263,6 +401,12 @@ export default function Bill() {
             </thead>
             <tbody className={cx("scrollable-tbody")}>
               {listDoAn.map((item, index) => {
+                const totalPrice = listDoAn.reduce(
+                  (accumulator, currentValue) => {
+                    return accumulator + currentValue.so_luong;
+                  },
+                  0
+                );
                 return (
                   <tr key={index}>
                     {/* <td width={50}>
@@ -280,18 +424,23 @@ export default function Bill() {
                     <td>
                       <p className={cx("productName")}>{item.ten_do_an}</p>
                       <small className={cx("productPrice")}>
-                        {item.gia_do_an}
+                        {formatCurrency(item.gia_do_an)}
                       </small>
                     </td>
                     <td width={200}>
-                      <input type="number" value="1" />
+                      <input type="number" value={item.so_luong} />
                     </td>
                     <td className={cx("tdRight")} width={200}>
-                      {item.gia_do_an}
+                      {formatCurrency(item.gia_do_an)}
                     </td>
                     <td width={80} className={cx("tdAction")}>
                       <button className={cx("btn", "btn-danger")}>
-                        <FontAwesomeIcon icon={faTrash} />
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          onClick={() =>
+                            deleteTamTinhDoAn(item.ma_tam_tinh_do_an)
+                          }
+                        />
                       </button>
                     </td>
                   </tr>
@@ -317,6 +466,12 @@ export default function Bill() {
             </thead>
             <tbody className={cx("scrollable-tbody")}>
               {listDungCuTheThao.map((item, index) => {
+                const totalPrice = listDungCuTheThao.reduce(
+                  (accumulator, currentValue) => {
+                    return accumulator + currentValue.so_luong;
+                  },
+                  0
+                );
                 return (
                   <tr key={index}>
                     {/* <td width={50}>
@@ -336,18 +491,25 @@ export default function Bill() {
                         {item.ten_dung_cu_the_thao}
                       </p>
                       <small className={cx("productPrice")}>
-                        {item.gia_dung_cu}
+                        {formatCurrency(item.gia_dung_cu)}
                       </small>
                     </td>
                     <td width={200}>
-                      <input type="number" value="1" />
+                      <input type="number" value={totalPrice} />
                     </td>
                     <td className={cx("tdRight")} width={200}>
-                      {item.gia_dung_cu}
+                      {formatCurrency(item.gia_dung_cu)}
                     </td>
                     <td width={80} className={cx("tdAction")}>
                       <button className={cx("btn", "btn-danger")}>
-                        <FontAwesomeIcon icon={faTrash} />
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          onClick={() =>
+                            deleteTamTinhDungCuTheThao(
+                              item.ma_tam_tinh_dung_cu_the_thao
+                            )
+                          }
+                        />
                       </button>
                     </td>
                   </tr>
@@ -373,6 +535,12 @@ export default function Bill() {
             </thead>
             <tbody className={cx("scrollable-tbody")}>
               {listDungCuYTe.map((item, index) => {
+                const totalPrice = listDungCuYTe.reduce(
+                  (accumulator, currentValue) => {
+                    return accumulator + currentValue.so_luong;
+                  },
+                  0
+                );
                 return (
                   <tr key={index}>
                     {/* <td width={50}>
@@ -392,18 +560,25 @@ export default function Bill() {
                         {item.ten_dung_cu_y_te}
                       </p>
                       <small className={cx("productPrice")}>
-                        {item.gia_dung_cu}
+                        {formatCurrency(item.gia_dung_cu)}
                       </small>
                     </td>
                     <td width={200}>
-                      <input type="number" value="1" />
+                      <input type="number" value={totalPrice} />
                     </td>
                     <td className={cx("tdRight")} width={200}>
-                      {item.gia_dung_cu}
+                      {formatCurrency(item.gia_dung_cu)}
                     </td>
                     <td width={80} className={cx("tdAction")}>
                       <button className={cx("btn", "btn-danger")}>
-                        <FontAwesomeIcon icon={faTrash} />
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          onClick={() =>
+                            deleteTamTinhDungCuYTe(
+                              item.ma_tam_tinh_dung_cu_y_te
+                            )
+                          }
+                        />
                       </button>
                     </td>
                   </tr>
@@ -419,26 +594,31 @@ export default function Bill() {
               <tr>
                 <td>Tạm tính</td>
                 <td>
-                  {totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe}đ
+                  {formatCurrency(
+                    totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe
+                  )}
                 </td>
               </tr>
 
               <tr>
                 <td>Tổng tiền</td>
                 <td>
-                  {totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe}đ
+                  {formatCurrency(
+                    totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe
+                  )}
                 </td>
               </tr>
               <tr>
                 <td>Tiền cần thanh toán (50% tổng tiền)</td>
                 <td>
-                  {(totalDoAn +
-                    totalNuoc +
-                    totalSan +
-                    totalTheThao +
-                    totalYTe) /
-                    2}
-                  đ
+                  {formatCurrency(
+                    (totalDoAn +
+                      totalNuoc +
+                      totalSan +
+                      totalTheThao +
+                      totalYTe) /
+                      2
+                  )}
                 </td>
               </tr>
               <tr>

@@ -24,10 +24,14 @@ export default function Volleyball() {
       <p className={cx("title")}>SÂN BÓNG CHUYỀN</p>
       <div className={cx("list-yard")}>
         {listSan.map((item, index) => {
-          if (index >= 0 && index <= 5 && item.loai_san === "Sân bóng chuyền") {
+          if (index >= 0 && index <= 5 && item.ten_loai_san === "Bóng chuyền") {
             return (
               <Item
-                clickDetails={() => navigate("/chi-tiet")}
+                clickDetails={() =>
+                  navigate(`/chi-tiet/${item.ten_san}/${item.ma_san}`, {
+                    state: item,
+                  })
+                }
                 name={item.ten_san}
                 quan={item.ten_quan}
                 phuong={item.ten_phuong}
@@ -39,7 +43,6 @@ export default function Volleyball() {
           }
         })}
       </div>
-      <Link className={cx("show-more")}>XEM THÊM</Link>
     </div>
   );
 }

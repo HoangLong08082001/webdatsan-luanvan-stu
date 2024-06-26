@@ -24,7 +24,7 @@ export default function Footbal() {
       <p className={cx("title")}>SÂN BÓNG ĐÁ</p>
       <div className={cx("list-yard")}>
         {listSan.map((item, index) => {
-          if (index >= 0 && index <= 5 && item.loai_san === "Sân bóng đá") {
+          if (index >= 0 && index <= 5 && item.ten_loai_san === "Bóng đá") {
             return (
               <Item
                 clickDetails={() =>
@@ -43,9 +43,7 @@ export default function Footbal() {
           }
         })}
       </div>
-      <Link className={cx("show-more")} to="/san-bong-da">
-        XEM THÊM
-      </Link>
+      
     </div>
   );
 }

@@ -24,10 +24,14 @@ export default function Badminton() {
       <p className={cx("title")}>SÂN CẦU LÔNG</p>
       <div className={cx("list-yard")}>
         {listSan.map((item, index) => {
-          if (index >= 0 && index <= 5 && item.loai_san === "Sân cầu lông") {
+          if (index >= 0 && index <= 5 && item.ten_loai_San === "Cầu lông") {
             return (
               <Item
-                clickDetails={() => navigate("/chi-tiet")}
+                clickDetails={() =>
+                  navigate(`/chi-tiet/${item.ten_san}/${item.ma_san}`, {
+                    state: item,
+                  })
+                }
                 name={item.ten_san}
                 quan={item.ten_quan}
                 phuong={item.ten_phuong}
@@ -39,9 +43,7 @@ export default function Badminton() {
           }
         })}
       </div>
-      <Link className={cx("show-more")} to="/san-cau-long">
-        XEM THÊM
-      </Link>
+      
     </div>
   );
 }

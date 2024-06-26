@@ -4,20 +4,17 @@ import {
   createNew,
   getAll,
   getById,
-  search,
-  updateSan,
-} from "./sanController";
+  updateLoaiSan,
+} from "./LoaiSanController";
 
 const express = require("express");
 const router = express.Router();
-export default function sanRoutes(app) {
-  router.post("/create", createNew);
+export default function LoaiSanRoutes(app) {
   router.get("/get-all", getAll);
+  router.post("/create", createNew);
   router.put("/block", Block);
   router.delete("/delete/:id", Delete);
-  router.get("/search/:search", search);
-  router.get("/get-san/:id", getById);
   router.get("/get-by-id/:id", getById);
-  router.put("/update", updateSan);
-  return app.use("/san", router);
+  router.put("/update", updateLoaiSan);
+  return app.use("/loai-san", router);
 }

@@ -37,12 +37,30 @@ export default function NuocUong() {
       })
       .then((res) => {
         if (res) {
+          fetchNuocUong();
         }
       });
   };
+  const handleDelete = async (id) => {
+    try {
+      await axios
+        .delete(`http://localhost:4000/nuoc-uong/delete/${id}`)
+        .then((res) => {
+          if (res) {
+            alert("Delete successfully");
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
+  };
   useEffect(() => {
     fetchNuocUong();
-  }, [listNuocUong]);
+  }, []);
   return (
     <div className={cx("wrapper")}>
       <p className={cx("title")}>NƯỚC UỐNG </p>
@@ -81,7 +99,11 @@ export default function NuocUong() {
                     className={cx("lock")}
                     onClick={() => handleBlock(item.ma_nuoc_uong_loai)}
                   />
-                  <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className={cx("delete")}
+                    onClick={() => handleDelete(item.ma_nuoc_uong_loai)}
+                  />
                 </td>
               </tr>
             );

@@ -32,6 +32,23 @@ export default function DungCuYTe() {
         }
       });
   };
+  const handleDelete = async (id) => {
+    try {
+      await axios
+        .delete(`http://localhost:4000/dung-cu-y-te/delete/${id}`)
+        .then((res) => {
+          if (res) {
+            alert("Delete successfully");
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error system");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
+  };
   useEffect(() => {
     fetchDungCuYTe();
   }, [listDungCu]);
@@ -70,7 +87,11 @@ export default function DungCuYTe() {
                 <td className={cx("action")}>
                   <FontAwesomeIcon icon={faPen} className={cx("edit")} />
                   <FontAwesomeIcon icon={faLock} className={cx("lock")} />
-                  <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className={cx("delete")}
+                    onClick={() => handleDelete(item.ma_dung_cu_y_te)}
+                  />
                 </td>
               </tr>
             );

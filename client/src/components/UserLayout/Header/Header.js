@@ -19,12 +19,36 @@ export default function Header() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
+  const [listCategory, setListCategory] = useState([]);
   const [id, setId] = useState(localStorage.getItem("email"));
   console.log(id);
   const handleLogout = () => {
     localStorage.removeItem("email");
     window.location.reload();
   };
+  const fetchCategory = async () => {
+    await axios.get("http://localhost:4000/loai-san/get-all").then((res) => {
+      if (res) {
+        setListCategory(res.data);
+      }
+    });
+  };
+  const handleClick = (id, name) => {
+    try {
+      axios.get(`http://localhost:4000/san/get-san/${id}`).then((res) => {
+        if (res) {
+          navigate(`/san/${name}/${id}`, { state: res.data });
+        }
+      });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert(error.response.data.message);
+      }
+    }
+  };
+  useEffect(() => {
+    fetchCategory();
+  }, []);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("list-menu")}>
@@ -36,7 +60,7 @@ export default function Header() {
           <li className={cx("link")} onClick={() => navigate("/")}>
             Trang chủ{" "}
           </li>
-          <li className={cx("link")} onClick={() => navigate("/")}>
+          <li className={cx("link")} onClick={() => navigate("/chi-nhanh")}>
             Chi nhánh{" "}
           </li>
           <li className={cx("link")} onClick={() => setShow(!show)}>
@@ -51,26 +75,21 @@ export default function Header() {
             )}
           >
             <ul>
-              <li>
-                <Link className={cx("link")} to="/san-cau-long">
-                  Sân cầu lông
-                </Link>
-              </li>
-              <li>
-                <Link className={cx("link")} to="/san-bong-da">
-                  Sân đá banh
-                </Link>
-              </li>
-              <li>
-                <Link className={cx("link")} to="/san-bong-ro">
-                  Sân bóng rổ
-                </Link>
-              </li>
-              <li>
-                <Link className={cx("link")} to="/san-tennis">
-                  Sân tennis
-                </Link>
-              </li>
+              {listCategory.map((item, index) => {
+                if (item.trang_thai === 1) {
+                  return (
+                    <li
+                      className={cx("link")}
+                      key={index}
+                      onClick={() =>
+                        handleClick(item.ma_loai_san, item.ten_loai_san)
+                      }
+                    >
+                      {item.ten_loai_san}
+                    </li>
+                  );
+                }
+              })}
             </ul>
           </div>
           <li className={cx("link")} onClick={() => navigate("/do-an")}>

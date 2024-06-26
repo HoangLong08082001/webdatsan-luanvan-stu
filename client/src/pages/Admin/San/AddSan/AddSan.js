@@ -11,7 +11,9 @@ export default function AddSan({ handleClose }) {
   const [mota, setMota] = useState("");
   const [machinhanh, setMaChinhNhanh] = useState("");
   const [loaisan, setLoaisan] = useState("");
+  const [giatien, setGiaTien]= useState("");
   const [listChiNhanh, setListChiNhanh] = useState([]);
+  const [listLoai, setListLoai] = useState([]);
   const fetchChiNhanh = () => {
     axios.get("http://localhost:4000/chi-nhanh/get-chi-nhanh").then((res) => {
       if (res) {
@@ -26,6 +28,13 @@ export default function AddSan({ handleClose }) {
     { id: 4, loai: "Sân bóng rổ" },
     { id: 5, loai: "Sân tennis" },
   ];
+  const fetchLoai = async () => {
+    await axios.get("http://localhost:4000/loai-san/get-all").then((res) => {
+      if (res) {
+        setListLoai(res.data);
+      }
+    });
+  };
   const handleSubmit = () => {
     axios
       .post("http://localhost:4000/san/create", {
@@ -34,16 +43,19 @@ export default function AddSan({ handleClose }) {
         mota: mota,
         machinhanh: machinhanh,
         loaisan: loaisan,
+        giatien:giatien
       })
       .then((res) => {
         if (res) {
           alert("Create new successfully");
+          fetchChiNhanh();
         }
       });
   };
   useEffect(() => {
+    fetchLoai();
     fetchChiNhanh();
-  }, [listChiNhanh]);
+  }, []);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("form")}>
@@ -57,9 +69,18 @@ export default function AddSan({ handleClose }) {
             <label htmlFor="">Tên sân</label>
             <input
               type="text"
-              placeholder="Nhập tên"
+              placeholder="Nhập tên sân"
               value={ten}
               onChange={(e) => setTen(e.target.value)}
+            />
+          </div>
+          <div className={cx("form-input")}>
+            <label htmlFor="">Giá sân</label>
+            <input
+              type="text"
+              placeholder="Nhập giá sân"
+              value={giatien}
+              onChange={(e) => setGiaTien(e.target.value)}
             />
           </div>
           <div className={cx("form-input")}>
@@ -92,8 +113,12 @@ export default function AddSan({ handleClose }) {
               onChange={(e) => setLoaisan(e.target.value)}
             >
               <option value={""}>Vui long chon</option>
-              {data.map((item, index) => {
-                return <option value={item.loai}>{item.loai}</option>;
+              {listLoai.map((item, index) => {
+                return (
+                  <option key={index} value={item.ma_loai_san}>
+                    {item.ten_loai_san}
+                  </option>
+                );
               })}
             </select>
           </div>

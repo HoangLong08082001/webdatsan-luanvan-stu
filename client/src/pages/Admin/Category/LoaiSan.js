@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import style from "./San.module.scss";
+import style from "./LoaiSan.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,45 +10,57 @@ import {
   faUnlock,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import AddSan from "./AddSan/AddSan";
 import { useNavigate } from "react-router-dom";
+import AddCategory from "./AddCategory/AddCategory";
+
 const cx = classNames.bind(style);
-
-export default function San() {
+export default function LoaiSan() {
   const [modal, setModal] = useState(false);
-  const [listSan, setListSan] = useState([]);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!window.localStorage.getItem("token")) {
-      navigate("/admin");
-    }
-  }, [navigate]);
-  const fetchListSan = () => {
-    axios.get("http://localhost:4000/san/get-all").then((res) => {
+  const [listLoai, setListLoai] = useState([]);
+  const fetchLoaiSan = async () => {
+    await axios.get("http://localhost:4000/loai-san/get-all").then((res) => {
       if (res) {
-        setListSan(res.data);
+        setListLoai(res.data);
       }
     });
   };
-  const handleBlock = (item) => {
-    axios
-      .put("http://localhost:4000/san/block", {
-        ma_san: item,
-      })
-      .then((res) => {
-        if (res) {
-          alert("Block successfully");
-          fetchListSan();
-        }
-      });
+  const deleteCategory = async (id) => {
+    try {
+      await axios
+        .delete(`http://localhost:4000/loai-san/delete/${id}`)
+        .then((res) => {
+          if (res) {
+            alert("Delete successfuly");
+          }
+        });
+    } catch (error) {
+      if (error.response.status >= 500) {
+        alert("Error System");
+      } else {
+        alert(error.response.data.message);
+      }
+    }
+  };
+  const handleBlock = async (item) => {
+    try {
+      await axios
+        .put(`http://localhost:4000/loai-san/block`, {
+          ma_loai_san: item,
+        })
+        .then((res) => {
+          if (res) {
+            alert("Block successfully");
+            fetchLoaiSan();
+          }
+        });
+    } catch (error) {}
   };
   useEffect(() => {
-    fetchListSan();
-  }, []);
+    fetchLoaiSan();
+  });
   return (
     <div className={cx("wrapper")}>
-      <p className={cx("title")}>SÂN</p>
+      <p className={cx("title")}>LOẠI SÂN</p>
       <div className={cx("list-btn")}>
         <button className={cx("add")} onClick={() => setModal(true)}>
           THÊM MỚI
@@ -60,22 +72,17 @@ export default function San() {
         <table border={1} cellSpacing={0} className={cx("table")}>
           <tr className={cx("tr-th")}>
             <th>STT</th>
-            <th>Tên sân</th>
+            <th>Tên loại sân</th>
             <th>trạng thái</th>
-            <th>Chi nhánh</th>
-            <th>Hình ảnh</th>
             <th>Xử lý</th>
           </tr>
-          {listSan.map((item, index) => {
+          {listLoai.map((item, index) => {
             return (
               <tr className={cx("tr-td")}>
                 <td>{index + 1}</td>
-                <td>{item.ten_san}</td>
+                <td>{item.ten_loai_san}</td>
                 <td>{item.trang_thai === 1 ? "Hiển thị" : "Chưa hiển thị"}</td>
-                <td>{item.ten_chi_nhanh}</td>
-                <td>
-                  <img className={cx("img")} src={item.hinh_anh} alt="" />
-                </td>
+
                 <td className={cx("action")}>
                   <FontAwesomeIcon icon={faPen} className={cx("edit")} />
                   <FontAwesomeIcon
@@ -83,16 +90,20 @@ export default function San() {
                     className={cx(
                       item.trang_thai === 1 ? "lock" : "lock-active"
                     )}
-                    onClick={() => handleBlock(item.ma_san)}
+                    onClick={() => handleBlock(item.ma_loai_san)}
                   />
-                  <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className={cx("delete")}
+                    onClick={() => deleteCategory(item.ma_loai_san)}
+                  />
                 </td>
               </tr>
             );
           })}
         </table>
       </div>
-      {modal === true ? <AddSan handleClose={() => setModal(false)} /> : ""}
+      {modal === true && <AddCategory handleClose={() => setModal(false)} />}
     </div>
   );
 }

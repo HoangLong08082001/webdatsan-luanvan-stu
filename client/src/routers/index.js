@@ -1,4 +1,5 @@
 import AdminPages from "../pages/Admin/AdminPages/AdminPages";
+import LoaiSan from "../pages/Admin/Category/LoaiSan";
 import ChiNhanh from "../pages/Admin/ChiNhanh/ChiNhanh";
 import DoAn from "../pages/Admin/DoAn/DoAn";
 import DungCuTheThao from "../pages/Admin/DungCuTheThao/DungCuTheThao";
@@ -22,8 +23,10 @@ import Home from "../pages/User/Home/Home";
 import LoginUser from "../pages/User/LoginUser/LoginUser";
 import Medical from "../pages/User/Medical/Medical";
 import RegisterUser from "../pages/User/RegisterUser/RegisterUser";
+import Search from "../pages/User/Search/Search";
 import Sport from "../pages/User/Sport/Sport";
 import TennisPages from "../pages/User/TennisPages/TennisPages";
+import Yard from "../pages/User/Yard/Yard";
 
 const AdminRouter = [
   { path: "/admin", component: LoginAdmin },
@@ -36,6 +39,7 @@ const AdminRouter = [
   { path: "/admin-nuoc-uong", component: NuocUong },
   { path: "/admin-san", component: San },
   { path: "/admin-page", component: AdminPages },
+  { path: "/admin-loai-san", component: LoaiSan },
 ];
 const UserRouter = [
   { path: "/", component: Home },
@@ -55,6 +59,8 @@ const UserRouter = [
   { path: "/chi-nhanh", component: Branch },
   { path: "/dung-cu-y-te", component: Medical },
   { path: "/dung-cu-the-thao", component: Sport },
+  { path: "/tim-kiem/:search", component: Search },
+  { path: "/san/:name/:id", component: Yard },
+  { path: "/chi-nhanh", component: Branch },
 ];
-
 export { AdminRouter, UserRouter };
