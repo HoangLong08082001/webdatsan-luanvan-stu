@@ -10,14 +10,14 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function AdminPages() {
   const [listDoAn, setListDoAn] = useState([]);
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const fetchtNhanVien = () => {
-    axios.get("http://localhost:4000/admin/get").then((res) => {
+    axios.get("/admin/get").then((res) => {
       if (res) {
         setListDoAn(res.data);
       }

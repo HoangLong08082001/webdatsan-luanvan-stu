@@ -3,14 +3,14 @@ import style from "./AddCategory.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function AddCategory({ handleClose }) {
   const [category, setCategory] = useState("");
   const handleSubmit = async () => {
     try {
       await axios
-        .post("http://localhost:4000/loai-san/create", {
+        .post("/loai-san/create", {
           loai_san: category,
         })
         .then((res) => {

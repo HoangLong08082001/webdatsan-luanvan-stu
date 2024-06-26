@@ -3,7 +3,7 @@ import style from "./AddDungCuYTe.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function AddDungCuYTe({ handleClose }) {
   const [ten, setTen] = useState("");
@@ -12,7 +12,7 @@ export default function AddDungCuYTe({ handleClose }) {
   const [hinhanh, setHinhanh] = useState("");
   const handleSubmit = () => {
     axios
-      .post("http://localhost:4000/dung-cu-y-te/create", {
+      .post("/dung-cu-y-te/create", {
         hinhanh: hinhanh,
         soluong: soluong,
         tendungcuyte: ten,

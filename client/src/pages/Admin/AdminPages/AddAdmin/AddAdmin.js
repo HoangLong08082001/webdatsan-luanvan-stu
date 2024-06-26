@@ -3,7 +3,7 @@ import style from "./AddAdmin.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function AddAdmin({ handleClose }) {
   const [username, setUsername] = useState("");
@@ -11,7 +11,7 @@ export default function AddAdmin({ handleClose }) {
 
   const handleSubmit = async () => {
     await axios
-      .post("http://localhost:4000/admin/create", {
+      .post("/admin/create", {
         username: username,
         password: password,
       })

@@ -3,7 +3,7 @@ import style from "./AddSan.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function AddSan({ handleClose }) {
   const [ten, setTen] = useState("");
@@ -11,11 +11,11 @@ export default function AddSan({ handleClose }) {
   const [mota, setMota] = useState("");
   const [machinhanh, setMaChinhNhanh] = useState("");
   const [loaisan, setLoaisan] = useState("");
-  const [giatien, setGiaTien]= useState("");
+  const [giatien, setGiaTien] = useState("");
   const [listChiNhanh, setListChiNhanh] = useState([]);
   const [listLoai, setListLoai] = useState([]);
   const fetchChiNhanh = () => {
-    axios.get("http://localhost:4000/chi-nhanh/get-chi-nhanh").then((res) => {
+    axios.get("/chi-nhanh/get-chi-nhanh").then((res) => {
       if (res) {
         setListChiNhanh(res.data);
       }
@@ -29,7 +29,7 @@ export default function AddSan({ handleClose }) {
     { id: 5, loai: "Sân tennis" },
   ];
   const fetchLoai = async () => {
-    await axios.get("http://localhost:4000/loai-san/get-all").then((res) => {
+    await axios.get("/loai-san/get-all").then((res) => {
       if (res) {
         setListLoai(res.data);
       }
@@ -37,13 +37,13 @@ export default function AddSan({ handleClose }) {
   };
   const handleSubmit = () => {
     axios
-      .post("http://localhost:4000/san/create", {
+      .post("/san/create", {
         ten: ten,
         hinhanh: hinhanh,
         mota: mota,
         machinhanh: machinhanh,
         loaisan: loaisan,
-        giatien:giatien
+        giatien: giatien,
       })
       .then((res) => {
         if (res) {

@@ -9,7 +9,7 @@ import {
   faTrashCan,
   faUnlock,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 import { useNavigate } from "react-router-dom";
 import AddCategory from "./AddCategory/AddCategory";
 
@@ -18,7 +18,7 @@ export default function LoaiSan() {
   const [modal, setModal] = useState(false);
   const [listLoai, setListLoai] = useState([]);
   const fetchLoaiSan = async () => {
-    await axios.get("http://localhost:4000/loai-san/get-all").then((res) => {
+    await axios.get("/loai-san/get-all").then((res) => {
       if (res) {
         setListLoai(res.data);
       }
@@ -26,13 +26,11 @@ export default function LoaiSan() {
   };
   const deleteCategory = async (id) => {
     try {
-      await axios
-        .delete(`http://localhost:4000/loai-san/delete/${id}`)
-        .then((res) => {
-          if (res) {
-            alert("Delete successfuly");
-          }
-        });
+      await axios.delete(`/loai-san/delete/${id}`).then((res) => {
+        if (res) {
+          alert("Delete successfuly");
+        }
+      });
     } catch (error) {
       if (error.response.status >= 500) {
         alert("Error System");
@@ -44,7 +42,7 @@ export default function LoaiSan() {
   const handleBlock = async (item) => {
     try {
       await axios
-        .put(`http://localhost:4000/loai-san/block`, {
+        .put(`/loai-san/block`, {
           ma_loai_san: item,
         })
         .then((res) => {

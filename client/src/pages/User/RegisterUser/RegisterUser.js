@@ -4,7 +4,7 @@ import style from "./RegisterUser.module.scss";
 import classNames from "classnames/bind";
 import { faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function RegisterUser() {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function RegisterUser() {
     let check = validatePassword();
     if (check === true) {
       axios
-        .post("http://localhost:4000/khach-hang/register", {
+        .post("/khach-hang/register", {
           ten_nguoi_dung: name,
           email: email,
           password: password,

@@ -8,7 +8,7 @@ import {
   faLock,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 import AddDoAn from "./AddDoAn/AddDoAn";
 import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
@@ -23,7 +23,7 @@ export default function DoAn() {
     }
   }, [navigate]);
   const fetchChiNhanh = async () => {
-    await axios.get("http://localhost:4000/do-an/get-all").then((res) => {
+    await axios.get("/do-an/get-all").then((res) => {
       if (res) {
         setListDoAn(res.data);
         console.log(res.data);
@@ -35,7 +35,7 @@ export default function DoAn() {
   };
   const handleBlock = (item) => {
     axios
-      .put("http://localhost:4000/do-an/block", {
+      .put("/do-an/block", {
         id_do_an: item,
       })
       .then((res) => {
@@ -46,7 +46,7 @@ export default function DoAn() {
   };
   const deleteDoAn = async (item) => {
     try {
-      await axios.delete(`http://localhost:4000/do-an/delete/${item}`).then((res) => {
+      await axios.delete(`/do-an/delete/${item}`).then((res) => {
         if (res) {
           alert("Xoá thành công");
         }

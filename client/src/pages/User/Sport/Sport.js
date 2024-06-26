@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import style from "./Sport.module.scss";
 import classNames from "classnames/bind";
 import Other from "../../../components/Other/Other";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function Sport() {
   const [listMedical, setListMedical] = useState([]);
   const fetchListMedical = () => {
-    axios.get("http://localhost:4000/dung-cu-the-thao/get").then((res) => {
+    axios.get("/dung-cu-the-thao/get").then((res) => {
       if (res) {
         setListMedical(res.data);
       }
@@ -16,7 +16,7 @@ export default function Sport() {
   const handleAdd = (id_do_an) => {
     if (localStorage.getItem("id")) {
       axios
-        .post("http://localhost:4000/tam-tinh/add-the-thao", {
+        .post("/tam-tinh/add-the-thao", {
           id_dung_cu_the_thao: id_do_an,
           id_tam_tinh: localStorage.getItem("tam_tinh"),
         })

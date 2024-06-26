@@ -3,12 +3,12 @@ import style from "./BasketballPages.module.scss";
 import classNames from "classnames/bind";
 import { Link, useNavigate } from "react-router-dom";
 import Item from "../../../components/Item/Item";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function BasketballPages() {
   const [listSan, setListSan] = useState([]);
   const fetchListSan = () => {
-    axios.get("http://localhost:4000/san/get-all").then((res) => {
+    axios.get("/san/get-all").then((res) => {
       if (res) {
         setListSan(res.data);
       }

@@ -8,7 +8,7 @@ import {
   faLock,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 import AddDungCuYTe from "./AddDungCuYTe/AddDungCuYTe";
 import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
@@ -24,23 +24,19 @@ export default function DungCuYTe() {
     }
   }, [navigate]);
   const fetchDungCuYTe = async () => {
-    await axios
-      .get("http://localhost:4000/dung-cu-y-te/get-all")
-      .then((res) => {
-        if (res) {
-          setListDungCu(res.data);
-        }
-      });
+    await axios.get("/dung-cu-y-te/get-all").then((res) => {
+      if (res) {
+        setListDungCu(res.data);
+      }
+    });
   };
   const handleDelete = async (id) => {
     try {
-      await axios
-        .delete(`http://localhost:4000/dung-cu-y-te/delete/${id}`)
-        .then((res) => {
-          if (res) {
-            alert("Delete successfully");
-          }
-        });
+      await axios.delete(`/dung-cu-y-te/delete/${id}`).then((res) => {
+        if (res) {
+          alert("Delete successfully");
+        }
+      });
     } catch (error) {
       if (error.response.status >= 500) {
         alert("Error system");

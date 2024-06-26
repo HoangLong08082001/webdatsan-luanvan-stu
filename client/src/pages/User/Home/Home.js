@@ -8,7 +8,7 @@ import Basketball from "./Basketball/Basketball";
 import Volleyball from "./Volleyball/Volleyball";
 import Contract from "./Contract/Contract";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function Home() {
   const navigate = useNavigate();
@@ -18,15 +18,13 @@ export default function Home() {
 
   const fetchSearchResult = async () => {
     try {
-      await axios
-        .get(`http://localhost:4000/san/search/${search}`)
-        .then((res) => {
-          if (res) {
-            navigate(`/tim-kiem/${search}`, {
-              state: res.data,
-            });
-          }
-        });
+      await axios.get(`/san/search/${search}`).then((res) => {
+        if (res) {
+          navigate(`/tim-kiem/${search}`, {
+            state: res.data,
+          });
+        }
+      });
     } catch (error) {
       if (error.response.status >= 500) {
         alert("Error System");

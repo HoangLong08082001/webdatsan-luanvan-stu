@@ -4,7 +4,7 @@ import classNames from "classnames/bind";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function LoginUser() {
   const [username, setUsername] = useState("");
@@ -13,7 +13,7 @@ export default function LoginUser() {
   const handleLogin = async () => {
     try {
       await axios
-        .post("http://localhost:4000/khach-hang/login", {
+        .post("/khach-hang/login", {
           username: username,
           password: password,
         })

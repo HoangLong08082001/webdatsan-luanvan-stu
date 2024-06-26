@@ -3,7 +3,7 @@ import style from "./AddChiNhanh.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
 export default function AddChiNhanh({ handleClose }) {
@@ -15,7 +15,7 @@ export default function AddChiNhanh({ handleClose }) {
   const [phuong, setPhuong] = useState("");
   const [sdt, setSdt] = useState("");
   const fetchDistrict = () => {
-    axios.get("http://localhost:4000/chi-nhanh/get-phuong-quan").then((res) => {
+    axios.get("/chi-nhanh/get-phuong-quan").then((res) => {
       if (res) {
         setListDistrict(res.data);
       }
@@ -23,7 +23,7 @@ export default function AddChiNhanh({ handleClose }) {
   };
   const handleSubmit = () => {
     axios
-      .post("http://localhost:4000/chi-nhanh/create", {
+      .post("/chi-nhanh/create", {
         ten_chi_nhanh: name,
         di_chi: diachi,
         ma_quan_huyen: maquan,

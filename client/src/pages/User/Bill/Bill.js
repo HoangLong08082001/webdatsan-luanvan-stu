@@ -9,8 +9,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
 export default function Bill() {
@@ -36,11 +35,7 @@ export default function Bill() {
   }
   const fetchSan = () => {
     axios
-      .get(
-        `http://localhost:4000/tam-tinh/get-tam-tinh-san/${localStorage.getItem(
-          "tam_tinh"
-        )}`
-      )
+      .get(`/tam-tinh/get-tam-tinh-san/${localStorage.getItem("tam_tinh")}`)
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -54,11 +49,7 @@ export default function Bill() {
   };
   const fetchDoAn = () => {
     axios
-      .get(
-        `http://localhost:4000/tam-tinh/get-tam-tinh-do-an/${localStorage.getItem(
-          "tam_tinh"
-        )}`
-      )
+      .get(`/tam-tinh/get-tam-tinh-do-an/${localStorage.getItem("tam_tinh")}`)
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -73,9 +64,7 @@ export default function Bill() {
   const fetchNuoc = () => {
     axios
       .get(
-        `http://localhost:4000/tam-tinh/get-tam-tinh-nuoc-uong/${localStorage.getItem(
-          "tam_tinh"
-        )}`
+        `/tam-tinh/get-tam-tinh-nuoc-uong/${localStorage.getItem("tam_tinh")}`
       )
       .then((res) => {
         if (res) {
@@ -91,7 +80,7 @@ export default function Bill() {
   const fetchTheThao = () => {
     axios
       .get(
-        `http://localhost:4000/tam-tinh/get-tam-tinh-dung-cu-the-thao/${localStorage.getItem(
+        `/tam-tinh/get-tam-tinh-dung-cu-the-thao/${localStorage.getItem(
           "tam_tinh"
         )}`
       )
@@ -109,7 +98,7 @@ export default function Bill() {
   const fetchYTe = () => {
     axios
       .get(
-        `http://localhost:4000/tam-tinh/get-tam-tinh-dung-cu-y-te/${localStorage.getItem(
+        `/tam-tinh/get-tam-tinh-dung-cu-y-te/${localStorage.getItem(
           "tam_tinh"
         )}`
       )
@@ -126,7 +115,7 @@ export default function Bill() {
   };
   const handlePayment = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/payment/momo", {
+      const response = await axios.post("/payment/momo", {
         partnerCode: "MOMOBKUN20180529",
         accessKey: "klm05TvNBzhg7h7j",
         secretKey: "at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa",
@@ -148,7 +137,7 @@ export default function Bill() {
       console.error("Error during the payment process:", error);
     }
     // axios
-    //   .post("http://localhost:4000/payment/momo", {
+    //   .post("/payment/momo", {
     //     total: (totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe) / 2,
     //   })
     //   .then((res) => {
@@ -160,14 +149,12 @@ export default function Bill() {
   };
   const deleteTamTinhSan = async (id) => {
     try {
-      await axios
-        .delete(`http://localhost:4000/tam-tinh/delete-tam-tinh-san/${id}`)
-        .then((res) => {
-          if (res) {
-            alert("Xoá thành công");
-            fetchSan();
-          }
-        });
+      await axios.delete(`/tam-tinh/delete-tam-tinh-san/${id}`).then((res) => {
+        if (res) {
+          alert("Xoá thành công");
+          fetchSan();
+        }
+      });
     } catch (error) {
       if (error.response.status >= 500) {
         alert("Error system");
@@ -179,9 +166,7 @@ export default function Bill() {
   const deleteTamTinhNuocUong = async (id) => {
     try {
       await axios
-        .delete(
-          `http://localhost:4000/tam-tinh/delete-tam-tinh-nuoc-uong/${id}`
-        )
+        .delete(`/tam-tinh/delete-tam-tinh-nuoc-uong/${id}`)
         .then((res) => {
           if (res) {
             alert("Xoá thành công");
@@ -199,7 +184,7 @@ export default function Bill() {
   const deleteTamTinhDoAn = async (id) => {
     try {
       await axios
-        .delete(`http://localhost:4000/tam-tinh/delete-tam-tinh-do-an/${id}`)
+        .delete(`/tam-tinh/delete-tam-tinh-do-an/${id}`)
         .then((res) => {
           if (res) {
             alert("Xoá thành công");
@@ -217,9 +202,7 @@ export default function Bill() {
   const deleteTamTinhDungCuYTe = async (id) => {
     try {
       await axios
-        .delete(
-          `http://localhost:4000/tam-tinh/delete-tam-tinh-dung-cu-y-te/${id}`
-        )
+        .delete(`/tam-tinh/delete-tam-tinh-dung-cu-y-te/${id}`)
         .then((res) => {
           if (res) {
             alert("Xoá thành công");
@@ -237,9 +220,7 @@ export default function Bill() {
   const deleteTamTinhDungCuTheThao = async (id) => {
     try {
       await axios
-        .delete(
-          `http://localhost:4000/tam-tinh/delete-tam-tinh-dung-cu-the-thao/${id}`
-        )
+        .delete(`/tam-tinh/delete-tam-tinh-dung-cu-the-thao/${id}`)
         .then((res) => {
           if (res) {
             alert("Xoá thành công");

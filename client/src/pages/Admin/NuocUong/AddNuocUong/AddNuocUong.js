@@ -3,7 +3,7 @@ import style from "./AddNuocUong.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function AddNuocUong({ handleClose }) {
   const [listLoai, setListLoai] = useState([]);
@@ -13,7 +13,7 @@ export default function AddNuocUong({ handleClose }) {
   const [hinhanh, setHinhAnh] = useState("");
   const [gia, setGia] = useState("");
   const fetchLoai = () => {
-    axios.get("http://localhost:4000/nuoc-uong/get-loai-nuoc").then((res) => {
+    axios.get("/nuoc-uong/get-loai-nuoc").then((res) => {
       if (res) {
         setListLoai(res.data);
       }
@@ -22,7 +22,7 @@ export default function AddNuocUong({ handleClose }) {
 
   const handleSubmit = async () => {
     await axios
-      .post("http://localhost:4000/nuoc-uong/create", {
+      .post("/nuoc-uong/create", {
         ten: ten,
         soluong: soluong,
         maloai: maloai,

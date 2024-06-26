@@ -8,7 +8,7 @@ import {
   faLock,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 import AddDoAn from "../DoAn/AddDoAn/AddDoAn";
 import AddNuocUong from "./AddNuocUong/AddNuocUong";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ export default function NuocUong() {
     }
   }, [navigate]);
   const fetchNuocUong = async () => {
-    await axios.get("http://localhost:4000/nuoc-uong/get-all").then((res) => {
+    await axios.get("/nuoc-uong/get-all").then((res) => {
       if (res) {
         setListNuocUong(res.data);
       }
@@ -32,7 +32,7 @@ export default function NuocUong() {
   };
   const handleBlock = (item) => {
     axios
-      .put("http://localhost:4000/nuoc-uong/block", {
+      .put("/nuoc-uong/block", {
         id_nuoc_uong: item,
       })
       .then((res) => {
@@ -43,13 +43,11 @@ export default function NuocUong() {
   };
   const handleDelete = async (id) => {
     try {
-      await axios
-        .delete(`http://localhost:4000/nuoc-uong/delete/${id}`)
-        .then((res) => {
-          if (res) {
-            alert("Delete successfully");
-          }
-        });
+      await axios.delete(`/nuoc-uong/delete/${id}`).then((res) => {
+        if (res) {
+          alert("Delete successfully");
+        }
+      });
     } catch (error) {
       if (error.response.status >= 500) {
         alert("Error system");

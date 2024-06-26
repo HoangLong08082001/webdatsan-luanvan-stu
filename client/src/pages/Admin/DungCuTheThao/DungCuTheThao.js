@@ -8,7 +8,7 @@ import {
   faLock,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 import AddDungCuTheThao from "./AddDungCuTheThao/AddDungCuTheThao";
 import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
@@ -23,18 +23,16 @@ export default function DungCuTheThao() {
     }
   }, [navigate]);
   const fetchDungCuYTe = async () => {
-    await axios
-      .get("http://localhost:4000/dung-cu-the-thao/get")
-      .then((res) => {
-        if (res) {
-          console.log(res.data);
-          setList(res.data);
-        }
-      });
+    await axios.get("/dung-cu-the-thao/get").then((res) => {
+      if (res) {
+        console.log(res.data);
+        setList(res.data);
+      }
+    });
   };
   const handleBlock = (item) => {
     axios
-      .put("http://localhost:4000/dung-cu-the-thao/block", {
+      .put("/dung-cu-the-thao/block", {
         id_dung_cu_the_thao: item,
       })
       .then((res) => {
@@ -45,13 +43,11 @@ export default function DungCuTheThao() {
   };
   const handleDelete = async (id) => {
     try {
-      await axios
-        .delete(`http://localhost:4000/dung-cu-the-thao/delete/${id}`)
-        .then((res) => {
-          if (res) {
-            alert("Delete successfully");
-          }
-        });
+      await axios.delete(`/dung-cu-the-thao/delete/${id}`).then((res) => {
+        if (res) {
+          alert("Delete successfully");
+        }
+      });
     } catch (error) {
       if (error.response.status >= 500) {
         alert("Error system");

@@ -3,7 +3,7 @@ import style from "./Search.module.scss";
 import classNames from "classnames/bind";
 import { useLocation } from "react-router-dom";
 import Item from "../../../components/Item/Item";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 const cx = classNames.bind(style);

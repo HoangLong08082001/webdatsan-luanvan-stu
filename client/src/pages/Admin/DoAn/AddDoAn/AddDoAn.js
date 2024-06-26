@@ -3,7 +3,7 @@ import style from "./AddDoAn.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function AddDoAn({ handleClose }) {
   const [name, setName] = useState("");
@@ -11,7 +11,7 @@ export default function AddDoAn({ handleClose }) {
   const [img, setImg] = useState("");
   const handleSubmit = async () => {
     await axios
-      .post("http://localhost:4000/do-an/create", {
+      .post("/do-an/create", {
         tendoan: name,
         gia: price,
         hinhanh: img,
@@ -49,7 +49,7 @@ export default function AddDoAn({ handleClose }) {
               onChange={(e) => setPrice(e.target.value)}
             />
           </div>
-          
+
           <div className={cx("form-input")}>
             <label htmlFor="">Hình ảnh</label>
             <input

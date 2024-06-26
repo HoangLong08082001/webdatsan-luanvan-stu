@@ -8,7 +8,7 @@ import {
   faLock,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 import { useNavigate } from "react-router-dom";
 import AddChiNhanh from "./AddChiNhanh/AddChiNhanh";
 const cx = classNames.bind(style);
@@ -23,7 +23,7 @@ export default function ChiNhanh() {
     }
   }, [navigate]);
   const fetchChiNhanh = async () => {
-    await axios.get("http://localhost:4000/chi-nhanh/get-all").then((res) => {
+    await axios.get("/chi-nhanh/get-all").then((res) => {
       if (res) {
         setListChiNhanh(res.data);
       }
@@ -31,7 +31,7 @@ export default function ChiNhanh() {
   };
   const handleLock = (item) => {
     axios
-      .put("http://localhost:4000/chi-nhanh/block", {
+      .put("/chi-nhanh/block", {
         id_chi_nhanh: item,
       })
       .then((res) => {
@@ -40,13 +40,11 @@ export default function ChiNhanh() {
   };
   const handleDelete = async (id) => {
     try {
-      await axios
-        .delete(`http://localhost:4000/chi-nhanh/delete/${id}`)
-        .then((res) => {
-          if (res) {
-            alert("Delete successfully");
-          }
-        });
+      await axios.delete(`/chi-nhanh/delete/${id}`).then((res) => {
+        if (res) {
+          alert("Delete successfully");
+        }
+      });
     } catch (error) {
       if (error.response.status >= 500) {
         alert("Error system");

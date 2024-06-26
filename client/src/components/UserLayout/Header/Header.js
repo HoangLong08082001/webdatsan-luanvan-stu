@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import Cart from "../../Cart/Cart";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function Header() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function Header() {
     window.location.reload();
   };
   const fetchCategory = async () => {
-    await axios.get("http://localhost:4000/loai-san/get-all").then((res) => {
+    await axios.get("/loai-san/get-all").then((res) => {
       if (res) {
         setListCategory(res.data);
       }
@@ -35,7 +35,7 @@ export default function Header() {
   };
   const handleClick = (id, name) => {
     try {
-      axios.get(`http://localhost:4000/san/get-san/${id}`).then((res) => {
+      axios.get(`/san/get-san/${id}`).then((res) => {
         if (res) {
           navigate(`/san/${name}/${id}`, { state: res.data });
         }

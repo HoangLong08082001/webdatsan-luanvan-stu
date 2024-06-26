@@ -4,14 +4,14 @@ import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Other from "../../../components/Other/Other";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function Drinks() {
   const [listDrink, setListDrink] = useState([]);
   const id_tam_tinh = localStorage.getItem("tam_tinh");
   const id_khach_hang = localStorage.getItem("id");
   const fetchListDrink = () => {
-    axios.get("http://localhost:4000/nuoc-uong/get-all").then((res) => {
+    axios.get("/nuoc-uong/get-all").then((res) => {
       if (res) {
         setListDrink(res.data);
       }
@@ -20,7 +20,7 @@ export default function Drinks() {
   const addTamTinh = (id_nuoc_uong) => {
     if (id_khach_hang) {
       axios
-        .post("http://localhost:4000/tam-tinh/add-nuoc-uong", {
+        .post("/tam-tinh/add-nuoc-uong", {
           id_nuoc_uong: id_nuoc_uong,
           id_tam_tinh: id_tam_tinh,
         })

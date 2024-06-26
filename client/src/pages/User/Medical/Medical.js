@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import style from "./Medical.module.scss";
 import classNames from "classnames/bind";
 import Other from "../../../components/Other/Other";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
 export default function Medical() {
   const [listMedical, setListMedical] = useState([]);
   const fetchListMedical = () => {
-    axios.get("http://localhost:4000/dung-cu-y-te/get-all").then((res) => {
+    axios.get("/dung-cu-y-te/get-all").then((res) => {
       if (res) {
         setListMedical(res.data);
       }
@@ -17,7 +17,7 @@ export default function Medical() {
   const handleAdd = (id_do_an) => {
     if (localStorage.getItem("id")) {
       axios
-        .post("http://localhost:4000/tam-tinh/add-y-te", {
+        .post("/tam-tinh/add-y-te", {
           id_dung_cu_y_te: id_do_an,
           id_tam_tinh: localStorage.getItem("tam_tinh"),
         })

@@ -10,7 +10,7 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function Details() {
   const getTodayDate = () => {
@@ -56,7 +56,7 @@ export default function Details() {
   };
   const fetchKhungGio = async () => {
     try {
-      await axios.get("http://localhost:4000/khung-gio/get-all").then((res) => {
+      await axios.get("/khung-gio/get-all").then((res) => {
         if (res) {
           setSchedule(res.data);
           console.log(res.data);
@@ -107,7 +107,7 @@ export default function Details() {
       ) {
         if (click !== null) {
           axios
-            .post("http://localhost:4000/tam-tinh/add-san", {
+            .post("/tam-tinh/add-san", {
               id_san: idSan,
               id_tam_tinh: localStorage.getItem("tam_tinh"),
               start: start,

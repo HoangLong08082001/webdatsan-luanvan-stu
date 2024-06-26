@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import style from "./LoginAdmin.module.scss";
 import classNames from "classnames/bind";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 import { AuthContext } from "../../../context/UserContext";
 const cx = classNames.bind(style);
 export default function LoginAdmin() {
@@ -13,7 +13,7 @@ export default function LoginAdmin() {
   const [password, setPassword] = useState("");
   const handleLogin = async () => {
     try {
-      let res = await axios.post("http://localhost:4000/admin/login", {
+      let res = await axios.post("/admin/login", {
         username: username,
         password: password,
       });

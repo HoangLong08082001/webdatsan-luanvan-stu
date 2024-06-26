@@ -3,7 +3,7 @@ import style from "./Yard.module.scss";
 import classNames from "classnames/bind";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Item from "../../../components/Item/Item";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function Yard() {
   const location = useLocation();
@@ -16,7 +16,7 @@ export default function Yard() {
     console.log(location.state);
   };
   const fetchCategory = async () => {
-    await axios.get("http://localhost:4000/loai-san/get-all").then((res) => {
+    await axios.get("/loai-san/get-all").then((res) => {
       if (res) {
         setListCategory(res.data);
       }

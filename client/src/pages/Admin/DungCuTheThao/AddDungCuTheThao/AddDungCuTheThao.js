@@ -3,7 +3,7 @@ import style from "./AddDungCuTheThao.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
 export default function AddDungCuTheThao({ handleClose }) {
@@ -13,7 +13,7 @@ export default function AddDungCuTheThao({ handleClose }) {
   const [hinhanh, setHinhAnh] = useState("");
   const handleSubmit = () => {
     axios
-      .post("http://localhost:4000/dung-cu-the-thao/create", {
+      .post("/dung-cu-the-thao/create", {
         hinhanh: hinhanh,
         soluong: soluong,
         tendungcuthethao: ten,

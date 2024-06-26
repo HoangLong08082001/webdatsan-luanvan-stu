@@ -9,7 +9,7 @@ import {
   faTrashCan,
   faUnlock,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 import AddSan from "./AddSan/AddSan";
 import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
@@ -25,7 +25,7 @@ export default function San() {
     }
   }, [navigate]);
   const fetchListSan = () => {
-    axios.get("http://localhost:4000/san/get-all").then((res) => {
+    axios.get("/san/get-all").then((res) => {
       if (res) {
         setListSan(res.data);
       }
@@ -33,7 +33,7 @@ export default function San() {
   };
   const handleBlock = (item) => {
     axios
-      .put("http://localhost:4000/san/block", {
+      .put("/san/block", {
         ma_san: item,
       })
       .then((res) => {

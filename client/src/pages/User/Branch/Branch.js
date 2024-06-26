@@ -3,13 +3,13 @@ import style from "./Branch.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 export default function Branch() {
   const [listChiNhanh, setListChiNhanh] = useState([]);
   const fetchChiNhanh = async () => {
     try {
-      await axios.get("http://localhost:4000/chi-nhanh/get-all").then((res) => {
+      await axios.get("/chi-nhanh/get-all").then((res) => {
         if (res) {
           setListChiNhanh(res.data);
         }
