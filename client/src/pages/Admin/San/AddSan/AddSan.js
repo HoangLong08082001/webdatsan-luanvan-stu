@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
-export default function AddSan({ handleClose }) {
+export default function AddSan({ setModalFalse,id=null }) {
   const [ten, setTen] = useState("");
   const [hinhanh, setHinhAnh] = useState("");
   const [mota, setMota] = useState("");
@@ -21,13 +21,21 @@ export default function AddSan({ handleClose }) {
       }
     });
   };
-  const data = [
-    { id: 1, loai: "Sân bóng đá" },
-    { id: 2, loai: "Sân bóng chuyền" },
-    { id: 3, loai: "Sân cầu lông" },
-    { id: 4, loai: "Sân bóng rổ" },
-    { id: 5, loai: "Sân tennis" },
-  ];
+
+  const getSanId = () => {
+    axios.get(`/san/get-by-id/${id}`).then((res) => {
+      if (res) {
+        let san = res?.data[0]
+        setTen(san.ten_san);
+        setHinhAnh(san.hinh_anh);
+        setMota(san.description);
+        setMaChinhNhanh(san.ma_chi_nhanh);
+        setLoaisan(san.ma_loai_san);
+        setGiaTien(san.gia_san);
+      }
+    });
+  };
+
   const fetchLoai = async () => {
     await axios.get("/loai-san/get-all").then((res) => {
       if (res) {
@@ -36,26 +44,69 @@ export default function AddSan({ handleClose }) {
     });
   };
   const handleSubmit = () => {
-    axios
-      .post("/san/create", {
-        ten: ten,
-        hinhanh: hinhanh,
-        mota: mota,
-        machinhanh: machinhanh,
-        loaisan: loaisan,
-        giatien: giatien,
-      })
-      .then((res) => {
-        if (res) {
-          alert("Create new successfully");
-          fetchChiNhanh();
+    try {
+        if(id){
+          axios
+          .put("/san/update", {
+            id_san:id,
+            ten_san: ten,
+            hinh_anh: hinhanh,
+            mo_ta: mota,
+            id_chi_nhanh: machinhanh,
+            id_loai_san: loaisan,
+            gia_san: giatien,
+          })
+          .then((res) => {
+            if (res) {
+              alert("Create new successfully");
+              fetchChiNhanh();
+            }
+          });
         }
-      });
+        if(id==null){
+          axios
+          .post("/san/create", {
+            ten: ten,
+            hinhanh: hinhanh,
+            mota: mota,
+            machinhanh: machinhanh,
+            loaisan: loaisan,
+            giatien: giatien,
+          })
+          .then((res) => {
+            if (res) {
+              alert("Create new successfully");
+              fetchChiNhanh();
+            }
+          });
+        }
+    } catch (error) {
+      console.log(error);
+    }
+    handleClose();
   };
+
+  const handleClose = ()=>{
+    setTen("");
+    setHinhAnh("");
+    setMota("");
+    setMaChinhNhanh("");
+    setLoaisan("");
+    setGiaTien("");
+    setModalFalse();
+  }
+
   useEffect(() => {
     fetchLoai();
     fetchChiNhanh();
   }, []);
+
+  useEffect(() => {
+    if(id){
+      getSanId();
+    }
+
+  }, [id]);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("form")}>
@@ -141,7 +192,7 @@ export default function AddSan({ handleClose }) {
             />
           </div>
           <button onClick={handleSubmit} className={cx("add")}>
-            THÊM MỚI
+            {id?"CHỈNH SỬA":"THÊM MỚI"}
           </button>
         </div>
       </div>

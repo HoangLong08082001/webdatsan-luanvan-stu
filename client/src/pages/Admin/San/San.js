@@ -18,6 +18,9 @@ export default function San() {
   const [modal, setModal] = useState(false);
   const [listSan, setListSan] = useState([]);
   const navigate = useNavigate();
+  const [load,setLoad] = useState(true);
+  const [id, setId] = useState(null);
+
 
   useEffect(() => {
     if (!window.localStorage.getItem("token")) {
@@ -28,6 +31,7 @@ export default function San() {
     axios.get("/san/get-all").then((res) => {
       if (res) {
         setListSan(res.data);
+        setLoad(false);
       }
     });
   };
@@ -42,10 +46,24 @@ export default function San() {
           fetchListSan();
         }
       });
+      setLoad(false);
   };
+
+  const closeModel = ()=>{
+    setLoad(true);
+    setModal(false);
+    setId(null);
+  }
+
+   async function editModel(itemId){
+    await setModal(true);
+    await setId(itemId);
+  }
+
   useEffect(() => {
     fetchListSan();
-  }, []);
+  }, [load]);
+
   return (
     <div className={cx("wrapper")}>
       <p className={cx("title")}>SÂN</p>
@@ -77,7 +95,11 @@ export default function San() {
                   <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>
                 <td className={cx("action")}>
-                  <FontAwesomeIcon icon={faPen} className={cx("edit")} />
+                  <FontAwesomeIcon 
+                    icon={faPen} 
+                    className={cx("edit")}
+                    onClick={() => editModel(item.ma_san)}
+                    />
                   <FontAwesomeIcon
                     icon={item.trang_thai === 1 ? faLock : faUnlock}
                     className={cx(
@@ -92,7 +114,7 @@ export default function San() {
           })}
         </table>
       </div>
-      {modal === true ? <AddSan handleClose={() => setModal(false)} /> : ""}
+      {modal === true ? <AddSan setModalFalse={closeModel} id={id} /> : ""}
     </div>
   );
 }

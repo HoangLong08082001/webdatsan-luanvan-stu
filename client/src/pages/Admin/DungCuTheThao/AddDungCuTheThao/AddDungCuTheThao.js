@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./AddDungCuTheThao.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,13 +6,43 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
-export default function AddDungCuTheThao({ handleClose }) {
+export default function AddDungCuTheThao({ setModalFalse,id=null }) {
   const [ten, setTen] = useState("");
   const [gia, setGia] = useState("");
   const [soluong, setSoLuong] = useState("");
   const [hinhanh, setHinhAnh] = useState("");
+
+  const getDungCuTheThaoId = () => {
+    axios.get(`/dung-cu-the-thao/get-by-id/${id}`).then((res) => {
+      if (res) {
+        let theThao = res?.data[0]
+        setTen(theThao.ten_dung_cu_the_thao);
+        setGia(theThao.gia_dung_cu);
+        setSoLuong(theThao.so_luong);
+        setHinhAnh(theThao.hinh_anh);
+      }
+    });
+  };
+
   const handleSubmit = () => {
-    axios
+    try {
+      if(id){
+        axios
+        .put("/dung-cu-the-thao/update", {
+          id_dung_cu:id,
+          hinh_anh: hinhanh,
+          so_luong: soluong,
+          ten_dung_cu: ten,
+          gia: gia,
+        })
+        .then((res) => {
+          if (res) {
+            alert("Create new successfully");
+          }
+        });
+      }
+      if(id==null){
+        axios
       .post("/dung-cu-the-thao/create", {
         hinhanh: hinhanh,
         soluong: soluong,
@@ -24,7 +54,27 @@ export default function AddDungCuTheThao({ handleClose }) {
           alert("Create new successfully");
         }
       });
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    handleClose()
   };
+
+  const handleClose = ()=>{
+    setTen("");
+    setGia("");
+    setSoLuong("");
+    setHinhAnh("");
+    setModalFalse();
+  }
+
+  useEffect(() => {
+    if(id){
+      getDungCuTheThaoId();
+    }
+  }, [id]);
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("form")}>
@@ -71,7 +121,7 @@ export default function AddDungCuTheThao({ handleClose }) {
             />
           </div>
           <button onClick={handleSubmit} className={cx("add")}>
-            THÊM MỚI
+            {id?"CHỈNH SỬA":"THÊM MỚI"}
           </button>
         </div>
       </div>

@@ -16,6 +16,10 @@ export default function DungCuTheThao() {
   const [modal, setModal] = useState(false);
   const [list, setList] = useState([]);
   const navigate = useNavigate();
+  const [load,setLoad] = useState(true);
+  const [id, setId] = useState(null);
+
+
 
   useEffect(() => {
     if (!window.localStorage.getItem("token")) {
@@ -25,8 +29,8 @@ export default function DungCuTheThao() {
   const fetchDungCuYTe = async () => {
     await axios.get("/dung-cu-the-thao/get").then((res) => {
       if (res) {
-        console.log(res.data);
         setList(res.data);
+        setLoad(false)
       }
     });
   };
@@ -40,6 +44,8 @@ export default function DungCuTheThao() {
           fetchDungCuYTe();
         }
       });
+      setLoad(false)
+
   };
   const handleDelete = async (id) => {
     try {
@@ -55,10 +61,23 @@ export default function DungCuTheThao() {
         alert(error.response.data.message);
       }
     }
+    setLoad(false)
   };
+
+  const closeModel = ()=>{
+    setLoad(true);
+    setModal(false);
+    setId(null);
+  }
+
+   async function editModel(itemId){
+    await setModal(true);
+    await setId(itemId);
+  }
+
   useEffect(() => {
     fetchDungCuYTe();
-  }, []);
+  }, [load]);
   return (
     <div className={cx("wrapper")}>
       <p className={cx("title")}>DỤNG CỤ THỂ THAO </p>
@@ -92,7 +111,11 @@ export default function DungCuTheThao() {
                   <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>
                 <td className={cx("action")}>
-                  <FontAwesomeIcon icon={faPen} className={cx("edit")} />
+                  <FontAwesomeIcon 
+                    icon={faPen} 
+                    className={cx("edit")} 
+                    onClick={() => editModel(item.ma_dung_cu_the_thao)}
+                    />
                   <FontAwesomeIcon
                     icon={faLock}
                     className={cx("lock")}
@@ -110,7 +133,7 @@ export default function DungCuTheThao() {
         </table>
       </div>
       {modal === true ? (
-        <AddDungCuTheThao handleClose={() => setModal(false)} />
+        <AddDungCuTheThao setModalFalse={closeModel} id={id} />
       ) : (
         ""
       )}

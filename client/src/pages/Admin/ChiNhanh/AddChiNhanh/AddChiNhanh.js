@@ -6,7 +6,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
-export default function AddChiNhanh({ setModalFalse,id=null}) {
+export default function AddChiNhanh({ setModalFalse,id=null }) {
   const [listDistrict, setListDistrict] = useState([]);
   const [name, setName] = useState("");
   const [diachi, setDiaChi] = useState("");

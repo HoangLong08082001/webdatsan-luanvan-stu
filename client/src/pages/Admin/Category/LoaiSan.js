@@ -17,13 +17,18 @@ const cx = classNames.bind(style);
 export default function LoaiSan() {
   const [modal, setModal] = useState(false);
   const [listLoai, setListLoai] = useState([]);
+  const [load,setLoad] = useState(true);
+  const [id, setId] = useState(null);
+
   const fetchLoaiSan = async () => {
     await axios.get("/loai-san/get-all").then((res) => {
       if (res) {
         setListLoai(res.data);
+        setLoad(false)
       }
     });
   };
+
   const deleteCategory = async (id) => {
     try {
       await axios.delete(`/loai-san/delete/${id}`).then((res) => {
@@ -38,6 +43,8 @@ export default function LoaiSan() {
         alert(error.response.data.message);
       }
     }
+    setLoad(false)
+
   };
   const handleBlock = async (item) => {
     try {
@@ -52,10 +59,23 @@ export default function LoaiSan() {
           }
         });
     } catch (error) {}
+    setLoad(false)
   };
+
+  const closeModel = ()=>{
+    setLoad(true);
+    setModal(false);
+    setId(null);
+  }
+
+   async function editModel(itemId){
+    await setModal(true);
+    await setId(itemId);
+  }
+
   useEffect(() => {
     fetchLoaiSan();
-  });
+  },[load]);
   return (
     <div className={cx("wrapper")}>
       <p className={cx("title")}>LOẠI SÂN</p>
@@ -82,7 +102,11 @@ export default function LoaiSan() {
                 <td>{item.trang_thai === 1 ? "Hiển thị" : "Chưa hiển thị"}</td>
 
                 <td className={cx("action")}>
-                  <FontAwesomeIcon icon={faPen} className={cx("edit")} />
+                  <FontAwesomeIcon 
+                    icon={faPen} 
+                    className={cx("edit")}
+                    onClick={() => editModel(item.ma_loai_san)}
+                    />
                   <FontAwesomeIcon
                     icon={item.trang_thai === 1 ? faLock : faUnlock}
                     className={cx(
@@ -101,7 +125,7 @@ export default function LoaiSan() {
           })}
         </table>
       </div>
-      {modal === true && <AddCategory handleClose={() => setModal(false)} />}
+      {modal === true && <AddCategory setModalFalse={closeModel} id={id} />}
     </div>
   );
 }
