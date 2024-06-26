@@ -14,9 +14,12 @@ import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 export default function DungCuYTe() {
   const [modal, setModal] = useState(false);
-  const [imageSrc, setImageSrc] = useState("");
   const [listDungCu, setListDungCu] = useState([]);
   const navigate = useNavigate();
+  const [load,setLoad] = useState(true);
+  const [id, setId] = useState(null);
+
+
 
   useEffect(() => {
     if (!window.localStorage.getItem("token")) {
@@ -27,6 +30,7 @@ export default function DungCuYTe() {
     await axios.get("/dung-cu-y-te/get-all").then((res) => {
       if (res) {
         setListDungCu(res.data);
+        setLoad(false)
       }
     });
   };
@@ -44,10 +48,24 @@ export default function DungCuYTe() {
         alert(error.response.data.message);
       }
     }
+    setLoad(true)
   };
+
+  const closeModel = ()=>{
+    setLoad(true);
+    setModal(false);
+    setId(null);
+  }
+
+   async function editModel(itemId){
+    await setModal(true);
+    await setId(itemId);
+  }
+
+
   useEffect(() => {
     fetchDungCuYTe();
-  }, [listDungCu]);
+  }, [load]);
   return (
     <div className={cx("wrapper")}>
       <p className={cx("title")}>DỤNG CỤ Y TẾ </p>
@@ -81,7 +99,10 @@ export default function DungCuYTe() {
                   <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>
                 <td className={cx("action")}>
-                  <FontAwesomeIcon icon={faPen} className={cx("edit")} />
+                  <FontAwesomeIcon 
+                    icon={faPen} 
+                    className={cx("edit")}
+                    onClick={() => editModel(item.ma_dung_cu_y_te)} />
                   <FontAwesomeIcon icon={faLock} className={cx("lock")} />
                   <FontAwesomeIcon
                     icon={faTrash}
@@ -95,7 +116,7 @@ export default function DungCuYTe() {
         </table>
       </div>
       {modal === true ? (
-        <AddDungCuYTe handleClose={() => setModal(false)} />
+        <AddDungCuYTe setModalFalse={closeModel} id={id} />
       ) : (
         ""
       )}

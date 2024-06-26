@@ -16,23 +16,37 @@ export default function DoAn() {
   const [listDoAn, setListDoAn] = useState([]);
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
+  const [load,setLoad] = useState(true);
+  const [id, setId] = useState(null);
+
+
 
   useEffect(() => {
     if (!window.localStorage.getItem("token")) {
       navigate("/admin");
     }
   }, [navigate]);
-  const fetchChiNhanh = async () => {
+  const fetchDoAn = async () => {
     await axios.get("/do-an/get-all").then((res) => {
       if (res) {
         setListDoAn(res.data);
-        console.log(res.data);
+        setLoad(false);
       }
     });
   };
-  const close = () => {
+
+  const closeModel = ()=>{
+    setLoad(true);
     setModal(false);
-  };
+    setId(null);
+  }
+
+   async function editModel(itemId){
+    await setModal(true);
+    await setId(itemId);
+  }
+
+
   const handleBlock = (item) => {
     axios
       .put("/do-an/block", {
@@ -40,9 +54,10 @@ export default function DoAn() {
       })
       .then((res) => {
         if (res) {
-          fetchChiNhanh();
+          fetchDoAn();
         }
       });
+      setLoad(true);
   };
   const deleteDoAn = async (item) => {
     try {
@@ -58,10 +73,11 @@ export default function DoAn() {
         alert(error.response.data.message);
       }
     }
+    setLoad(true);
   };
   useEffect(() => {
-    fetchChiNhanh();
-  }, []);
+    fetchDoAn();
+  }, [load]);
   return (
     <div className={cx("wrapper")}>
       <p className={cx("title")}>ĐỒ ĂN </p>
@@ -93,7 +109,10 @@ export default function DoAn() {
                   <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>
                 <td className={cx("action")}>
-                  <FontAwesomeIcon icon={faPen} className={cx("edit")} />
+                  <FontAwesomeIcon 
+                    icon={faPen} 
+                    className={cx("edit")}
+                    onClick={()=>editModel(item.ma_do_an)} />
                   <FontAwesomeIcon
                     icon={faLock}
                     className={cx("lock")}
@@ -110,7 +129,7 @@ export default function DoAn() {
           })}
         </table>
       </div>
-      {modal === true ? <AddDoAn handleClose={close} /> : ""}
+      {modal === true ? <AddDoAn setModalFalse={closeModel} id={id}/> : ""}
     </div>
   );
 }

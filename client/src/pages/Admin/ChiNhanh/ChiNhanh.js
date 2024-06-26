@@ -14,8 +14,10 @@ import AddChiNhanh from "./AddChiNhanh/AddChiNhanh";
 const cx = classNames.bind(style);
 export default function ChiNhanh() {
   const [modal, setModal] = useState(false);
+  const [id, setId] = useState(null);
   const [listChiNhanh, setListChiNhanh] = useState([]);
   const navigate = useNavigate();
+  const [load,setLoad] = useState(true);
 
   useEffect(() => {
     if (!window.localStorage.getItem("token")) {
@@ -26,6 +28,7 @@ export default function ChiNhanh() {
     await axios.get("/chi-nhanh/get-all").then((res) => {
       if (res) {
         setListChiNhanh(res.data);
+        setLoad(false);
       }
     });
   };
@@ -37,6 +40,7 @@ export default function ChiNhanh() {
       .then((res) => {
         alert("Block successfully");
       });
+      setLoad(true)
   };
   const handleDelete = async (id) => {
     try {
@@ -52,10 +56,25 @@ export default function ChiNhanh() {
         alert(error.response.data.message);
       }
     }
+    setLoad(true)
+
   };
+
+  const closeModel = ()=>{
+    setLoad(true);
+    setModal(false);
+    setId(null);
+  }
+
+   async function editModel(itemId){
+    await setModal(true);
+    await setId(itemId);
+  }
+
+
   useEffect(() => {
     fetchChiNhanh();
-  }, [listChiNhanh]);
+  }, [load]);
   return (
     <div className={cx("wrapper")}>
       <p className={cx("title")}>CHI NHÁNH </p>
@@ -87,7 +106,7 @@ export default function ChiNhanh() {
                   <FontAwesomeIcon
                     icon={faPen}
                     className={cx("edit")}
-                    onClick={() => setModal(true)}
+                    onClick={() => editModel(item.ma_chi_nhanh)}
                   />
                   <FontAwesomeIcon
                     icon={faLock}
@@ -106,7 +125,7 @@ export default function ChiNhanh() {
         </table>
       </div>
       {modal === true ? (
-        <AddChiNhanh handleClose={() => setModal(false)} />
+        <AddChiNhanh setModalFalse={closeModel} id={id} />
       ) : (
         ""
       )}

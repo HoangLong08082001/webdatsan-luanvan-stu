@@ -6,7 +6,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
-export default function AddChiNhanh({ handleClose }) {
+export default function AddChiNhanh({ setModalFalse,id=null}) {
   const [listDistrict, setListDistrict] = useState([]);
   const [name, setName] = useState("");
   const [diachi, setDiaChi] = useState("");
@@ -14,6 +14,19 @@ export default function AddChiNhanh({ handleClose }) {
   const [quan, setQuan] = useState("");
   const [phuong, setPhuong] = useState("");
   const [sdt, setSdt] = useState("");
+
+  const getChiNhanhId = () => {
+    axios.get(`/chi-nhanh/get-by-id/${id}`).then((res) => {
+      if (res) {
+        let chiNhanh = res?.data[0]
+        setName(chiNhanh.ten_chi_nhanh);
+        setSdt(chiNhanh.so_dien_thoai);
+        setDiaChi(chiNhanh.dia_chi);
+        setMaquan(chiNhanh.ma_quan_huyen);
+      }
+    });
+  };
+
   const fetchDistrict = () => {
     axios.get("/chi-nhanh/get-phuong-quan").then((res) => {
       if (res) {
@@ -21,8 +34,27 @@ export default function AddChiNhanh({ handleClose }) {
       }
     });
   };
+  
   const handleSubmit = () => {
-    axios
+    try {
+      if(id){
+        axios
+      .put("/chi-nhanh/update", {
+        id_chinhanh:id,
+        ten_chi_nhanh: name,
+        dia_chi: diachi,
+        so_dien_thoai:sdt,
+        id_quan_huyen: maquan,
+      })
+      .then((res) => {
+        if (res) {
+          alert("Create new Successfully");
+        }
+      });
+      }
+
+      if(id==null){
+        axios
       .post("/chi-nhanh/create", {
         ten_chi_nhanh: name,
         di_chi: diachi,
@@ -35,15 +67,37 @@ export default function AddChiNhanh({ handleClose }) {
           alert("Create new Successfully");
         }
       });
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    handleClose()
+    
   };
+
+  const handleClose = ()=>{
+    setName("");
+    setDiaChi("");
+    setMaquan("");
+    setQuan("");
+    setPhuong("");
+    setSdt("");
+    setModalFalse();
+  }
   useEffect(() => {
     fetchDistrict();
-  }, [listDistrict]);
+  }, []);
+  useEffect(() => {
+    if(id){
+      getChiNhanhId();
+    }
+
+  }, [id]);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("form")}>
         <FontAwesomeIcon
-          onClick={handleClose}
+          onClick={()=>handleClose()}
           icon={faX}
           className={cx("icon")}
         />
@@ -157,7 +211,7 @@ export default function AddChiNhanh({ handleClose }) {
             </div>
           )}
           <button onClick={handleSubmit} className={cx("add")}>
-            THÊM MỚI
+            {id?"CHỈNH SỬA":"THÊM MỚI"}
           </button>
         </div>
       </div>
