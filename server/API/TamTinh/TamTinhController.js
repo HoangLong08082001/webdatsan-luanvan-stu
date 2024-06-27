@@ -11,9 +11,9 @@ const addNuocUong = (req, res) => {
         throw err;
       }
       if (data.length > 0) {
-        let quality = data[0].so_luong;
+        let quality = data[0].so_luong_tam_tinh;
         pool.query(
-          "UPDATE tam_tinh_nuoc_uong SET so_luong=? WHERE ma_tam_tinh=? AND ma_nuoc_uong_loai=?",
+          "UPDATE tam_tinh_nuoc_uong SET so_luong_tam_tinh=? WHERE ma_tam_tinh=? AND ma_nuoc_uong_loai=?",
           [quality + 1, id_tam_tinh, id_nuoc_uong],
           (err, data) => {
             if (err) {
@@ -26,7 +26,7 @@ const addNuocUong = (req, res) => {
         );
       } else {
         pool.query(
-          "INSERT INTO tam_tinh_nuoc_uong (ma_nuoc_uong_loai, so_luong, ma_tam_tinh) VALUES(?,?,?)",
+          "INSERT INTO tam_tinh_nuoc_uong (ma_nuoc_uong_loai, so_luong_tam_tinh, ma_tam_tinh) VALUES(?,?,?)",
           [id_nuoc_uong, 1, id_tam_tinh],
           (err, data) => {
             if (err) {
@@ -94,9 +94,9 @@ const addDungCuYTe = (req, res) => {
         throw err;
       }
       if (data.length > 0) {
-        let quality = data[0].so_luong;
+        let quality = data[0].so_luong_tam_tinh;
         pool.query(
-          "UPDATE tam_tinh_dung_cu_y_te SET so_luong=? WHERE ma_dung_cu_y_te=? AND ma_tam_tinh=?",
+          "UPDATE tam_tinh_dung_cu_y_te SET so_luong_tam_tinh=? WHERE ma_dung_cu_y_te=? AND ma_tam_tinh=?",
           [quality + 1, id_dung_cu_y_te, id_tam_tinh],
           (err, data) => {
             if (err) {
@@ -109,7 +109,7 @@ const addDungCuYTe = (req, res) => {
         );
       } else {
         pool.query(
-          "INSERT INTO tam_tinh_dung_cu_y_te (ma_dung_cu_y_te, so_luong, ma_tam_tinh) VALUES(?,?,?)",
+          "INSERT INTO tam_tinh_dung_cu_y_te (ma_dung_cu_y_te, so_luong_tam_tinh, ma_tam_tinh) VALUES(?,?,?)",
           [id_dung_cu_y_te, 1, id_tam_tinh],
           (err, data) => {
             if (err) {
@@ -135,9 +135,9 @@ const addTheThao = (req, res) => {
         throw err;
       }
       if (data.length > 0) {
-        let quality = data[0].so_luong;
+        let quality = data[0].so_luong_tam_tinh;
         pool.query(
-          "UPDATE tam_tinh_dung_cu_the_thao SET so_luong=? WHERE ma_tam_tinh=? AND ma_dung_cu_the_thao=?",
+          "UPDATE tam_tinh_dung_cu_the_thao SET so_luong_tam_tinh=? WHERE ma_tam_tinh=? AND ma_dung_cu_the_thao=?",
           [quality + 1, id_tam_tinh, id_dung_cu_the_thao],
           (err, data) => {
             if (err) {
@@ -150,7 +150,7 @@ const addTheThao = (req, res) => {
         );
       } else {
         pool.query(
-          "INSERT INTO tam_tinh_dung_cu_the_thao (ma_dung_cu_the_thao, so_luong, ma_tam_tinh) VALUES(?,?,?)",
+          "INSERT INTO tam_tinh_dung_cu_the_thao (ma_dung_cu_the_thao, so_luong_tam_tinh, ma_tam_tinh) VALUES(?,?,?)",
           [id_dung_cu_the_thao, 1, id_tam_tinh],
           (err, data) => {
             if (err) {
@@ -223,7 +223,7 @@ const getTamTinhDoAn = (req, res) => {
 const getTamTinhSan = (req, res) => {
   let id_tam_tinh = req.params.id_tam_tinh;
   pool.query(
-    "SELECT * FROM tam_tinh join tam_tinh_san on tam_tinh_san.ma_tam_tinh = tam_tinh.ma_tam_tinh join san on tam_tinh_san.ma_san = san.ma_san WHERE tam_tinh_san.ma_tam_tinh=?",
+    "SELECT * FROM tam_tinh join tam_tinh_san on tam_tinh_san.ma_tam_tinh = tam_tinh.ma_tam_tinh join san on tam_tinh_san.ma_san = san.ma_san join chi_nhanh on san.ma_chi_nhanh = san.ma_chi_nhanh join quan_huyen on chi_nhanh.ma_quan_huyen = quan_huyen.ma_quan_huyen join khung_gio on khung_gio.ma_khung_gio = tam_tinh_san.ma_khung_gio WHERE tam_tinh_san.ma_tam_tinh=?",
     [id_tam_tinh],
     (err, data) => {
       if (err) {

@@ -4,7 +4,12 @@ import classNames from "classnames/bind";
 import Other from "../../../components/Other/Other";
 import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
-export default function Foods() {
+export default function Foods() {function formatCurrency(amount) {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(amount);
+}
   const [listFood, setListFood] = useState([]);
   const fetchListFood = () => {
     axios.get("/do-an/get-all").then((res) => {
@@ -41,7 +46,7 @@ export default function Foods() {
                 img={item.hinh_anh}
                 name={item.ten_do_an}
                 soluong={item.so_luong}
-                gia={item.gia_do_an}
+                gia={formatCurrency(item.gia_do_an)}
                 key={index}
                 handleClick={() => handleAdd(item.ma_do_an)}
               />

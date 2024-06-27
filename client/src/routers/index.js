@@ -25,6 +25,7 @@ import Medical from "../pages/User/Medical/Medical";
 import RegisterUser from "../pages/User/RegisterUser/RegisterUser";
 import Search from "../pages/User/Search/Search";
 import Sport from "../pages/User/Sport/Sport";
+import Success from "../pages/User/Success/Success";
 import TennisPages from "../pages/User/TennisPages/TennisPages";
 import Yard from "../pages/User/Yard/Yard";
 
@@ -62,5 +63,6 @@ const UserRouter = [
   { path: "/tim-kiem/:search", component: Search },
   { path: "/san/:name/:id", component: Yard },
   { path: "/chi-nhanh", component: Branch },
+  { path: "/success/:id", component: Success },
 ];
 export { AdminRouter, UserRouter };

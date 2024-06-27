@@ -144,7 +144,7 @@ const updateDungCuYTe = (req, res) => {
   let tendungcu = req.body.ten_dung_cu;
   let gia = req.body.gia_dung_cu;
   pool.query(
-    "UPDATE dung_cu_y_te SET hinh_anh=?, so_luong=?, ten_dung_cu=?, gia_dung_cu=? WHERE ma_dung_cu_y_te=?",
+    "UPDATE dung_cu_y_te SET hinh_anh=?, so_luong=?, ten_dung_cu_y_te=?, gia_dung_cu=? WHERE ma_dung_cu_y_te=?",
     [hinhanh, soluong, tendungcu, gia, iddungcu],
     (err, data) => {
       if (err) {

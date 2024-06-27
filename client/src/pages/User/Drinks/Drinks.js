@@ -6,7 +6,12 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Other from "../../../components/Other/Other";
 import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
-export default function Drinks() {
+export default function Drinks() {function formatCurrency(amount) {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(amount);
+}
   const [listDrink, setListDrink] = useState([]);
   const id_tam_tinh = localStorage.getItem("tam_tinh");
   const id_khach_hang = localStorage.getItem("id");
@@ -47,7 +52,7 @@ export default function Drinks() {
               name={item.ten_nuoc_uong}
               img={item.hinh_anh}
               soluong={item.so_luong_kho}
-              gia={item.gia_nuoc}
+              gia={formatCurrency(item.gia_nuoc)}
               handleClick={() => addTamTinh(item.ma_nuoc_uong_loai)}
             />
           );

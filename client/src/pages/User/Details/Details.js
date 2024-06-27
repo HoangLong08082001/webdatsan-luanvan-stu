@@ -38,6 +38,7 @@ export default function Details() {
   const [phuong, setPhuong] = useState("");
   const [id, setId] = useState("");
   const [start, setStart] = useState("");
+  const [gia, setGia] = useState("");
   const [end, setEnd] = useState("");
   const [object, setObject] = useState([]);
   const [schedule, setSchedule] = useState([]);
@@ -55,8 +56,15 @@ export default function Details() {
     setPrice(location.state.gia_san);
   };
   const fetchKhungGio = async () => {
+    const pathname = window.location.pathname;
+
+    // Tách pathname thành các phần dựa trên dấu "/"
+    const pathParts = pathname.split("/");
+
+    // Giá trị của id sẽ nằm ở phần tử cuối cùng của mảng pathParts
+    const id = pathParts[pathParts.length - 1];
     try {
-      await axios.get("/khung-gio/get-all").then((res) => {
+      await axios.get(`/khung-gio/get-all/${id}`).then((res) => {
         if (res) {
           setSchedule(res.data);
           console.log(res.data);

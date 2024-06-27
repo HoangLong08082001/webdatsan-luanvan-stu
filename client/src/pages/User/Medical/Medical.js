@@ -5,7 +5,12 @@ import Other from "../../../components/Other/Other";
 import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
-export default function Medical() {
+export default function Medical() {function formatCurrency(amount) {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(amount);
+}
   const [listMedical, setListMedical] = useState([]);
   const fetchListMedical = () => {
     axios.get("/dung-cu-y-te/get-all").then((res) => {
@@ -42,7 +47,7 @@ export default function Medical() {
                 img={item.hinh_anh}
                 name={item.ten_dung_cu_y_te}
                 soluong={item.so_luong}
-                gia={item.gia_dung_cu}
+                gia={formatCurrency(item.gia_dung_cu)}
                 key={index}
                 handleClick={() => handleAdd(item.ma_dung_cu_y_te)}
               />

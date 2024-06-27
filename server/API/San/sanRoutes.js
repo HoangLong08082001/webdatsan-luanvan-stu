@@ -4,6 +4,7 @@ import {
   createNew,
   getAll,
   getById,
+  getById2,
   search,
   updateSan,
 } from "./sanController";
@@ -17,7 +18,7 @@ export default function sanRoutes(app) {
   router.delete("/delete/:id", Delete);
   router.get("/search/:search", search);
   router.get("/get-san/:id", getById);
-  router.get("/get-by-id/:id", getById);
+  router.get("/get-by-id/:id", getById2);
   router.put("/update", updateSan);
   return app.use("/san", router);
 }

@@ -13,6 +13,13 @@ import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
 export default function Bill() {
+  const formartDate = (date) => {
+    const year = date.getFullYear(); // Lấy năm với 4 chữ số
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Lấy tháng, thêm 1 và định dạng 2 chữ số
+    const day = String(date.getDate()).padStart(2, "0"); // Lấy ngày và định dạng 2 chữ số
+
+    return `${year}-${month}-${day}`;
+  };
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [listSan, setListSan] = useState([]);
@@ -123,13 +130,21 @@ export default function Bill() {
         orderInfo: "Thanh toán qua MoMo",
         amount:
           (totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe) / 2,
-        ipnUrl: "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b",
-        redirectUrl: "http://localhost:3000/",
+        ipnUrl: `https://4652-116-110-41-77.ngrok-free.app/payment/callback`,
+        redirectUrl: `http://localhost:3000/success/${localStorage.getItem(
+          "tam_tinh"
+        )}`,
         extraData: "",
+        tongtien: totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe,
+        ngaytao: formartDate(new Date()),
       });
 
-      if (response.data.payUrl) {
+      if (response) {
         window.location.href = response.data.payUrl;
+        console.log(response);
+        if (response.data.code === "0") {
+          navigate("/trang-chu");
+        }
       } else {
         console.error("Payment URL not found in the response");
       }
@@ -255,6 +270,7 @@ export default function Bill() {
                 <th width={50}></th>
                 <th width={200}></th>
                 <th>Sản phẩm</th>
+                <th>Thông tin đặt</th>
                 <th className={cx("thRight")} width={200}>
                   Tạm tính
                 </th>
@@ -282,6 +298,16 @@ export default function Bill() {
                       <small className={cx("productPrice")}>
                         {formatCurrency(item.gia_san)}
                       </small>
+                    </td>
+                    <td>
+                      <div className={cx("info")}>
+                        <p className={cx("start")}>{item.gio_bat_dau}</p>
+                        <p className={cx("end")}>{item.gio_ket_thuc}</p>
+                        <p className={cx("branch")}>{item.ten_chi_nhanh}</p>
+                        <p className={cx("address")}>
+                          {item.dia_chi}, {item.ten_phuong}, {item.ten_quan}
+                        </p>
+                      </div>
                     </td>
                     <td className={cx("tdRight")} width={200}>
                       {formatCurrency(item.gia_san)}
@@ -344,7 +370,7 @@ export default function Bill() {
                       </small>
                     </td>
                     <td width={200}>
-                      <input type="number" value={totalPrice} />
+                      <input type="number" value={item.so_luong_tam_tinh} />
                     </td>
                     <td className={cx("tdRight")} width={200}>
                       {formatCurrency(item.gia_nuoc)}
@@ -476,7 +502,7 @@ export default function Bill() {
                       </small>
                     </td>
                     <td width={200}>
-                      <input type="number" value={totalPrice} />
+                      <input type="number" value={item.so_luong_tam_tinh} />
                     </td>
                     <td className={cx("tdRight")} width={200}>
                       {formatCurrency(item.gia_dung_cu)}
@@ -518,7 +544,7 @@ export default function Bill() {
               {listDungCuYTe.map((item, index) => {
                 const totalPrice = listDungCuYTe.reduce(
                   (accumulator, currentValue) => {
-                    return accumulator + currentValue.so_luong;
+                    return accumulator + currentValue.so_luong_tam_tinh;
                   },
                   0
                 );
@@ -545,7 +571,7 @@ export default function Bill() {
                       </small>
                     </td>
                     <td width={200}>
-                      <input type="number" value={totalPrice} />
+                      <input type="number" value={item.so_luong_tam_tinh} />
                     </td>
                     <td className={cx("tdRight")} width={200}>
                       {formatCurrency(item.gia_dung_cu)}

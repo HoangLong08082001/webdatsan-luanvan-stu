@@ -13,6 +13,8 @@ const MomoPayment = async (req, res) => {
     ipnUrl,
     redirectUrl,
     extraData,
+    tongtien,
+    ngaytao
   } = req.body;
 
   const requestId = Date.now().toString();
@@ -37,6 +39,8 @@ const MomoPayment = async (req, res) => {
     extraData,
     requestType,
     signature,
+    tongtien,
+    ngaytao,
   };
 
   try {
@@ -49,7 +53,7 @@ const MomoPayment = async (req, res) => {
     const jsonResult = response.data;
 
     if (jsonResult.payUrl) {
-      res.status(200).json({code: '00', payUrl: jsonResult.payUrl });
+      res.status(200).json({ payUrl: jsonResult.payUrl });
     } else {
       res.status(400).json({ error: "Payment URL not found in the response." });
     }
@@ -58,5 +62,12 @@ const MomoPayment = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-module.exports = { MomoPayment };
+const callBack = (req, res) => {
+  console.log(req.body);
+  try {
+    return res.status(200).json({ code: "0", data: req.body });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+module.exports = { MomoPayment, callBack };

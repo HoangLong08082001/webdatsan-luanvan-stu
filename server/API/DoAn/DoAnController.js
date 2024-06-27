@@ -33,7 +33,7 @@ const createNew = (req, res) => {
         } else {
           pool.query(
             "INSERT INTO do_an ( hinh_anh, gia_do_an, trang_thai, ten_do_an) VALUES(?,?,?,?)",
-            [hinhanh, soluong, gia, 0, tendoan],
+            [hinhanh, gia, 0, tendoan],
             (err, data) => {
               if (err) {
                 throw err;
