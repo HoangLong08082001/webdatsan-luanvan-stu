@@ -13,13 +13,17 @@ import AddDungCuYTe from "./AddDungCuYTe/AddDungCuYTe";
 import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 export default function DungCuYTe() {
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  }
   const [modal, setModal] = useState(false);
   const [listDungCu, setListDungCu] = useState([]);
   const navigate = useNavigate();
-  const [load,setLoad] = useState(true);
+  const [load, setLoad] = useState(true);
   const [id, setId] = useState(null);
-
-
 
   useEffect(() => {
     if (!window.localStorage.getItem("token")) {
@@ -30,7 +34,7 @@ export default function DungCuYTe() {
     await axios.get("/dung-cu-y-te/get-all").then((res) => {
       if (res) {
         setListDungCu(res.data);
-        setLoad(false)
+        setLoad(false);
       }
     });
   };
@@ -48,20 +52,19 @@ export default function DungCuYTe() {
         alert(error.response.data.message);
       }
     }
-    setLoad(true)
+    setLoad(true);
   };
 
-  const closeModel = ()=>{
+  const closeModel = () => {
     setLoad(true);
     setModal(false);
     setId(null);
-  }
+  };
 
-   async function editModel(itemId){
+  async function editModel(itemId) {
     await setModal(true);
     await setId(itemId);
   }
-
 
   useEffect(() => {
     fetchDungCuYTe();
@@ -91,7 +94,7 @@ export default function DungCuYTe() {
               <tr className={cx("tr-td")}>
                 <td>{index + 1}</td>
                 <td>{item.ten_dung_cu_y_te}</td>
-                <td>{item.gia_dung_cu}</td>
+                <td>{formatCurrency(item.gia_dung_cu)}</td>
                 <td>{item.so_luong}</td>
                 <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td>
                 <td>
@@ -99,10 +102,11 @@ export default function DungCuYTe() {
                   <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>
                 <td className={cx("action")}>
-                  <FontAwesomeIcon 
-                    icon={faPen} 
+                  <FontAwesomeIcon
+                    icon={faPen}
                     className={cx("edit")}
-                    onClick={() => editModel(item.ma_dung_cu_y_te)} />
+                    onClick={() => editModel(item.ma_dung_cu_y_te)}
+                  />
                   <FontAwesomeIcon icon={faLock} className={cx("lock")} />
                   <FontAwesomeIcon
                     icon={faTrash}

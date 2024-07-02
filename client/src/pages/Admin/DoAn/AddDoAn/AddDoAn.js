@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
-export default function AddDoAn({ setModalFalse, id=null }) {
+export default function AddDoAn({ setModalFalse, id = null }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [img, setImg] = useState("");
@@ -13,59 +13,62 @@ export default function AddDoAn({ setModalFalse, id=null }) {
   const getDoAnId = () => {
     axios.get(`/do-an/get-by-id/${id}`).then((res) => {
       if (res) {
-        let doAn = res?.data[0]
+        let doAn = res?.data[0];
         setName(doAn.ten_do_an);
         setPrice(doAn.gia_do_an);
         setImg(doAn.hinh_anh);
-        
       }
     });
   };
 
   const handleSubmit = async () => {
+    if (name === "" || price === "" || img === "") {
+      alert("Không để trống");
+    } else {
       try {
-        if(id){
+        if (id) {
           await axios
-          .put("/do-an/update ", {
-            id_do_an:id,
-            ten_do_an: name,
-            gia_do_an: price,
-            hinh_anh: img,
-          })
-          .then((res) => {
-            if (res) {
-              alert("Create new successfully");
-            }
-          });
+            .put("/do-an/update ", {
+              id_do_an: id,
+              ten_do_an: name,
+              gia_do_an: price,
+              hinh_anh: img,
+            })
+            .then((res) => {
+              if (res) {
+                alert("Create new successfully");
+              }
+            });
         }
-        if(id==null){
+        if (id == null) {
           await axios
-          .post("/do-an/create", {
-            tendoan: name,
-            gia: price,
-            hinhanh: img,
-          })
-          .then((res) => {
-            if (res) {
-              alert("Create new successfully");
-            }
-          });
+            .post("/do-an/create", {
+              tendoan: name,
+              gia: price,
+              hinhanh: img,
+            })
+            .then((res) => {
+              if (res) {
+                alert("Create new successfully");
+              }
+            });
         }
       } catch (error) {
-       console.log(error);
+        console.log(error);
       }
-      handleClose();
+    }
+    handleClose();
   };
 
-  const handleClose = ()=>{
+  const handleClose = () => {
     setName("");
     setPrice("");
     setImg("");
     setModalFalse();
-  }
+  };
 
   useEffect(() => {
-    if(id){
+    if (id) {
       getDoAnId();
     }
   }, [id]);
@@ -108,7 +111,7 @@ export default function AddDoAn({ setModalFalse, id=null }) {
             />
           </div>
           <button onClick={handleSubmit} className={cx("add")}>
-            {id?"CHỈNH SỬA":"THÊM MỚI"}
+            {id ? "CHỈNH SỬA" : "THÊM MỚI"}
           </button>
         </div>
       </div>

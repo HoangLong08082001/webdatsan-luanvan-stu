@@ -13,6 +13,14 @@ import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
 export default function Bill() {
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Thêm số 0 vào đầu nếu tháng < 10
+    const day = String(today.getDate()).padStart(2, "0"); // Thêm số 0 vào đầu nếu ngày < 10
+
+    return `${year}-${month}-${day}`;
+  };
   const formartDate = (date) => {
     const year = date.getFullYear(); // Lấy năm với 4 chữ số
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Lấy tháng, thêm 1 và định dạng 2 chữ số
@@ -50,7 +58,9 @@ export default function Bill() {
           const totalSum = res.data.reduce((sum, current) => {
             return sum + current.gia_san;
           }, 0);
-          setTotalSan(totalSum);
+          if (res.data[0].trang_thai_tam_tinh === 0) {
+            setTotalSan(totalSum);
+          }
         }
       });
   };
@@ -64,7 +74,9 @@ export default function Bill() {
           const totalSum = res.data.reduce((sum, current) => {
             return sum + current.gia_do_an;
           }, 0);
-          setTotalDoAn(totalSum);
+          if (res.data[0].trang_thai_tam_tinh === 0) {
+            setTotalDoAn(totalSum);
+          }
         }
       });
   };
@@ -80,7 +92,9 @@ export default function Bill() {
           const totalSum = res.data.reduce((sum, current) => {
             return sum + current.gia_nuoc;
           }, 0);
-          setTotalNuoc(totalSum);
+          if (res.data[0].trang_thai_tam_tinh === 0) {
+            setTotalNuoc(totalSum);
+          }
         }
       });
   };
@@ -98,7 +112,9 @@ export default function Bill() {
           const totalSum = res.data.reduce((sum, current) => {
             return sum + current.gia_dung_cu;
           }, 0);
-          setTotalTheThao(totalSum);
+          if (res.data[0].trang_thai_tam_tinh === 0) {
+            setTotalTheThao(totalSum);
+          }
         }
       });
   };
@@ -116,37 +132,43 @@ export default function Bill() {
           const totalSum = res.data.reduce((sum, current) => {
             return sum + current.gia_dung_cu;
           }, 0);
-          setTotalYTe(totalSum);
+          if (res.data[0].trang_thai_tam_tinh === 0) {
+            setTotalYTe(totalSum);
+          }
         }
       });
   };
   const handlePayment = async () => {
     try {
-      const response = await axios.post("/payment/momo", {
-        partnerCode: "MOMOBKUN20180529",
-        accessKey: "klm05TvNBzhg7h7j",
-        secretKey: "at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa",
-        orderId: Date.now().toString(),
-        orderInfo: "Thanh toán qua MoMo",
-        amount:
-          (totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe) / 2,
-        ipnUrl: `https://4652-116-110-41-77.ngrok-free.app/payment/callback`,
-        redirectUrl: `http://localhost:3000/success/${localStorage.getItem(
-          "tam_tinh"
-        )}`,
-        extraData: "",
-        tongtien: totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe,
-        ngaytao: formartDate(new Date()),
-      });
+      if (totalSan) {
+        const response = await axios.post("/payment/momo", {
+          partnerCode: "MOMOBKUN20180529",
+          accessKey: "klm05TvNBzhg7h7j",
+          secretKey: "at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa",
+          orderId: Date.now().toString(),
+          orderInfo: "Thanh toán qua MoMo",
+          amount:
+            (totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe) / 2,
+          ipnUrl: `https://4652-116-110-41-77.ngrok-free.app/payment/callback`,
+          redirectUrl: `http://localhost:3000/success/${localStorage.getItem(
+            "tam_tinh"
+          )}?${totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe}`,
+          extraData: "",
+          tongtien: totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe,
+          ngaytao: formartDate(new Date()),
+        });
 
-      if (response) {
-        window.location.href = response.data.payUrl;
-        console.log(response);
-        if (response.data.code === "0") {
-          navigate("/trang-chu");
+        if (response) {
+          window.location.href = response.data.payUrl;
+          console.log(response);
+          if (response.data.code === "0") {
+            navigate("/trang-chu");
+          }
+        } else {
+          console.error("Payment URL not found in the response");
         }
       } else {
-        console.error("Payment URL not found in the response");
+        alert("Vui lòng đặt sân trước khi thanh toán");
       }
     } catch (error) {
       console.error("Error during the payment process:", error);
@@ -279,49 +301,56 @@ export default function Bill() {
             </thead>
             <tbody className={cx("scrollable-tbody")}>
               {listSan.map((item, index) => {
-                return (
-                  <tr key={index}>
-                    {/* <td width={50}>
+                if (item.trang_thai_tam_tinh === 0) {
+                  return (
+                    <tr key={index}>
+                      {/* <td width={50}>
                   <input type="checkbox" style={{ width: "20px" }} />
                 </td> */}
-                    <td width={200}>
-                      <div className={cx("cart-info")}>
-                        <img
-                          className={cx("productImage")}
-                          src={item.hinh_anh}
-                          alt=""
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <p className={cx("productName")}>{item.ten_san}</p>
-                      <small className={cx("productPrice")}>
+                      <td width={200}>
+                        <div className={cx("cart-info")}>
+                          <img
+                            className={cx("productImage")}
+                            src={item.hinh_anh}
+                            alt=""
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <p className={cx("productName")}>{item.ten_san}</p>
+                        <small className={cx("productPrice")}>
+                          {formatCurrency(item.gia_san)}
+                        </small>
+                      </td>
+                      <td>
+                        <div className={cx("info")}>
+                          <p className={cx("start")}>{item.gio_bat_dau}</p>
+                          <p className={cx("end")}>{item.gio_ket_thuc}</p>
+                          <p className={cx("branch")}>
+                            {getTodayDate(item.thoi_gian)}
+                          </p>
+                          <p className={cx("branch")}>{item.ten_chi_nhanh}</p>
+                          <p className={cx("address")}>
+                            {item.dia_chi}, {item.ten_phuong}, {item.ten_quan}
+                          </p>
+                        </div>
+                      </td>
+                      <td className={cx("tdRight")} width={200}>
                         {formatCurrency(item.gia_san)}
-                      </small>
-                    </td>
-                    <td>
-                      <div className={cx("info")}>
-                        <p className={cx("start")}>{item.gio_bat_dau}</p>
-                        <p className={cx("end")}>{item.gio_ket_thuc}</p>
-                        <p className={cx("branch")}>{item.ten_chi_nhanh}</p>
-                        <p className={cx("address")}>
-                          {item.dia_chi}, {item.ten_phuong}, {item.ten_quan}
-                        </p>
-                      </div>
-                    </td>
-                    <td className={cx("tdRight")} width={200}>
-                      {formatCurrency(item.gia_san)}
-                    </td>
-                    <td width={80} className={cx("tdAction")}>
-                      <button className={cx("btn", "btn-danger")}>
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          onClick={() => deleteTamTinhSan(item.ma_tam_tinh_san)}
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                );
+                      </td>
+                      <td width={80} className={cx("tdAction")}>
+                        <button className={cx("btn", "btn-danger")}>
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            onClick={() =>
+                              deleteTamTinhSan(item.ma_tam_tinh_san)
+                            }
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                }
               })}
             </tbody>
           </table>
@@ -349,44 +378,48 @@ export default function Bill() {
                   },
                   0
                 );
-                return (
-                  <tr key={index}>
-                    {/* <td width={50}>
+                if (item.trang_thai_tam_tinh === 0) {
+                  return (
+                    <tr key={index}>
+                      {/* <td width={50}>
                   <input type="checkbox" style={{ width: "20px" }} />
                 </td> */}
-                    <td width={200}>
-                      <div className={cx("cart-info")}>
-                        <img
-                          className={cx("productImage")}
-                          src={item.hinh_anh}
-                          alt=""
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <p className={cx("productName")}>{item.ten_nuoc_uong}</p>
-                      <small className={cx("productPrice")}>
+                      <td width={200}>
+                        <div className={cx("cart-info")}>
+                          <img
+                            className={cx("productImage")}
+                            src={item.hinh_anh}
+                            alt=""
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <p className={cx("productName")}>
+                          {item.ten_nuoc_uong}
+                        </p>
+                        <small className={cx("productPrice")}>
+                          {formatCurrency(item.gia_nuoc)}
+                        </small>
+                      </td>
+                      <td width={200}>
+                        <input type="number" value={item.so_luong_tam_tinh} />
+                      </td>
+                      <td className={cx("tdRight")} width={200}>
                         {formatCurrency(item.gia_nuoc)}
-                      </small>
-                    </td>
-                    <td width={200}>
-                      <input type="number" value={item.so_luong_tam_tinh} />
-                    </td>
-                    <td className={cx("tdRight")} width={200}>
-                      {formatCurrency(item.gia_nuoc)}
-                    </td>
-                    <td width={80} className={cx("tdAction")}>
-                      <button className={cx("btn", "btn-danger")}>
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          onClick={() =>
-                            deleteTamTinhNuocUong(item.ma_tam_tinh_nuoc_uong)
-                          }
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                );
+                      </td>
+                      <td width={80} className={cx("tdAction")}>
+                        <button className={cx("btn", "btn-danger")}>
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            onClick={() =>
+                              deleteTamTinhNuocUong(item.ma_tam_tinh_nuoc_uong)
+                            }
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                }
               })}
             </tbody>
           </table>
@@ -414,44 +447,46 @@ export default function Bill() {
                   },
                   0
                 );
-                return (
-                  <tr key={index}>
-                    {/* <td width={50}>
+                if (item.trang_thai_tam_tinh === 0) {
+                  return (
+                    <tr key={index}>
+                      {/* <td width={50}>
                   <input type="checkbox" style={{ width: "20px" }} />
                 </td> */}
-                    <td width={200}>
-                      <div className={cx("cart-info")}>
-                        <img
-                          className={cx("productImage")}
-                          src={item.hinh_anh}
-                          alt=""
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <p className={cx("productName")}>{item.ten_do_an}</p>
-                      <small className={cx("productPrice")}>
+                      <td width={200}>
+                        <div className={cx("cart-info")}>
+                          <img
+                            className={cx("productImage")}
+                            src={item.hinh_anh}
+                            alt=""
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <p className={cx("productName")}>{item.ten_do_an}</p>
+                        <small className={cx("productPrice")}>
+                          {formatCurrency(item.gia_do_an)}
+                        </small>
+                      </td>
+                      <td width={200}>
+                        <input type="number" value={item.so_luong} />
+                      </td>
+                      <td className={cx("tdRight")} width={200}>
                         {formatCurrency(item.gia_do_an)}
-                      </small>
-                    </td>
-                    <td width={200}>
-                      <input type="number" value={item.so_luong} />
-                    </td>
-                    <td className={cx("tdRight")} width={200}>
-                      {formatCurrency(item.gia_do_an)}
-                    </td>
-                    <td width={80} className={cx("tdAction")}>
-                      <button className={cx("btn", "btn-danger")}>
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          onClick={() =>
-                            deleteTamTinhDoAn(item.ma_tam_tinh_do_an)
-                          }
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                );
+                      </td>
+                      <td width={80} className={cx("tdAction")}>
+                        <button className={cx("btn", "btn-danger")}>
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            onClick={() =>
+                              deleteTamTinhDoAn(item.ma_tam_tinh_do_an)
+                            }
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                }
               })}
             </tbody>
           </table>
@@ -479,48 +514,50 @@ export default function Bill() {
                   },
                   0
                 );
-                return (
-                  <tr key={index}>
-                    {/* <td width={50}>
+                if (item.trang_thai_tam_tinh === 0) {
+                  return (
+                    <tr key={index}>
+                      {/* <td width={50}>
                   <input type="checkbox" style={{ width: "20px" }} />
                 </td> */}
-                    <td width={200}>
-                      <div className={cx("cart-info")}>
-                        <img
-                          className={cx("productImage")}
-                          src={item.hinh_anh}
-                          alt=""
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <p className={cx("productName")}>
-                        {item.ten_dung_cu_the_thao}
-                      </p>
-                      <small className={cx("productPrice")}>
+                      <td width={200}>
+                        <div className={cx("cart-info")}>
+                          <img
+                            className={cx("productImage")}
+                            src={item.hinh_anh}
+                            alt=""
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <p className={cx("productName")}>
+                          {item.ten_dung_cu_the_thao}
+                        </p>
+                        <small className={cx("productPrice")}>
+                          {formatCurrency(item.gia_dung_cu)}
+                        </small>
+                      </td>
+                      <td width={200}>
+                        <input type="number" value={item.so_luong_tam_tinh} />
+                      </td>
+                      <td className={cx("tdRight")} width={200}>
                         {formatCurrency(item.gia_dung_cu)}
-                      </small>
-                    </td>
-                    <td width={200}>
-                      <input type="number" value={item.so_luong_tam_tinh} />
-                    </td>
-                    <td className={cx("tdRight")} width={200}>
-                      {formatCurrency(item.gia_dung_cu)}
-                    </td>
-                    <td width={80} className={cx("tdAction")}>
-                      <button className={cx("btn", "btn-danger")}>
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          onClick={() =>
-                            deleteTamTinhDungCuTheThao(
-                              item.ma_tam_tinh_dung_cu_the_thao
-                            )
-                          }
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                );
+                      </td>
+                      <td width={80} className={cx("tdAction")}>
+                        <button className={cx("btn", "btn-danger")}>
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            onClick={() =>
+                              deleteTamTinhDungCuTheThao(
+                                item.ma_tam_tinh_dung_cu_the_thao
+                              )
+                            }
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                }
               })}
             </tbody>
           </table>
@@ -548,48 +585,50 @@ export default function Bill() {
                   },
                   0
                 );
-                return (
-                  <tr key={index}>
-                    {/* <td width={50}>
+                if (item.trang_thai_tam_tinh === 0) {
+                  return (
+                    <tr key={index}>
+                      {/* <td width={50}>
                   <input type="checkbox" style={{ width: "20px" }} />
                 </td> */}
-                    <td width={200}>
-                      <div className={cx("cart-info")}>
-                        <img
-                          className={cx("productImage")}
-                          src={item.hinh_anh}
-                          alt=""
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <p className={cx("productName")}>
-                        {item.ten_dung_cu_y_te}
-                      </p>
-                      <small className={cx("productPrice")}>
+                      <td width={200}>
+                        <div className={cx("cart-info")}>
+                          <img
+                            className={cx("productImage")}
+                            src={item.hinh_anh}
+                            alt=""
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <p className={cx("productName")}>
+                          {item.ten_dung_cu_y_te}
+                        </p>
+                        <small className={cx("productPrice")}>
+                          {formatCurrency(item.gia_dung_cu)}
+                        </small>
+                      </td>
+                      <td width={200}>
+                        <input type="number" value={item.so_luong_tam_tinh} />
+                      </td>
+                      <td className={cx("tdRight")} width={200}>
                         {formatCurrency(item.gia_dung_cu)}
-                      </small>
-                    </td>
-                    <td width={200}>
-                      <input type="number" value={item.so_luong_tam_tinh} />
-                    </td>
-                    <td className={cx("tdRight")} width={200}>
-                      {formatCurrency(item.gia_dung_cu)}
-                    </td>
-                    <td width={80} className={cx("tdAction")}>
-                      <button className={cx("btn", "btn-danger")}>
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          onClick={() =>
-                            deleteTamTinhDungCuYTe(
-                              item.ma_tam_tinh_dung_cu_y_te
-                            )
-                          }
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                );
+                      </td>
+                      <td width={80} className={cx("tdAction")}>
+                        <button className={cx("btn", "btn-danger")}>
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            onClick={() =>
+                              deleteTamTinhDungCuYTe(
+                                item.ma_tam_tinh_dung_cu_y_te
+                              )
+                            }
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                }
               })}
             </tbody>
           </table>

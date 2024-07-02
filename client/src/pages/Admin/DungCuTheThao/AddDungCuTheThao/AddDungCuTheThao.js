@@ -6,7 +6,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
-export default function AddDungCuTheThao({ setModalFalse,id=null }) {
+export default function AddDungCuTheThao({ setModalFalse, id = null }) {
   const [ten, setTen] = useState("");
   const [gia, setGia] = useState("");
   const [soluong, setSoLuong] = useState("");
@@ -15,7 +15,7 @@ export default function AddDungCuTheThao({ setModalFalse,id=null }) {
   const getDungCuTheThaoId = () => {
     axios.get(`/dung-cu-the-thao/get-by-id/${id}`).then((res) => {
       if (res) {
-        let theThao = res?.data[0]
+        let theThao = res?.data[0];
         setTen(theThao.ten_dung_cu_the_thao);
         setGia(theThao.gia_dung_cu);
         setSoLuong(theThao.so_luong);
@@ -25,52 +25,56 @@ export default function AddDungCuTheThao({ setModalFalse,id=null }) {
   };
 
   const handleSubmit = () => {
-    try {
-      if(id){
-        axios
-        .put("/dung-cu-the-thao/update", {
-          id_dung_cu:id,
-          hinh_anh: hinhanh,
-          so_luong: soluong,
-          ten_dung_cu: ten,
-          gia: gia,
-        })
-        .then((res) => {
-          if (res) {
-            alert("Create new successfully");
-          }
-        });
-      }
-      if(id==null){
-        axios
-      .post("/dung-cu-the-thao/create", {
-        hinhanh: hinhanh,
-        soluong: soluong,
-        tendungcuthethao: ten,
-        gia: gia,
-      })
-      .then((res) => {
-        if (res) {
-          alert("Create new successfully");
+    if (ten === "" || gia === "" || soluong === "" || hinhanh === "") {
+      alert("Không để trống");
+    } else {
+      try {
+        if (id) {
+          axios
+            .put("/dung-cu-the-thao/update", {
+              id_dung_cu: id,
+              hinh_anh: hinhanh,
+              so_luong: soluong,
+              ten_dung_cu: ten,
+              gia: gia,
+            })
+            .then((res) => {
+              if (res) {
+                alert("Create new successfully");
+              }
+            });
         }
-      });
+        if (id == null) {
+          axios
+            .post("/dung-cu-the-thao/create", {
+              hinhanh: hinhanh,
+              soluong: soluong,
+              tendungcuthethao: ten,
+              gia: gia,
+            })
+            .then((res) => {
+              if (res) {
+                alert("Create new successfully");
+              }
+            });
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error)
     }
-    handleClose()
+    handleClose();
   };
 
-  const handleClose = ()=>{
+  const handleClose = () => {
     setTen("");
     setGia("");
     setSoLuong("");
     setHinhAnh("");
     setModalFalse();
-  }
+  };
 
   useEffect(() => {
-    if(id){
+    if (id) {
       getDungCuTheThaoId();
     }
   }, [id]);
@@ -121,7 +125,7 @@ export default function AddDungCuTheThao({ setModalFalse,id=null }) {
             />
           </div>
           <button onClick={handleSubmit} className={cx("add")}>
-            {id?"CHỈNH SỬA":"THÊM MỚI"}
+            {id ? "CHỈNH SỬA" : "THÊM MỚI"}
           </button>
         </div>
       </div>

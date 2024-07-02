@@ -67,7 +67,7 @@ export default function Header() {
           </Link>
         </li>
         <li>
-          <Link className={cx("link")} to="">
+          <Link className={cx("link")} to="/admin-don-gia">
             Hoá đơn
           </Link>
         </li>

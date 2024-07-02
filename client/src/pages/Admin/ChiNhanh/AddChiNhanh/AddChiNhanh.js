@@ -6,7 +6,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
 
-export default function AddChiNhanh({ setModalFalse,id=null }) {
+export default function AddChiNhanh({ setModalFalse, id = null }) {
   const [listDistrict, setListDistrict] = useState([]);
   const [name, setName] = useState("");
   const [diachi, setDiaChi] = useState("");
@@ -18,7 +18,7 @@ export default function AddChiNhanh({ setModalFalse,id=null }) {
   const getChiNhanhId = () => {
     axios.get(`/chi-nhanh/get-by-id/${id}`).then((res) => {
       if (res) {
-        let chiNhanh = res?.data[0]
+        let chiNhanh = res?.data[0];
         setName(chiNhanh.ten_chi_nhanh);
         setSdt(chiNhanh.so_dien_thoai);
         setDiaChi(chiNhanh.dia_chi);
@@ -34,48 +34,51 @@ export default function AddChiNhanh({ setModalFalse,id=null }) {
       }
     });
   };
-  
-  const handleSubmit = () => {
-    try {
-      if(id){
-        axios
-      .put("/chi-nhanh/update", {
-        id_chinhanh:id,
-        ten_chi_nhanh: name,
-        dia_chi: diachi,
-        so_dien_thoai:sdt,
-        id_quan_huyen: maquan,
-      })
-      .then((res) => {
-        if (res) {
-          alert("Create new Successfully");
-        }
-      });
-      }
 
-      if(id==null){
-        axios
-      .post("/chi-nhanh/create", {
-        ten_chi_nhanh: name,
-        di_chi: diachi,
-        ma_quan_huyen: maquan,
-        quan: quan,
-        phuong: phuong,
-      })
-      .then((res) => {
-        if (res) {
-          alert("Create new Successfully");
+  const handleSubmit = () => {
+    if (name === "" || diachi === "" || sdt === "") {
+      alert("Không để trống");
+    } else {
+      try {
+        if (id) {
+          axios
+            .put("/chi-nhanh/update", {
+              id_chinhanh: id,
+              ten_chi_nhanh: name,
+              dia_chi: diachi,
+              so_dien_thoai: sdt,
+              id_quan_huyen: maquan,
+            })
+            .then((res) => {
+              if (res) {
+                alert("Create new Successfully");
+              }
+            });
         }
-      });
+
+        if (id == null) {
+          axios
+            .post("/chi-nhanh/create", {
+              ten_chi_nhanh: name,
+              di_chi: diachi,
+              ma_quan_huyen: maquan,
+              quan: quan,
+              phuong: phuong,
+            })
+            .then((res) => {
+              if (res) {
+                alert("Create new Successfully");
+              }
+            });
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error)
     }
-    handleClose()
-    
+    handleClose();
   };
 
-  const handleClose = ()=>{
+  const handleClose = () => {
     setName("");
     setDiaChi("");
     setMaquan("");
@@ -83,21 +86,20 @@ export default function AddChiNhanh({ setModalFalse,id=null }) {
     setPhuong("");
     setSdt("");
     setModalFalse();
-  }
+  };
   useEffect(() => {
     fetchDistrict();
   }, []);
   useEffect(() => {
-    if(id){
+    if (id) {
       getChiNhanhId();
     }
-
   }, [id]);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("form")}>
         <FontAwesomeIcon
-          onClick={()=>handleClose()}
+          onClick={() => handleClose()}
           icon={faX}
           className={cx("icon")}
         />
@@ -171,7 +173,7 @@ export default function AddChiNhanh({ setModalFalse,id=null }) {
               <label htmlFor="">Tên quận</label>
               <input
                 disabled
-                type="number"
+                type="text"
                 placeholder="Nhập số quận"
                 value={quan}
                 onChange={(e) => setQuan(e.target.value)}
@@ -181,7 +183,7 @@ export default function AddChiNhanh({ setModalFalse,id=null }) {
             <div className={cx("form-input")}>
               <label htmlFor="">Tên quận</label>
               <input
-                type="number"
+                type="text"
                 placeholder="Nhập số quận"
                 value={quan}
                 onChange={(e) => setQuan(e.target.value)}
@@ -193,7 +195,7 @@ export default function AddChiNhanh({ setModalFalse,id=null }) {
               <label htmlFor="">Tên phường</label>
               <input
                 disabled
-                type="number"
+                type="text"
                 placeholder="Nhập số phường"
                 value={phuong}
                 onChange={(e) => setPhuong(e.target.value)}
@@ -203,7 +205,7 @@ export default function AddChiNhanh({ setModalFalse,id=null }) {
             <div className={cx("form-input")}>
               <label htmlFor="">Tên phường</label>
               <input
-                type="number"
+                type="text"
                 placeholder="Nhập số phường"
                 value={phuong}
                 onChange={(e) => setPhuong(e.target.value)}
@@ -211,7 +213,7 @@ export default function AddChiNhanh({ setModalFalse,id=null }) {
             </div>
           )}
           <button onClick={handleSubmit} className={cx("add")}>
-            {id?"CHỈNH SỬA":"THÊM MỚI"}
+            {id ? "CHỈNH SỬA" : "THÊM MỚI"}
           </button>
         </div>
       </div>

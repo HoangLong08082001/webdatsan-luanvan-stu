@@ -8,18 +8,26 @@ const cx = classNames.bind(style);
 export default function AddAdmin({ handleClose }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const validate = () => {
+    if (username === "" || password === "") {
+      alert("Không để trống");
+      return false;
+    }
+    return true;
+  };
   const handleSubmit = async () => {
-    await axios
-      .post("/admin/create", {
-        username: username,
-        password: password,
-      })
-      .then((res) => {
-        if (res) {
-          alert("Create new successfully");
-        }
-      });
+    if (validate() === true) {
+      await axios
+        .post("/admin/create", {
+          username: username,
+          password: password,
+        })
+        .then((res) => {
+          if (res) {
+            alert("Create new successfully");
+          }
+        });
+    }
   };
   return (
     <div className={cx("wrapper")}>

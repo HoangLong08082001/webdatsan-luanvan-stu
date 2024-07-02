@@ -21,19 +21,29 @@ export default function AddNuocUong({ handleClose }) {
   };
 
   const handleSubmit = async () => {
-    await axios
-      .post("/nuoc-uong/create", {
-        ten: ten,
-        soluong: soluong,
-        maloai: maloai,
-        hinhanh: hinhanh,
-        gia: gia,
-      })
-      .then((res) => {
-        if (res) {
-          alert("Create new Successfully");
-        }
-      });
+    if (
+      ten === "" ||
+      soluong === "" ||
+      maloai === "" ||
+      hinhanh === "" ||
+      gia === ""
+    ) {
+      alert("Không để trống");
+    } else {
+      await axios
+        .post("/nuoc-uong/create", {
+          ten: ten,
+          soluong: soluong,
+          maloai: maloai,
+          hinhanh: hinhanh,
+          gia: gia,
+        })
+        .then((res) => {
+          if (res) {
+            alert("Create new Successfully");
+          }
+        });
+    }
   };
   useEffect(() => {
     fetchLoai();

@@ -12,6 +12,7 @@ import TamTinhRoutes from "./API/TamTinh/TamTinhRoutes";
 import PaymentRoutes from "./API/Payment/PaymentRoutes";
 import LoaiSanRoutes from "./API/LoaiSan/LoaiSanRoutes";
 import KhungGioRoutes from "./API/KhungGio/KhungGioRoutes";
+import HoaDonRoutes from "./API/HoaDon/HoaDonRoutes";
 const express = require("express");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
@@ -51,6 +52,7 @@ TamTinhRoutes(app);
 PaymentRoutes(app);
 LoaiSanRoutes(app);
 KhungGioRoutes(app);
+HoaDonRoutes(app);
 server.listen(port, (err) => {
   if (err) {
     throw err;

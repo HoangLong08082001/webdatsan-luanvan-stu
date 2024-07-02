@@ -13,13 +13,17 @@ import AddDungCuTheThao from "./AddDungCuTheThao/AddDungCuTheThao";
 import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 export default function DungCuTheThao() {
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  }
   const [modal, setModal] = useState(false);
   const [list, setList] = useState([]);
   const navigate = useNavigate();
-  const [load,setLoad] = useState(true);
+  const [load, setLoad] = useState(true);
   const [id, setId] = useState(null);
-
-
 
   useEffect(() => {
     if (!window.localStorage.getItem("token")) {
@@ -30,7 +34,7 @@ export default function DungCuTheThao() {
     await axios.get("/dung-cu-the-thao/get").then((res) => {
       if (res) {
         setList(res.data);
-        setLoad(false)
+        setLoad(false);
       }
     });
   };
@@ -44,8 +48,7 @@ export default function DungCuTheThao() {
           fetchDungCuYTe();
         }
       });
-      setLoad(false)
-
+    setLoad(false);
   };
   const handleDelete = async (id) => {
     try {
@@ -61,16 +64,16 @@ export default function DungCuTheThao() {
         alert(error.response.data.message);
       }
     }
-    setLoad(false)
+    setLoad(false);
   };
 
-  const closeModel = ()=>{
+  const closeModel = () => {
     setLoad(true);
     setModal(false);
     setId(null);
-  }
+  };
 
-   async function editModel(itemId){
+  async function editModel(itemId) {
     await setModal(true);
     await setId(itemId);
   }
@@ -103,7 +106,7 @@ export default function DungCuTheThao() {
               <tr className={cx("tr-td")}>
                 <td>{index + 1}</td>
                 <td>{item.ten_dung_cu_the_thao}</td>
-                <td>{item.gia_dung_cu}</td>
+                <td>{formatCurrency(item.gia_dung_cu)}</td>
                 <td>{item.so_luong}</td>
                 <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td>
                 <td>
@@ -111,11 +114,11 @@ export default function DungCuTheThao() {
                   <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>
                 <td className={cx("action")}>
-                  <FontAwesomeIcon 
-                    icon={faPen} 
-                    className={cx("edit")} 
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    className={cx("edit")}
                     onClick={() => editModel(item.ma_dung_cu_the_thao)}
-                    />
+                  />
                   <FontAwesomeIcon
                     icon={faLock}
                     className={cx("lock")}

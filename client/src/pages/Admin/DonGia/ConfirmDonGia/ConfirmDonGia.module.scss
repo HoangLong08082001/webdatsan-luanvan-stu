@@ -30,21 +30,11 @@
         }
         input {
           font-size: 18px;
-          width: 560px;
+          width: 600px;
           padding: 10px 15px;
           &:focus {
             outline: none;
           }
-        }
-        select {
-          padding: 10px 15px;
-          width: 560px;
-        }
-        textarea {
-          padding: 10px 15px;
-          width: 560px;
-          height: 200px;
-          resize: none;
         }
       }
       .add {

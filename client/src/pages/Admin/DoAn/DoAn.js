@@ -13,6 +13,12 @@ import AddDoAn from "./AddDoAn/AddDoAn";
 import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 export default function DoAn() {
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  }
   const [listDoAn, setListDoAn] = useState([]);
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
@@ -102,7 +108,7 @@ export default function DoAn() {
               <tr className={cx("tr-td")}>
                 <td>{index + 1}</td>
                 <td>{item.ten_do_an}</td>
-                <td>{item.gia_do_an}</td>
+                <td>{formatCurrency(item.gia_do_an)}</td>
                 <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td>
                 <td>
                   {" "}

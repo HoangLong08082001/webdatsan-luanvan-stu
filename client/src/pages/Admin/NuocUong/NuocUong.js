@@ -14,6 +14,12 @@ import AddNuocUong from "./AddNuocUong/AddNuocUong";
 import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 export default function NuocUong() {
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  }
   const [modal, setModal] = useState(false);
   const [listNuocUong, setListNuocUong] = useState([]);
   const navigate = useNavigate();
@@ -75,7 +81,7 @@ export default function NuocUong() {
             <th>Tên nước uống</th>
             <th>Giá</th>
             <th>Số lượng</th>
-            {/* <th>Trạng thái</th> */}
+            <th>Trạng thái</th>
             <th>Hình ảnh</th>
             <th>Xử lý</th>
           </tr>
@@ -84,9 +90,9 @@ export default function NuocUong() {
               <tr className={cx("tr-td")}>
                 <td>{index + 1}</td>
                 <td>{item.ten_nuoc_uong}</td>
-                <td>{item.gia_nuoc}</td>
+                <td>{formatCurrency(item.gia_nuoc)}</td>
                 <td>{item.so_luong_kho}</td>
-                {/* <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td> */}
+                <td>{item.trang_thai === 0 ? "Chưa hiển thị" : "Hiển thị"}</td>
                 <td>
                   <img className={cx("img")} src={item.hinh_anh} alt="" />
                 </td>

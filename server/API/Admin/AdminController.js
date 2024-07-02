@@ -1,5 +1,6 @@
 const pool = require("../../config/database");
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 const { createJwtWebsite } = require("../../middleware/JWTAction");
 const salt = 10;
 
@@ -140,4 +141,85 @@ const getById = (req, res) => {
     }
   });
 };
-module.exports = { create, login, forgotPassword, getAll, getById };
+const sendMail = (req, res) => {
+  let email = req.body.email;
+  try {
+    pool.query(
+      "SELECT * FROM quantri WHERE username_admin = ?",
+      [email],
+      (err, data) => {
+        if (err) {
+          throw err;
+        }
+        if (data.length > 0) {
+          res.status(200).json({ message: "success" });
+
+          const transport = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            service: "gmail",
+            secure: false,
+            auth: {
+              user: "dathuu0129@gmail.com",
+              pass: "frbsnjhbuouqfcir",
+            },
+          });
+          // Thiết lập email options
+          const mailOptions = {
+            from: "dathuu0129@gmail.com", // Địa chỉ email của người gửi
+            to: `${email}`, // Địa chỉ email của người nhận
+            subject: "CẤP LẠI MẬT KHẨU", // Tiêu đề email
+            text: `ĐỂ THAY ĐỔI MẬT KHẢU, BẠN VUI LÒNG TRUY CẬP ĐƯỜNG DẪN http://localhost:3000/admin-cap-mat-khau/${email}`, // Nội dung email
+          };
+          transport.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              throw error;
+            }
+            if (info) {
+            }
+          });
+        } else {
+          return res.status(400).json({ message: "Email này không tồn tại" });
+        }
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({ message: "error system" });
+  }
+};
+const reNewPass = (req, res) => {
+  let email = req.body.email;
+  let password = req.body.password;
+  try {
+    bcrypt.hash(password, salt, (err, hash) => {
+      if (err) {
+        throw err;
+      }
+      if (hash) {
+        pool.query(
+          "UPDATE quantri SET password_admin=? WHERE username_admin=?",
+          [hash, email],
+          (err, data) => {
+            if (err) {
+              throw err;
+            }
+            if (data) {
+              return res.status(200).json({ message: "success" });
+            }
+          }
+        );
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "fails" });
+  }
+};
+module.exports = {
+  reNewPass,
+  sendMail,
+  create,
+  login,
+  forgotPassword,
+  getAll,
+  getById,
+};

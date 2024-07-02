@@ -5,65 +5,66 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../../setup-axios/axios";
 const cx = classNames.bind(style);
-export default function AddCategory({ setModalFalse,id=null }) {
+export default function AddCategory({ setModalFalse, id = null }) {
   const [category, setCategory] = useState("");
 
   const getLoaiSanId = () => {
     axios.get(`/san/get-by-id/${id}`).then((res) => {
       if (res) {
-        let loaiSan = res?.data
+        let loaiSan = res?.data;
         setCategory(loaiSan.name);
-
       }
     });
   };
 
   const handleSubmit = () => {
-    try {
-      if(id){
-       axios
-        .put("/loai-san/update", {
-          id_loai_san:id,
-          ten_loai_san: category,
-        })
-        .then((res) => {
-          if (res) {
-            alert("Add successfully");
-            
-          }
-        });
-      }
-      if(id==null){
-       axios
-        .post("/loai-san/create", {
-          loai_san: category,
-        })
-        .then((res) => {
-          if (res) {
-            alert("Add successfully");
-          }
-        });
-      }
-    } catch (error) {
-      if (error.response.status >= 500) {
-        alert("Error System");
-      } else {
-        alert(error.response.data.message);
+    if (category === "") {
+      alert("Không để trống");
+    } else {
+      try {
+        if (id) {
+          axios
+            .put("/loai-san/update", {
+              id_loai_san: id,
+              ten_loai_san: category,
+            })
+            .then((res) => {
+              if (res) {
+                alert("Add successfully");
+              }
+            });
+        }
+        if (id == null) {
+          axios
+            .post("/loai-san/create", {
+              loai_san: category,
+            })
+            .then((res) => {
+              if (res) {
+                alert("Add successfully");
+              }
+            });
+        }
+      } catch (error) {
+        if (error.response.status >= 500) {
+          alert("Error System");
+        } else {
+          alert(error.response.data.message);
+        }
       }
     }
-    handleClose()
+    handleClose();
   };
 
-  const handleClose = ()=>{
+  const handleClose = () => {
     setCategory("");
     setModalFalse();
-  }
+  };
 
   useEffect(() => {
-    if(id){
+    if (id) {
       getLoaiSanId();
     }
-
   }, [id]);
   return (
     <div className={cx("wrapper")}>
@@ -84,7 +85,7 @@ export default function AddCategory({ setModalFalse,id=null }) {
             />
           </div>
           <button className={cx("add")} onClick={handleSubmit}>
-            {id?"CHỈNH SỬA":"THÊM MỚI"}
+            {id ? "CHỈNH SỬA" : "THÊM MỚI"}
           </button>
         </div>
       </div>

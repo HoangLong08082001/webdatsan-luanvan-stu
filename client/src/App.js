@@ -11,7 +11,7 @@ function App() {
           {AdminRouter.map((route, index) => {
             let Layout = AdminLayout;
             let Page = route.component;
-            if (index >= 2) {
+            if (index > 2) {
               return (
                 <Route
                   path={route.path}
@@ -29,16 +29,20 @@ function App() {
           {UserRouter.map((route, index) => {
             let Layout = UserLayout;
             let Page = route.component;
-            return (
-              <Route
-                path={route.path}
-                element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                }
-              />
-            );
+            if (index >= 20) {
+              return <Route path={route.path} element={<Page />} />;
+            } else {
+              return (
+                <Route
+                  path={route.path}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                />
+              );
+            }
           })}
         </Routes>
       </div>

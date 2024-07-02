@@ -112,18 +112,14 @@ const Delete = (req, res) => {
 };
 const getById = (req, res) => {
   let id = req.params.id;
-  pool.query(
-    "SELECT * FROM do_an WHERE ma_do_an=?",
-    [id],
-    (err, data) => {
-      if (err) {
-        throw err;
-      }
-      if (data.length > 0) {
-        return res.status(200).json(data);
-      }
+  pool.query("SELECT * FROM do_an WHERE ma_do_an=?", [id], (err, data) => {
+    if (err) {
+      throw err;
     }
-  );
+    if (data.length > 0) {
+      return res.status(200).json(data);
+    }
+  });
 };
 const updateDoAn = (req, res) => {
   let iddoan = req.body.id_do_an;

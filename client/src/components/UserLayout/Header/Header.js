@@ -30,6 +30,7 @@ export default function Header() {
     await axios.get("/loai-san/get-all").then((res) => {
       if (res) {
         setListCategory(res.data);
+        console.log(res.data);
       }
     });
   };
@@ -125,7 +126,6 @@ export default function Header() {
               </div>
             ) : (
               <div className={cx("action-div")}>
-                <p className={cx("name")}>{id}</p>
                 <button className={cx("btn-info")}>Thông tin</button>
                 <button
                   className={cx("btn-pay")}
