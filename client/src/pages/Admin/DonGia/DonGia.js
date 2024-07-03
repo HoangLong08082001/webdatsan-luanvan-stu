@@ -73,6 +73,8 @@ export default function DonGia() {
             <th>STT</th>
             <th>Tên khách hàng</th>
             <th>Email</th>
+            <th>Tên sân</th>
+            <th>Địa chỉ</th>
             <th>Số điện thoại</th>
             <th>Tiền đã thanh toán(50%)</th>
             <th>Tiền còn lại cần thanh toán</th>
@@ -87,6 +89,10 @@ export default function DonGia() {
                 <td>{index + 1}</td>
                 <td>{item.ten_khach_hang}</td>
                 <td>{item.email}</td>
+                <td>{item.ten_san}</td>
+                <td>
+                  {item.dia_chi},{item.ten_phuong},{item.ten_quan}
+                </td>
                 <td>{item.so_dien_thoai}</td>
                 <td>
                   {formatCurrency(item.tien_da_thanh_toan) ===
