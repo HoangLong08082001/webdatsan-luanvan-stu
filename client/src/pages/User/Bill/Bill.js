@@ -21,13 +21,15 @@ export default function Bill() {
 
     return `${year}-${month}-${day}`;
   };
-  const formartDate = (date) => {
-    const year = date.getFullYear(); // Lấy năm với 4 chữ số
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Lấy tháng, thêm 1 và định dạng 2 chữ số
-    const day = String(date.getDate()).padStart(2, "0"); // Lấy ngày và định dạng 2 chữ số
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Tháng bắt đầu từ 0
+    const day = String(date.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
-  };
+  }
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [listSan, setListSan] = useState([]);
@@ -58,9 +60,7 @@ export default function Bill() {
           const totalSum = res.data.reduce((sum, current) => {
             return sum + current.gia_san;
           }, 0);
-          if (res.data[0].trang_thai_tam_tinh === 0) {
-            setTotalSan(totalSum);
-          }
+          setTotalSan(totalSum);
         }
       });
   };
@@ -74,9 +74,7 @@ export default function Bill() {
           const totalSum = res.data.reduce((sum, current) => {
             return sum + current.gia_do_an;
           }, 0);
-          if (res.data[0].trang_thai_tam_tinh === 0) {
-            setTotalDoAn(totalSum);
-          }
+          setTotalDoAn(totalSum);
         }
       });
   };
@@ -92,9 +90,7 @@ export default function Bill() {
           const totalSum = res.data.reduce((sum, current) => {
             return sum + current.gia_nuoc;
           }, 0);
-          if (res.data[0].trang_thai_tam_tinh === 0) {
-            setTotalNuoc(totalSum);
-          }
+          setTotalNuoc(totalSum);
         }
       });
   };
@@ -112,9 +108,7 @@ export default function Bill() {
           const totalSum = res.data.reduce((sum, current) => {
             return sum + current.gia_dung_cu;
           }, 0);
-          if (res.data[0].trang_thai_tam_tinh === 0) {
-            setTotalTheThao(totalSum);
-          }
+          setTotalTheThao(totalSum);
         }
       });
   };
@@ -132,9 +126,7 @@ export default function Bill() {
           const totalSum = res.data.reduce((sum, current) => {
             return sum + current.gia_dung_cu;
           }, 0);
-          if (res.data[0].trang_thai_tam_tinh === 0) {
-            setTotalYTe(totalSum);
-          }
+          setTotalYTe(totalSum);
         }
       });
   };
@@ -155,7 +147,7 @@ export default function Bill() {
           )}?${totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe}`,
           extraData: "",
           tongtien: totalDoAn + totalNuoc + totalSan + totalTheThao + totalYTe,
-          ngaytao: formartDate(new Date()),
+          ngaytao: formatDate(new Date()),
         });
 
         if (response) {
@@ -327,7 +319,7 @@ export default function Bill() {
                           <p className={cx("start")}>{item.gio_bat_dau}</p>
                           <p className={cx("end")}>{item.gio_ket_thuc}</p>
                           <p className={cx("branch")}>
-                            {getTodayDate(item.thoi_gian)}
+                            {formatDate(item.thoi_gian)}
                           </p>
                           <p className={cx("branch")}>{item.ten_chi_nhanh}</p>
                           <p className={cx("address")}>

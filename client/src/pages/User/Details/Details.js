@@ -120,7 +120,7 @@ export default function Details() {
               id_tam_tinh: localStorage.getItem("tam_tinh"),
               start: start,
               end: end,
-              date: today,
+              date: currentDate,
             })
             .then((res) => {
               if (res) {

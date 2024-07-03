@@ -88,7 +88,12 @@ export default function DonGia() {
                 <td>{item.ten_khach_hang}</td>
                 <td>{item.email}</td>
                 <td>{item.so_dien_thoai}</td>
-                <td>{formatCurrency(item.tien_da_thanh_toan)}</td>
+                <td>
+                  {formatCurrency(item.tien_da_thanh_toan) ===
+                  formatCurrency(item.tong_tien)
+                    ? formatCurrency(0)
+                    : formatCurrency(item.tien_da_thanh_toan)}
+                </td>
                 <td>{formatCurrency(item.tong_tien)}</td>
                 <td>{item.phuong_thuc}</td>
                 <td>
