@@ -13,9 +13,20 @@ export default function HomeAdmin() {
   }, [navigate]);
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("statis")}>
-        <div className={cx("item")}></div>
-      </div>
+      {/* <div className={cx("statis")}>
+        <div className={cx("item-1")}>
+          <p className={cx("title")}>Tổng khách hàng: </p>
+        </div>
+        <div className={cx("item-2")}>
+          <p className={cx("title")}>Tổng tiền: </p>
+        </div>
+        <div className={cx("item-3")}>
+          <p className={cx("title")}>Tổng sân: </p>
+        </div>
+        <div className={cx("item-4")}>
+          <p className={cx("title")}>Tổng nhân viên: </p>
+        </div>
+      </div> */}
     </div>
   );
 }

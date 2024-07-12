@@ -5,8 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import axios from "../../../setup-axios/axios";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(style);
 export default function Information() {
+  const navigate = useNavigate();
   const formatDateTimeVN = (dateStr) => {
     const date = new Date(dateStr);
 
@@ -42,7 +44,9 @@ export default function Information() {
     try {
       await axios
         .get(
-          `${axios.defaults.baseURL}/hoa-don/get-hoa-don-by-ma-khach-hang/${localStorage.getItem("id")}`
+          `${
+            axios.defaults.baseURL
+          }/hoa-don/get-hoa-don-by-ma-khach-hang/${localStorage.getItem("id")}`
         )
         .then((res) => {
           if (res) {
@@ -66,60 +70,64 @@ export default function Information() {
     fetchInfor();
     fetchHoaDon();
   }, []);
-  return (
-    <div className={cx("wrapper")}>
-      <p className={cx("title")}>Thông tin khách hàng</p>
-      <div className={cx("container")}>
-        <div className={cx("left")}>
-          <input
-            disabled
-            type="text"
-            value={name}
-            className={cx("form-input")}
-          />
-          <input
-            disabled
-            type="text"
-            value={email}
-            className={cx("form-input")}
-          />
-          <input
-            disabled
-            type="text"
-            value={number}
-            className={cx("form-input")}
-          />
-        </div>
-        <div className={cx("right")}>
-          <p className={cx("title")}>Hoá đơn đã thanh toán</p>
-          <div className={cx("list")}>
-            <table>
-              <tr>
-                <th>Tổng tiền</th>
-                <th>Tiền đã thanh toán</th>
-                <th>Phương thức thanh toán</th>
-                <th>Trạng thái</th>
-                <th>Ngày thanh toán</th>
-              </tr>
-              {list.map((item, index) => {
-                return (
-                  <tr>
-                    <td>{formatCurrency(item.tong_tien)}</td>
-                    <td>{formatCurrency(item.tien_da_thanh_toan)}</td>
-                    <td>{item.phuong_thuc}</td>
-                    <td>
-                      {item.trang_thai_thanh_toan === 1
-                        ? "Đã thanh toán"
-                        : "Thanh toán 50%"}
-                    </td>
-                    <td>{formatDateTimeVN(item.ngay_tao)}</td>
-                  </tr>
-                );
-              })}
-            </table>
+  if (localStorage.getItem("id") && localStorage.getItem("email")) {
+    return (
+      <div className={cx("wrapper")}>
+        <p className={cx("title")}>Thông tin khách hàng</p>
+        <div className={cx("container")}>
+          <div className={cx("left")}>
+            <input
+              disabled
+              type="text"
+              value={name}
+              className={cx("form-input")}
+            />
+            <input
+              disabled
+              type="text"
+              value={email}
+              className={cx("form-input")}
+            />
+            <input
+              disabled
+              type="text"
+              value={number}
+              className={cx("form-input")}
+            />
+          </div>
+          <div className={cx("right")}>
+            <p className={cx("title")}>Hoá đơn đã thanh toán</p>
+            <div className={cx("list")}>
+              <table>
+                <tr>
+                  <th>Tổng tiền</th>
+                  <th>Tiền đã thanh toán</th>
+                  <th>Phương thức thanh toán</th>
+                  <th>Trạng thái</th>
+                  <th>Ngày thanh toán</th>
+                </tr>
+                {list.map((item, index) => {
+                  return (
+                    <tr>
+                      <td>{formatCurrency(item.tong_tien)}</td>
+                      <td>{formatCurrency(item.tien_da_thanh_toan)}</td>
+                      <td>{item.phuong_thuc}</td>
+                      <td>
+                        {item.trang_thai_thanh_toan === 1
+                          ? "Đã thanh toán"
+                          : "Thanh toán 50%"}
+                      </td>
+                      <td>{formatDateTimeVN(item.ngay_tao)}</td>
+                    </tr>
+                  );
+                })}
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    navigate("/trang-chu");
+  }
 }

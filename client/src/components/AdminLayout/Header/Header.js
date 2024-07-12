@@ -40,11 +40,11 @@ export default function Header() {
             Dụng cụ thể thao
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link className={cx("link")} to="">
             Khách hàng
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link className={cx("link")} to="/admin-page">
             Nhân viên

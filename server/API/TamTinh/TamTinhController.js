@@ -109,7 +109,7 @@ const addDungCuYTe = (req, res) => {
         );
       } else {
         pool.query(
-          "INSERT INTO tam_tinh_dung_cu_y_te (ma_dung_cu_y_te, so_luong_tam_tinh, trang_thai_tam_tinh ma_tam_tinh) VALUES(?,?,?,?)",
+          "INSERT INTO tam_tinh_dung_cu_y_te (ma_dung_cu_y_te, so_luong_tam_tinh, trang_thai_tam_tinh,ma_tam_tinh) VALUES(?,?,?,?)",
           [id_dung_cu_y_te, 1,0, id_tam_tinh],
           (err, data) => {
             if (err) {

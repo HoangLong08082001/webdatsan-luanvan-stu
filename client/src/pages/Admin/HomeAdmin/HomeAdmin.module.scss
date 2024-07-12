@@ -1,3 +1,64 @@
 .wrapper {
   height: 95%;
+  max-height: 95%;
+  overflow-y: scroll;
+  .statis {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .item-1 {
+      border-radius: 30px;
+      padding: 70px;
+      font-weight: 700;
+      width: 300px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      .title {
+        font-size: 30px;
+        color: white;
+      }
+      background-color: #8225b2;
+    }
+    .item-2 {
+      border-radius: 30px;
+      padding: 70px;
+      font-weight: 700;
+      width: 300px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      .title {
+        font-size: 30px;
+        color: white;
+      }
+      background-color: #2f96f7;
+    }
+    .item-3 {
+      border-radius: 30px;
+      padding: 70px;
+      font-weight: 700;
+      width: 300px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      .title {
+        font-size: 30px;
+        color: white;
+      }
+      background-color: #f0ad12;
+    }
+    .item-4 {
+      border-radius: 30px;
+      padding: 70px;
+      font-weight: 700;
+      width: 300px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      .title {
+        font-size: 30px;
+        color: white;
+      }
+      background-color: #de4b4c;
+    }
+  }
 }

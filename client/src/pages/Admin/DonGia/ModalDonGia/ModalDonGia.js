@@ -6,7 +6,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 const cx = classNames.bind(style);
 export default function ModalDonGia({ setModalFalse, id = null }) {
-  const [idDonGIa, setIdDonGia] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [method, setMethod] = useState("");
+  const [phone, setPhone] = useState("");
+  const [tendctt, setTendctt] = useState("");
+  const [soluongdctt, setSoluongdctt] = useState("");
+  const [tendcyte, setTendcyte] = useState("");
+  const [soluongdcyte, setSoluongdcyte] = useState("");
+  const [tennuoc, setTennuoc] = useState("");
+  const [soluonnuoc, setSoluongnuoc] = useState("");
   const fetchDetailDonGia = () => {
     try {
       axios.get(`/hoa-don/get-hoa-don-by-ma-hoa-don/${id}`).then((res) => {
@@ -32,11 +41,7 @@ export default function ModalDonGia({ setModalFalse, id = null }) {
           icon={faX}
           className={cx("icon")}
         />
-        <div className={cx("form-add")}>
-          <div className={cx("form-input")}>
-            <p className="title"></p>
-          </div>
-        </div>
+        
       </div>
     </div>
   );

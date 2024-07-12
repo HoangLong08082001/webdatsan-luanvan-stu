@@ -14,7 +14,7 @@ const create = (req, res) => {
   let id_tam_tinh = req.body.id_tam_tinh;
   try {
     pool.query(
-      "INSERT INTO don_gia (ma_tam_tinh, tong_tien, tien_da_thanh_toan, phuong_thuc, trang_thai, ngay_tao) VALUES(?,?,?,?,?,?)",
+      "INSERT INTO don_gia (ma_tam_tinh, tong_tien, tien_da_thanh_toan, phuong_thuc, trang_thai_thanh_toan, ngay_tao) VALUES(?,?,?,?,?,?)",
       [id_tam_tinh, total, half, method, 0, getTodayDate(new Date())],
       (err, data) => {
         if (err) {
@@ -140,7 +140,7 @@ const confrimPayment = (req, res) => {
   let price_return = req.body.price_return;
   try {
     pool.query(
-      "UPDATE don_gia SET tien_da_thanh_toan=?, trang_thai = 1 WHERE ma_don_gia=?",
+      "UPDATE don_gia SET tien_da_thanh_toan=?, trang_thai_thanh_toan = 1 WHERE ma_don_gia=?",
       [parseInt(parseInt(half) + parseInt(price_return)), id],
       (err, data) => {
         if (err) {
