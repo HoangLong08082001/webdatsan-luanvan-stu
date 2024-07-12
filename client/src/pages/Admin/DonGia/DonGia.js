@@ -89,6 +89,7 @@ export default function DonGia() {
             <th>Số điện thoại</th>
             <th>Tiền đã thanh toán(50%)</th>
             <th>Tiền còn lại cần thanh toán</th>
+            <th>Tiền đã thanh toán</th>
             <th>Phương thức thanh toán</th>
             <th>Trạng thái thanh toán</th>
             <th>Ngày thanh toán</th>
@@ -111,7 +112,13 @@ export default function DonGia() {
                     ? formatCurrency(0)
                     : formatCurrency(item.tien_da_thanh_toan)}
                 </td>
+                <td>
+                  {formatCurrency(
+                    parseInt(item.tong_tien) - parseInt(item.tien_da_thanh_toan)
+                  )}
+                </td>
                 <td>{formatCurrency(item.tong_tien)}</td>
+
                 <td>{item.phuong_thuc}</td>
                 <td>
                   {item.trang_thai_thanh_toan === 0
