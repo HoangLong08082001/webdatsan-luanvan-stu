@@ -6,12 +6,13 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Other from "../../../components/Other/Other";
 import axios from "../../../setup-axios/axios";
 const cx = classNames.bind(style);
-export default function Drinks() {function formatCurrency(amount) {
-  return new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(amount);
-}
+export default function Drinks() {
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  }
   const [listDrink, setListDrink] = useState([]);
   const id_tam_tinh = localStorage.getItem("tam_tinh");
   const id_khach_hang = localStorage.getItem("id");

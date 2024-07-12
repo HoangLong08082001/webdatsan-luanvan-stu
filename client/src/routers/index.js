@@ -22,6 +22,7 @@ import Foods from "../pages/User/Foods/Foods";
 import FootballPages from "../pages/User/FootballPages/FootballPages";
 import Forgot from "../pages/User/Forgot/Forgot";
 import Home from "../pages/User/Home/Home";
+import Information from "../pages/User/Information/Information";
 import LoginUser from "../pages/User/LoginUser/LoginUser";
 import Medical from "../pages/User/Medical/Medical";
 import ReNewPass from "../pages/User/ReNewPass/ReNewPass";
@@ -65,6 +66,7 @@ const UserRouter = [
   { path: "/thanh-toan", component: Bill },
   { path: "/chi-nhanh", component: Branch },
   { path: "/dung-cu-y-te", component: Medical },
+  { path: "/thong-tin/:name/:id", component: Information },
   { path: "/dung-cu-the-thao", component: Sport },
   { path: "/tim-kiem/:search", component: Search },
   { path: "/san/:name/:id", component: Yard },

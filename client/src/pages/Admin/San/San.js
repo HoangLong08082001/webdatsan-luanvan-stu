@@ -8,6 +8,7 @@ import {
   faLock,
   faTrashCan,
   faUnlock,
+  faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../setup-axios/axios";
 import AddSan from "./AddSan/AddSan";
@@ -107,7 +108,7 @@ export default function San() {
                     )}
                     onClick={() => handleBlock(item.ma_san)}
                   />
-                  <FontAwesomeIcon icon={faTrash} className={cx("delete")} />
+                  <FontAwesomeIcon icon={faEye} className={cx("delete")} />
                 </td>
               </tr>
             );

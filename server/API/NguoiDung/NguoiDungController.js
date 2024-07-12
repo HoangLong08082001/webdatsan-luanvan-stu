@@ -214,4 +214,31 @@ const renew = (req, res) => {
     return res.status(500).json({ message: "error" });
   }
 };
-module.exports = { sendMail, renew, getById, createNew, Login, getAll };
+const getAllById = (req, res) => {
+  let id = req.params.id;
+  try {
+    pool.query(
+      "SELECT * FROM khach_hang WHERE ma_khach_hang = ?",
+      [id],
+      (err, data) => {
+        if (err) {
+          throw err;
+        }
+        if (data.length > 0) {
+          return res.status(200).json(data);
+        }
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({ message: "fails" });
+  }
+};
+module.exports = {
+  getAllById,
+  sendMail,
+  renew,
+  getById,
+  createNew,
+  Login,
+  getAll,
+};

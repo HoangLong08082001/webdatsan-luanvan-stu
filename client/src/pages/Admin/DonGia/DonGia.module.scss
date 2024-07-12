@@ -45,6 +45,7 @@
         color: white;
         th {
           padding: 10px;
+          text-align: center;
         }
       }
       .tr-td {
@@ -69,18 +70,24 @@
   }
 }
 .action {
+  border: none;
   display: flex;
   justify-content: space-around;
   font-size: 20px;
   .edit {
+    margin-left: 10px;
+    margin-right: 10px;
     color: #1c6841;
     font-weight: 600;
     cursor: pointer;
+    margin-top: 10px;
   }
   .edit-active {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     color: red;
     font-weight: 600;
-    cursor: pointer;
   }
   .lock {
     color: #ad9914;

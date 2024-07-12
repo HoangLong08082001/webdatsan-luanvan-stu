@@ -2,14 +2,21 @@ import React, { useEffect, useState } from "react";
 import style from "./DonGia.module.scss";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faDownload,
+  faEye,
+  faFilePdf,
+} from "@fortawesome/free-solid-svg-icons";
 import axios from "../../../setup-axios/axios";
 import { useNavigate } from "react-router-dom";
 import ConfirmDonGia from "./ConfirmDonGia/ConfirmDonGia";
+import ModalDonGia from "./ModalDonGia/ModalDonGia";
 const cx = classNames.bind(style);
 export default function DonGia() {
   const [listHoaDon, setListHoaDon] = useState([]);
   const [modal, setModal] = useState(false);
+  const [modalCheck, setModalCheck] = useState(false);
   const navigate = useNavigate();
   const [load, setLoad] = useState(true);
   const [id, setId] = useState(null);
@@ -54,6 +61,10 @@ export default function DonGia() {
         alert("Error system");
       }
     }
+  };
+  const showModal = async (itemId) => {
+    await setModalCheck(true);
+    await setId(itemId);
   };
   useEffect(() => {
     fetchHoaDon();
@@ -103,13 +114,13 @@ export default function DonGia() {
                 <td>{formatCurrency(item.tong_tien)}</td>
                 <td>{item.phuong_thuc}</td>
                 <td>
-                  {item.trang_thai === 0
+                  {item.trang_thai_thanh_toan === 0
                     ? "Đã thanh toán 50%"
                     : "Đã thanh toán"}
                 </td>
                 <td>{getTodayDate(item.ngay_tao)}</td>
                 <td className={cx("action")}>
-                  {item.trang_thai === 0 ? (
+                  {item.trang_thai_thanh_toan === 0 ? (
                     <FontAwesomeIcon
                       icon={faCheck}
                       onClick={() => editModel(item.ma_don_gia)}
@@ -121,12 +132,23 @@ export default function DonGia() {
                       className={cx("edit-active")}
                     />
                   )}
+                  <FontAwesomeIcon
+                    icon={faEye}
+                    onClick={() => showModal(item.ma_don_gia)}
+                    className={cx("edit")}
+                  />
+                  <FontAwesomeIcon icon={faFilePdf} className={cx("edit")} />
                 </td>
               </tr>
             );
           })}
         </table>
       </div>
+      {modalCheck === true ? (
+        <ModalDonGia setModalFalse={closeModel} id={id} />
+      ) : (
+        ""
+      )}
       {modal === true ? (
         <ConfirmDonGia setModalFalse={closeModel} id={id} />
       ) : (

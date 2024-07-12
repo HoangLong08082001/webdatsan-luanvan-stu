@@ -70,6 +70,7 @@
 }
 .action {
   margin-top: 20%;
+  border: none;
   display: flex;
   justify-content: space-around;
   font-size: 20px;
@@ -84,7 +85,7 @@
     cursor: pointer;
   }
   .delete {
-    color: red;
+    color: rgb(5, 172, 77);
     font-weight: 600;
     cursor: pointer;
   }

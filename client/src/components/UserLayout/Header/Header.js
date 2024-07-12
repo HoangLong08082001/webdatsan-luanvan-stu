@@ -126,7 +126,18 @@ export default function Header() {
               </div>
             ) : (
               <div className={cx("action-div")}>
-                <button className={cx("btn-info")}>Thông tin</button>
+                <button
+                  className={cx("btn-info")}
+                  onClick={() =>
+                    navigate(
+                      `/thong-tin/${localStorage.getItem(
+                        "email"
+                      )}/${localStorage.getItem("id")}`
+                    )
+                  }
+                >
+                  Thông tin
+                </button>
                 <button
                   className={cx("btn-pay")}
                   onClick={() => navigate("/thanh-toan")}
