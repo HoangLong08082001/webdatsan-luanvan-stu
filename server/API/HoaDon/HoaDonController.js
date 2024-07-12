@@ -99,7 +99,7 @@ const create = (req, res) => {
 const getAll = (req, res) => {
   try {
     pool.query(
-      "SELECT * FROM don_gia join tam_tinh on don_gia.ma_tam_tinh=tam_tinh.ma_tam_tinh join khach_hang on tam_tinh.ma_khach_hang = khach_hang.ma_khach_hang join tam_tinh_san on tam_tinh.ma_tam_tinh = tam_tinh_san.ma_tam_tinh join san on san.ma_san = tam_tinh_san.ma_san join khung_gio on tam_tinh_san.ma_khung_gio = khung_gio.ma_khung_gio join chi_nhanh on chi_nhanh.ma_chi_nhanh = san.ma_chi_nhanh join quan_huyen on quan_huyen.ma_quan_huyen=chi_nhanh.ma_quan_huyen",
+      "SELECT * FROM don_gia join tam_tinh on don_gia.ma_tam_tinh=tam_tinh.ma_tam_tinh join khach_hang on tam_tinh.ma_khach_hang = khach_hang.ma_khach_hang join tam_tinh_san on tam_tinh.ma_tam_tinh = tam_tinh_san.ma_tam_tinh join san on san.ma_san = tam_tinh_san.ma_san join khung_gio on tam_tinh_san.ma_khung_gio = khung_gio.ma_khung_gio join chi_nhanh on chi_nhanh.ma_chi_nhanh = san.ma_chi_nhanh join quan_huyen on quan_huyen.ma_quan_huyen=chi_nhanh.ma_quan_huyen GROUP BY don_gia.ma_don_gia;",
       [],
       (err, data) => {
         if (err) {
